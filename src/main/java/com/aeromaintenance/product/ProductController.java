@@ -7,18 +7,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/product")
+@CrossOrigin(origins = "http://localhost:5173")
+
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+    
+    public ProductController() {
+        System.out.println("ProductController Initialized");
+    }
 
     // Create Product
-    @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
-        return ResponseEntity.ok(savedProduct);
+    @PostMapping("/create")
+    public ResponseEntity<String> createProduct(@RequestBody Product product) {
+        System.out.println("Creating product: " + product);
+        productService.saveProduct(product);
+        return ResponseEntity.ok("Product created successfully");
     }
+
 
     // Get All Products
     @GetMapping
@@ -36,4 +44,28 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+ // Delete Product by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        if (product != null) {
+            productService.deleteProductById(id);
+            return ResponseEntity.ok("Product deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    // Update Product by ID
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        Product product = productService.updateProduct(id, updatedProduct);
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
 }
