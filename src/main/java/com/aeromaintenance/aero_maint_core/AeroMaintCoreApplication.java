@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = " com.aeromaintenance")
 @EnableJpaRepositories(basePackages = "com.aeromaintenance")
 @SpringBootApplication(scanBasePackages = "com.aeromaintenance")
-
-//@SpringBootApplication
 public class AeroMaintCoreApplication {
 
 	public static void main(String[] args) {
