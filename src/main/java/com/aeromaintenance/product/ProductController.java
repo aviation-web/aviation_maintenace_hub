@@ -9,7 +9,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @CrossOrigin(origins = "http://localhost:5173")
-
 public class ProductController {
 
     @Autowired
@@ -33,17 +32,18 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
+   
+	// Get Product by ID
 
-    // Get Product by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        if (product != null) {
-            return ResponseEntity.ok(product);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+		Product product = productService.getProductById(id);
+		if (product != null) {
+			return ResponseEntity.ok(product);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
     
  // Delete Product by ID
     @DeleteMapping("/{id}")

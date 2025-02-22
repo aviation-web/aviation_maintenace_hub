@@ -41,11 +41,11 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getPhoneNumber() != null) {
 	            updateExisting.setPhoneNumber(supplierModel.getPhoneNumber());
 	        }
-	        if (supplierModel.getFax() != null) {
-	            updateExisting.setFax(supplierModel.getFax());
+	        if (supplierModel.getFaxNum() != null) {
+	            updateExisting.setFaxNum(supplierModel.getFaxNum());
 	        }
-	        if (supplierModel.getEmailId() != null) {
-	            updateExisting.setEmailId(supplierModel.getEmailId());
+	        if (supplierModel.getEmail() != null) {
+	            updateExisting.setEmail(supplierModel.getEmail());
 	        }
 	        if (supplierModel.getQualityManagerName() != null) {
 	            updateExisting.setQualityManagerName(supplierModel.getQualityManagerName());
@@ -56,20 +56,21 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getQualityManagerEmailId() != null) {
 	            updateExisting.setQualityManagerEmailId(supplierModel.getQualityManagerEmailId());
 	        }
-	        if (supplierModel.getSalesRepresentativeName() != null) {
-	            updateExisting.setSalesRepresentativeName(supplierModel.getSalesRepresentativeName());
+	        if(supplierModel.getSaleRepresentativeName()!=null) {
+	        	updateExisting.setSaleRepresentativeName(supplierModel.getSaleRepresentativeName());
 	        }
-	        if (supplierModel.getSalePhoneNumber() != null) {
-	            updateExisting.setSalePhoneNumber(supplierModel.getSalePhoneNumber());
+	        
+	        if (supplierModel.getSaleRepresentativePhoneNumber() != null) {
+	            updateExisting.setSaleRepresentativePhoneNumber(supplierModel.getSaleRepresentativePhoneNumber());
 	        }
-	        if (supplierModel.getSaleEmailId() != null) {
-	            updateExisting.setSaleEmailId(supplierModel.getSaleEmailId());
+	        if (supplierModel.getSaleRepresentativeEmailId() != null) {
+	            updateExisting.setSaleRepresentativeEmailId(supplierModel.getSaleRepresentativeEmailId());
 	        }
-	        if (supplierModel.getCoreProducts() != null) {
-	            updateExisting.setCoreProducts(supplierModel.getCoreProducts());
+	        if (supplierModel.getCoreProcess() != null) {
+	            updateExisting.setCoreProcess(supplierModel.getCoreProcess());
 	        }
-	        if (supplierModel.getYearsInBusiness() != null) {
-	            updateExisting.setYearsInBusiness(supplierModel.getYearsInBusiness());
+	        if (supplierModel.getWorkYear() != null) {
+	            updateExisting.setWorkYear(supplierModel.getWorkYear());
 	        }
 	        if (supplierModel.getIsoRegistered() != null) {
 	            updateExisting.setIsoRegistered(supplierModel.getIsoRegistered());
@@ -83,59 +84,61 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getIsoRegistrationPlans() != null) {
 	            updateExisting.setIsoRegistrationPlans(supplierModel.getIsoRegistrationPlans());
 	        }
-	        if (supplierModel.getTotalEmployees() != null) {
-	            updateExisting.setTotalEmployees(supplierModel.getTotalEmployees());
+	        if (supplierModel.getNumEmp() != null) {
+	            updateExisting.setNumEmp(supplierModel.getNumEmp());
 	        }
-	        if (supplierModel.getOperatingShifts() != null) {
-	            updateExisting.setOperatingShifts(supplierModel.getOperatingShifts());
+	        if (supplierModel.getNumOpeShift() != null) {
+	            updateExisting.setNumOpeShift(supplierModel.getNumOpeShift());
 	        }
-	        if (supplierModel.getQualityManual() != null) {
-	            updateExisting.setQualityManual(supplierModel.getQualityManual());
+	        if (supplierModel.getQuaManual() != null) {
+	            updateExisting.setQuaManual(supplierModel.getQuaManual());
 	        }
-	        if (supplierModel.getAnnualTurnover() != null) {
-	            updateExisting.setAnnualTurnover(supplierModel.getAnnualTurnover());
+	        if (supplierModel.getTurnOver() != null) {
+	            updateExisting.setTurnOver(supplierModel.getTurnOver());
 	        }
-	        if (supplierModel.getQualityAssuranceIndependence() != null) {
-	            updateExisting.setQualityAssuranceIndependence(supplierModel.getQualityAssuranceIndependence());
+	        if (supplierModel.getIndependenceManuf() != null) {
+	        	 updateExisting.setIndependenceManuf(supplierModel.getIndependenceManuf());
+	            //updateExisting.setIndependenceManuf(supplierModel.getIndependenceManuf());
 	        }
-	        if (supplierModel.getDocumentedCorrectivePreventiveActions() != null) {
-	            updateExisting.setDocumentedCorrectivePreventiveActions(supplierModel.getDocumentedCorrectivePreventiveActions());
+	        if (supplierModel.getDocumentedOperative() != null) {
+	            updateExisting.setDocumentedOperative(supplierModel.getDocumentedOperative());
 	        }
-	        if (supplierModel.getQualityRecordManagement() != null) {
-	            updateExisting.setQualityRecordManagement(supplierModel.getQualityRecordManagement());
+	        if (supplierModel.getDocumentedProcedure() != null) {
+	            updateExisting.setDocumentedProcedure(supplierModel.getDocumentedProcedure());
 	        }
-	        if (supplierModel.getProductMeetsSpecifications() != null) {
-	            updateExisting.setProductMeetsSpecifications(supplierModel.getProductMeetsSpecifications());
+	        if (supplierModel.getProductShipment() != null) {
+	            updateExisting.setProductShipment(supplierModel.getProductShipment());
 	        }
-	        if (supplierModel.getIncomingProcessDocumented() != null) {
-	            updateExisting.setIncomingProcessDocumented(supplierModel.getIncomingProcessDocumented());
+	        if (supplierModel.getProcessDocumented() != null) {
+	            updateExisting.setProcessDocumented(supplierModel.getProcessDocumented());
 	        }
-	        if (supplierModel.getSamplingPlan() != null) {
-	            updateExisting.setSamplingPlan(supplierModel.getSamplingPlan());
+	        if (supplierModel.getSamplingIncomingInsp() != null) {
+	            updateExisting.setSamplingIncomingInsp(supplierModel.getSamplingIncomingInsp());
 	        }
 	        if (supplierModel.getReceivingInspectionResultsOnFile() != null) {
 	            updateExisting.setReceivingInspectionResultsOnFile(supplierModel.getReceivingInspectionResultsOnFile());
 	        }
-	        if (supplierModel.getTraceabilityIdentificationMaintenance() != null) {
-	            updateExisting.setTraceabilityIdentificationMaintenance(supplierModel.getTraceabilityIdentificationMaintenance());
+	        if (supplierModel.getIdentificationMaintained() != null) {
+	            updateExisting.setIdentificationMaintained(supplierModel.getIdentificationMaintained());
 	        }
-	        if (supplierModel.getMaterialIsolationProcedure() != null) {
-	            updateExisting.setMaterialIsolationProcedure(supplierModel.getMaterialIsolationProcedure());
+	        if (supplierModel.getSepInsMaterial() != null) {
+	            updateExisting.setSepInsMaterial(supplierModel.getSepInsMaterial());
 	        }
-	        if (supplierModel.getIsolatingNonconformingMaterial() != null) {
-	            updateExisting.setIsolatingNonconformingMaterial(supplierModel.getIsolatingNonconformingMaterial());
+	        if (supplierModel.getNonConMaterial() != null) {
+	            updateExisting.setNonConMaterial(supplierModel.getNonConMaterial());
 	        }
-	        if (supplierModel.getCustomerDeviationReferred() != null) {
-	            updateExisting.setCustomerDeviationReferred(supplierModel.getCustomerDeviationReferred());
+	        if (supplierModel.getAffectCusReq() != null) {
+	            updateExisting.setAffectCusReq(supplierModel.getAffectCusReq());
+	        }// incoming inspection end 
+	        
+	        if (supplierModel.getEquipCalibrated() != null) {
+	            updateExisting.setEquipCalibrated(supplierModel.getEquipCalibrated());
 	        }
-	        if (supplierModel.getEquipmentCalibrated() != null) {
-	            updateExisting.setEquipmentCalibrated(supplierModel.getEquipmentCalibrated());
+	        if (supplierModel.getRecalibration() != null) {
+	            updateExisting.setRecalibration(supplierModel.getRecalibration());
 	        }
-	        if (supplierModel.getGaugesCertified() != null) {
-	            updateExisting.setGaugesCertified(supplierModel.getGaugesCertified());
-	        }
-	        if (supplierModel.getGaugesSufficient() != null) {
-	            updateExisting.setGaugesSufficient(supplierModel.getGaugesSufficient());
+	        if (supplierModel.getScopeOfWork() != null) {
+	            updateExisting.setScopeOfWork(supplierModel.getScopeOfWork());
 	        }
 	        if (supplierModel.getWrittenWorkInstructionsAvaibleInStation() != null) {
 	            updateExisting.setWrittenWorkInstructionsAvaibleInStation(supplierModel.getWrittenWorkInstructionsAvaibleInStation());
@@ -143,17 +146,17 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getFinalInspectionEvidence() != null) {
 	            updateExisting.setFinalInspectionEvidence(supplierModel.getFinalInspectionEvidence());
 	        }
-	        if (supplierModel.getStatisticalMethodsUsed() != null) {
-	            updateExisting.setStatisticalMethodsUsed(supplierModel.getStatisticalMethodsUsed());
+	        if (supplierModel.getStatisMethod() != null) {
+	            updateExisting.setStatisMethod(supplierModel.getStatisMethod());
 	        }
-	        if (supplierModel.getCustomerDocumentsControl() != null) {
-	            updateExisting.setCustomerDocumentsControl(supplierModel.getCustomerDocumentsControl());
+	        if (supplierModel.getSuppliedDocument() != null) {
+	            updateExisting.setSuppliedDocument(supplierModel.getSuppliedDocument());
 	        }
-	        if (supplierModel.getRevisionChangeHandling() != null) {
-	            updateExisting.setRevisionChangeHandling(supplierModel.getRevisionChangeHandling());
+	        if (supplierModel.getIncludeMethod()!= null) {
+	            updateExisting.setIncludeMethod(supplierModel.getIncludeMethod());
 	        }
-	        if (supplierModel.getSupplierQualityEvaluations() != null) {
-	            updateExisting.setSupplierQualityEvaluations(supplierModel.getSupplierQualityEvaluations());
+	        if (supplierModel.getQualityCapabilities() != null) {
+	            updateExisting.setQualityCapabilities(supplierModel.getQualityCapabilities());
 	        }
 	        if (supplierModel.getApprovedSupplierList() != null) {
 	            updateExisting.setApprovedSupplierList(supplierModel.getApprovedSupplierList());
@@ -164,14 +167,14 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getSupplierOnTimeDelivery() != null) {
 	            updateExisting.setSupplierOnTimeDelivery(supplierModel.getSupplierOnTimeDelivery());
 	        }
-	        if (supplierModel.getSupplierMarketPriceCompetence() != null) {
-	            updateExisting.setSupplierMarketPriceCompetence(supplierModel.getSupplierMarketPriceCompetence());
+	        if (supplierModel.getMarketPrice() != null) {
+	            updateExisting.setMarketPrice(supplierModel.getMarketPrice());
 	        }
-	        if (supplierModel.getAdequateAreaSafety() != null) {
-	            updateExisting.setAdequateAreaSafety(supplierModel.getAdequateAreaSafety());
+	        if (supplierModel.getSafetyProgram() != null) {
+	            updateExisting.setSafetyProgram(supplierModel.getSafetyProgram());
 	        }
-	        if (supplierModel.getHousekeepingProcedure() != null) {
-	            updateExisting.setHousekeepingProcedure(supplierModel.getHousekeepingProcedure());
+	        if (supplierModel.getHouseKeeping() != null) {
+	            updateExisting.setHouseKeeping(supplierModel.getHouseKeeping());
 	        }
 
 	        return supplierRepository.save(updateExisting);

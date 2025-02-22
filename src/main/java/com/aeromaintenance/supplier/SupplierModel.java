@@ -38,8 +38,8 @@ public class SupplierModel {
     
     @Column(name = "sysdate")
     private Date sysdate;
-
-    @NotBlank(message = "Supplier name cannot be blank")
+    
+     @NotBlank(message = "Supplier name cannot be blank")
     @Size(max = 255, message = "Supplier name cannot exceed 255 characters")
     @Column(name = "supplier_name")
     private String supplierName;
@@ -55,12 +55,12 @@ public class SupplierModel {
 
     @Size(max = 20, message = "Fax cannot exceed 20 characters")
     @Column(name = "fax")
-    private String fax;
+    private String faxNum;
 
     @Email(message = "Email should be valid")
     @Size(max = 255, message = "Email ID cannot exceed 255 characters")
     @Column(name = "email_id")
-    private String emailId;
+    private String email;
 
     @NotBlank(message = "Quality manager name cannot be blank")
     @Size(max = 255, message = "Quality manager name cannot exceed 255 characters")
@@ -79,25 +79,29 @@ public class SupplierModel {
 
     @Size(max = 255, message = "Sales representative name cannot exceed 255 characters")
     @Column(name = "sales_representative_name")
-    private String salesRepresentativeName;
+    private String saleRepresentativeName;
     
     @Size(max = 15, message = "Sales phone number cannot exceed 15 characters")
     @Column(name = "sale_phone_number")
-    private String salePhoneNumber;
+    private String saleRepresentativePhoneNumber;
 
     @Email(message = "Sales representative email should be valid")
     @Size(max = 255, message = "Sales representative email ID cannot exceed 255 characters")
     @Column(name = "sale_email_id")
-    private String saleEmailId;
+    private String saleRepresentativeEmailId;
 
     @Size(max = 500, message = "Core products cannot exceed 500 characters")
     @Column(name = "core_products")
-    private String coreProducts;
+    private String coreProcess;
 
     @Size(max = 4, message = "Years in business cannot exceed 4 characters")
     @Column(name = "years_in_business")
-    private String yearsInBusiness;
+    private String workYear;
 
+    @Size(max = 255, message = "ISO iso_registered cannot exceed 255 characters")
+    @Column(name = "alredy_iso_standard")
+    private String areYouIsoRegistered;
+    
     @Column(name = "iso_registered") 
     private String isoRegistered;
 
@@ -115,43 +119,43 @@ public class SupplierModel {
 
     @Min(value = 1, message = "Total employees must be greater than 0")
     @Column(name = "total_employees")
-    private Integer totalEmployees;
+    private Integer numEmp;
 
     @Min(value = 1, message = "Operating shifts must be greater than 0")
     @Column(name = "operating_shifts")
-    private Integer operatingShifts;
+    private Integer numOpeShift;
 
     @Size(max = 255, message = "Quality manual cannot exceed 255 characters")
     @Column(name = "quality_manual")
-    private String qualityManual;
+    private String quaManual;
 
     @DecimalMin(value = "0.0", message = "Annual turnover must be greater than or equal to 0")
     @Column(name = "annual_turnover")
-    private BigDecimal annualTurnover;
+    private BigDecimal turnOver;
 
     @Size(max = 255, message = "Quality assurance independence cannot exceed 255 characters")
     @Column(name = "quality_assurance_independence")
-    private String qualityAssuranceIndependence;
+    private String independenceManuf ;//qualityAssuranceIndependence;
 
     @Size(max = 255, message = "Documented corrective actions cannot exceed 255 characters")
     @Column(name = "documented_corrective_preventive_actions")
-    private String documentedCorrectivePreventiveActions;
+    private String documentedOperative; //nonConMaterial
 
     @Size(max = 255, message = "Quality record management cannot exceed 255 characters")
     @Column(name = "quality_record_management")
-    private String qualityRecordManagement;
+    private String documentedProcedure;
 
     @Size(max = 255, message = "Product meets specifications cannot exceed 255 characters")
     @Column(name = "product_meets_specifications")
-    private String productMeetsSpecifications;
+    private String productShipment;
 
     @Size(max = 255, message = "Incoming process documented cannot exceed 255 characters")
     @Column(name = "incoming_process_documented")
-    private String incomingProcessDocumented;
+    private String processDocumented;
 
     @Size(max = 255, message = "Sampling plan cannot exceed 255 characters")
     @Column(name = "sampling_plan")
-    private String samplingPlan;
+    private String samplingIncomingInsp;
 
     @Size(max = 255, message = "Receiving inspection results on file cannot exceed 255 characters")
     @Column(name = "rece_inspe_results_on_file")
@@ -159,59 +163,54 @@ public class SupplierModel {
 
     @Size(max = 255, message = "Traceability maintenance cannot exceed 255 characters")
     @Column(name = "trace_Identi_maintenance")
-    private String traceabilityIdentificationMaintenance;
+    private String identificationMaintained; //traceabilityIdentificationMaintenance;
 
     @Size(max = 255, message = "Material isolation procedure cannot exceed 255 characters")
     @Column(name = "material_isolation_procedure")
-    private String materialIsolationProcedure;
+    private String sepInsMaterial;  //sepInsMaterial
 
     @Size(max = 255, message = "Isolating nonconforming material cannot exceed 255 characters")
     @Column(name = "isolating_nonconforming_material")
-    private String isolatingNonconformingMaterial;
+    private String nonConMaterial;
 
     @Size(max = 255, message = "Customer deviation referred cannot exceed 255 characters")
     @Column(name = "customer_deviation_referred")
-    private String customerDeviationReferred;
-
-    @Size(max = 255, message = "Equipment calibrated cannot exceed 255 characters")
-    @Column(name = "equipment_calibrated")
-    private String equipmentCalibrated;
-
-    @Size(max = 255, message = "Gauges certified cannot exceed 255 characters")
-    @Column(name = "gauges_certified")
-    private String gaugesCertified;
-
-    @Size(max = 255, message = "Gauges sufficient cannot exceed 255 characters")
-    @Column(name = "gauges_sufficient")
-    private String gaugesSufficient;
+    private String affectCusReq;
 
     @Size(max = 255, message = "Written work instructions cannot exceed 255 characters")
     @Column(name = "written_work_instructions")
     private String writtenWorkInstructionsAvaibleInStation;
-
+    
     @Size(max = 255, message = "Final inspection evidence cannot exceed 255 characters")
     @Column(name = "final_inspection_evidence")
     private String finalInspectionEvidence;
-
+    
     @Size(max = 255, message = "Statistical methods used cannot exceed 255 characters")
     @Column(name = "statistical_methods_used")
-    private String statisticalMethodsUsed;
+    private String statisMethod;
+    
 
     @Size(max = 255, message = "Customer documents control cannot exceed 255 characters")
     @Column(name = "customer_documents_control")
-    private String customerDocumentsControl;
+    private String suppliedDocument;
 
     @Size(max = 255, message = "Revision change handling cannot exceed 255 characters")
-    @Column(name = "revision_change_handling")
-    private String revisionChangeHandling;
-
+    @Column(name = "revChange_hand_includeMethod")
+    private String includeMethod;
+    
+   
     @Size(max = 255, message = "Supplier quality evaluations cannot exceed 255 characters")
     @Column(name = "supplier_quality_evaluations")
-    private String supplierQualityEvaluations;
+    private String qualityCapabilities;
 
     @Size(max = 255, message = "Approved supplier list cannot exceed 255 characters")
     @Column(name = "approved_supplier_list")
     private String approvedSupplierList;
+    
+    @Size(max = 255, message = "Supplier market price competence cannot exceed 255 characters")
+    @Column(name = "supplier_market_price_competence")
+    private String marketPrice;
+    
 
     @Size(max = 255, message = "Certified test reports cannot exceed 255 characters")
     @Column(name = "certified_test_reports")
@@ -221,18 +220,25 @@ public class SupplierModel {
     @Column(name = "supplier_on_time_delivery")
     private String supplierOnTimeDelivery;
 
-    @Size(max = 255, message = "Supplier market price competence cannot exceed 255 characters")
-    @Column(name = "supplier_market_price_competence")
-    private String supplierMarketPriceCompetence;
+    @Size(max = 255, message = "Equipment calibrated cannot exceed 255 characters")
+    @Column(name = "equipment_calibrated")
+    private String equipCalibrated;
+    
+   @Size(max = 255, message = "Gauges certified cannot exceed 255 characters")
+    @Column(name = "gauges_certified")
+    private String recalibration;
 
+    @Size(max = 255, message = "Gauges sufficient cannot exceed 255 characters")
+    @Column(name = "gauges_sufficient")
+    private String scopeOfWork;
+    
+    
     @Size(max = 255, message = "Adequate area safety cannot exceed 255 characters")
     @Column(name = "adequate_area_safety")
-    private String adequateAreaSafety;
+    private String safetyProgram;
 
     @Size(max = 255, message = "Housekeeping procedure cannot exceed 255 characters")
     @Column(name = "housekeeping_procedure")
-    private String housekeepingProcedure;
+    private String houseKeeping;
 
-    
-    
 }
