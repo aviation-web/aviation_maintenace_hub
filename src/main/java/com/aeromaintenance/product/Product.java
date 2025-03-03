@@ -33,13 +33,7 @@ public class Product {
     private String nha;
 
     @Column(nullable = false)
-    private int cmmRef1;
-
-    @Column(nullable = false)
-    private int cmmRef2;
-
-    @Column(nullable = false)
-    private int cmmRef3;
+    private int cmmReferenceNumber;
 
     @Column(nullable = false, length = 30)
     private String materialClassification;

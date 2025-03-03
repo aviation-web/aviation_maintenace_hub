@@ -1,79 +1,87 @@
 package com.aeromaintenance.storeAcceptance;
 
-import java.sql.Date;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
+@Entity
+@Table(name = "STORE_ACCEPTANCE")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name= "STORE_ACCEPTANCE")
 public class StoreAcc {
-	
-	@Id
-	@Column(name = "PART_NUM" ,nullable = false, length = 10)
-	private String partNum;
-	
-	@Column(name = "PART_DESC" ,nullable = true, length = 100)
-	private String description;
-	
-	@Column(name = "BATCH" ,nullable = false, length = 20)
-	private int batch;
-	
-//	@Column(name = "CONDITION" ,nullable = false, length = 50)
-//	private String condition;
-	
-	@Column(name = "NEW_OPT" ,nullable = true, length = 1)
-	private boolean new_opt;
-	
-	@Column(name = "O_W" ,nullable = true, length = 1)
-	private boolean o_w;
-	
-	@Column(name = "REPAIRED" ,nullable = true, length = 1)
-	private boolean repaired;
-	
-	@Column(name = "SUPPLIER" ,nullable = false, length = 100)
-	private String supplier;
-	
-	@Column(name = "DOM" ,nullable = false, length = 30)
-	private Date dom;
-	
-	@Column(name = "DOE" ,nullable = false, length = 30)
-	private Date doe;
-	
-	@Column(name = "QUANTITY" ,nullable = false, length = 7)
-	private int quantity;
-	
-	@Column(name = "REVEIVING_INSP_REPORT" ,nullable = true, length = 500)
-	private String recInspReport;
-	
-	@Column(name = "DATE_OF_RECEIPT" ,nullable = false, length = 30)
-	private Date dateOfRecipet;
-	
-	@Column(name = "NAME_QUAILITY_INSP" ,nullable = false, length = 100)
-	private String nameOfQualityInsp;
-	
-	@Column(name = "SIGNATURE_QUALITY_INSP" ,nullable = false, length = 20)
-	private String signatureOfQualityInsp;
-	
-	@Column(name = "DATE_REGISTRATION" ,nullable = true, length = 30)
-	private Date date;
-	
-	@Column(name = "FROM_AMC" ,nullable = true, length = 100)
-	private String fromAMC;
-	
-	@Column(name = "REV_NO" ,nullable = true, length = 100)
-	private String revNo;
 
+  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+    
+    @Id
+    @Column(name = "part_num", nullable = false)
+    private String partNum;
+
+    @Column(name = "description", length = 100)
+    private String description;
+
+    @Column(name = "batch")
+    private String batch;
+
+    @Column(name = "condition_type")
+    private String condition; // "New", "O/W", "Repaired"
+
+    @Column(name = "supplier", length = 100)
+    private String supplier;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "dom")
+    private Date dom; // Date of Manufacture
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "doe")
+    private Date doe; // Date of Expiry
+
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "inspection_report", length = 500)
+    private String document;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_of_receipt")
+    private Date dateOfRecipet;
+
+    @Column(name = "quality_inspector", length = 100)
+    private String nameOfQualityInsp;
+
+    @Column(name = "signature_of_quality_inspector", length = 20)
+    private String signatureOfQualityInsp;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", updatable = false)
+    private Date createdAt;
+
+    @Column(name = "form_amc", updatable = false)
+    private String formAMC;
+
+
+    @Column(name = "rev_no", updatable = false)
+    private String revNo;
+
+    
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+        this.revNo = generateRevNo();  // Automatically generate rev_no
+        this.formAMC = generateFormAMC();
+
+    }
+
+    private String generateRevNo() {
+        return "REV-" + System.currentTimeMillis(); // Example: REV-1708607000000
+    }
+    private String generateFormAMC() {
+        return "AMC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(); // Example: AMC-A1B2C3D4
+    }
 }

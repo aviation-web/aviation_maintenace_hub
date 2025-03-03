@@ -31,7 +31,7 @@ public class MaterialReceiptNoteService {
         if (!mrnRepository.existsById(id)) {
             throw new RuntimeException("MRN not found with id: " + id);
         }
-        mrn.setId(id);
+        mrn.setMaterialId(id);
         return mrnRepository.save(mrn);
     }
     

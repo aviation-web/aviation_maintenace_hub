@@ -43,9 +43,9 @@ public class ProductService {
                 existingProduct.setUnitOfMeasurement(updatedProduct.getUnitOfMeasurement());
                 existingProduct.setOem(updatedProduct.getOem());
                 existingProduct.setNha(updatedProduct.getNha());
-                existingProduct.setCmmRef1(updatedProduct.getCmmRef1());
-                existingProduct.setCmmRef2(updatedProduct.getCmmRef2());
-                existingProduct.setCmmRef3(updatedProduct.getCmmRef3());
+                existingProduct.setCmmReferenceNumber(updatedProduct.getCmmReferenceNumber());
+//                existingProduct.setCmmRef2(updatedProduct.getCmmRef2());
+//                existingProduct.setCmmRef3(updatedProduct.getCmmRef3());
                 existingProduct.setMaterialClassification(updatedProduct.getMaterialClassification());
                 existingProduct.setRegisteredBy(updatedProduct.getRegisteredBy());
                 return productRepository.save(existingProduct);

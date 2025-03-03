@@ -1,63 +1,48 @@
 package com.aeromaintenance.storeAcceptance;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+import java.util.List;
+
 @RestController
 @RequestMapping("/storeAcceptance")
+@CrossOrigin(origins = "http://localhost:8089")
 public class StoreAccController {
-	
-	@Autowired
-	private StoreAccService StoreAccService;
-	
-	//REST API
-	@PostMapping
-	public ResponseEntity<StoreAccDto> createStoreAcc(@RequestBody StoreAccDto storeDto)
-	{	StoreAccDto savedStoreAcc = StoreAccService.createStore(storeDto);
-		return new ResponseEntity<>(savedStoreAcc, HttpStatus.CREATED);
-	}
-	
-	//REST API
-	@GetMapping("{partNum}")
-	public ResponseEntity<StoreAccDto> getStoreById(@PathVariable("partNum") String partNum)
-	{
-		StoreAccDto storeAccDto = StoreAccService.getStoreByPartNum(partNum);
-		return ResponseEntity.ok(storeAccDto);
-		
-	}
-	
-	@GetMapping("/")
-	public ResponseEntity<List<String>> getAllStore()
-	{
-		List<String> partNum = StoreAccService.getPartNumbersList();
-		return ResponseEntity.ok(partNum);
-	}
-	
-	
-	@PutMapping("{partNum}")
-	public ResponseEntity<StoreAccDto> updateEmploye(@PathVariable("partNum") String partNum,@RequestBody StoreAccDto storeAccDto)
-	{
-		StoreAccDto updatedstoreAccDto = StoreAccService.updateStore(partNum, storeAccDto);
-		return ResponseEntity.ok(updatedstoreAccDto);
-	}
-	
-	@DeleteMapping("{partNum}")
-	public ResponseEntity<String> deleteStore (@PathVariable("partNum") String partNum)
-	{
-		StoreAccService.deleteStore(partNum);;
-		return ResponseEntity.ok("store with part number :" + partNum + ", has been deleted");
-	}
+
+    @Autowired
+    private StoreAccService service;
+
+    @GetMapping
+    public List<StoreAcc> getAllStoreAcceptances() {
+        return service.getAllStoreAcceptances();
+    }
+
+    @GetMapping("/{id}")
+    public StoreAcc getStoreAcceptanceById(@PathVariable String id) {
+        return service.getStoreAcceptanceById(id);
+    }
+
+    @PostMapping
+    public StoreAcc saveStoreAcceptance(@RequestBody StoreAcc storeAcceptance) {
+        return service.saveStoreAcceptance(storeAcceptance);
+    }
+
+    @PutMapping("/{id}")
+    public StoreAcc updateStoreAcceptance(@PathVariable String id, @RequestBody StoreAcc storeAcceptance) {
+        return service.updateStoreAcceptance(id, storeAcceptance);
+    }
+
+//    @DeleteMapping("/{id}")
+//    public String deleteStoreAcceptance(@PathVariable Long id) {
+//        service.deleteStoreAcceptance(id);
+//        return "Record deleted successfully!";
+//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteStoreAcceptance(@PathVariable String id) {
+      service.deleteStoreAcceptance(id);
+        return ResponseEntity.ok("Deleted storeAcceptance with ID: " + id);
+    }
 }

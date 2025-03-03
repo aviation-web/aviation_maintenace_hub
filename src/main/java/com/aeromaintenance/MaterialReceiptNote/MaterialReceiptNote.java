@@ -24,7 +24,8 @@ public class MaterialReceiptNote {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="id")
+    private Long materialId;
     
     @Column(name = "mrn_no", length = 15, nullable = false)
     private String mrnNo;

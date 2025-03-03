@@ -33,6 +33,7 @@ public class MaterialReceiptNoteController {
     
     @GetMapping("/{id}")
     public ResponseEntity<MaterialReceiptNote> getMRNById(@PathVariable Long id) {
+    	System.out.print("Edit method.."+id);
         return mrnService.getMRNById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
