@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StoreAccRepository extends JpaRepository<StoreAcc, String> {
+public interface StoreAccRepository extends JpaRepository<StoreAcc, Long> {
 }
