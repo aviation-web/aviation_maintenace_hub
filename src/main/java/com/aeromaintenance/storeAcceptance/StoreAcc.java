@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StoreAcc {
 
-  
+	
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     

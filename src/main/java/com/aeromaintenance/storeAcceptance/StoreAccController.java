@@ -12,7 +12,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:8089")
 public class StoreAccController {
 
-    @Autowired
+    public StoreAccController() {
+System.out.println("StoreAccController Initialized");
+    
+    }
+
+	@Autowired
     private StoreAccService service;
 
     @GetMapping
