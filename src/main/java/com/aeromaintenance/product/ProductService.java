@@ -45,7 +45,7 @@ public class ProductService {
                 existingProduct.setNha(updatedProduct.getNha());
                 existingProduct.setCmmReferenceNumber(updatedProduct.getCmmReferenceNumber());
 //                existingProduct.setCmmRef2(updatedProduct.getCmmRef2());
-//                existingProduct.setCmmRef3(updatedProduct.getCmmRef3());
+                existingProduct.setRegistrationDate(updatedProduct.getRegistrationDate());
                 existingProduct.setMaterialClassification(updatedProduct.getMaterialClassification());
                 existingProduct.setRegisteredBy(updatedProduct.getRegisteredBy());
                 return productRepository.save(existingProduct);

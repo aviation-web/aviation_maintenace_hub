@@ -14,11 +14,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StoreAcc {
 
-	
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     
-    @Id
+    
     @Column(name = "part_num", nullable = false)
     private String partNum;
 

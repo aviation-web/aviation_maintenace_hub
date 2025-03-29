@@ -38,7 +38,7 @@ public class Product {
     @Column(nullable = false, length = 30)
     private String materialClassification;
 
-    @Column(name = "registration_date", nullable = false, updatable = false)
+    @Column(name = "registration_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date registrationDate = new Date();
 
