@@ -15,6 +15,12 @@ public class SupplierServiceImpl implements SupplierService {
 	public SupplierModel saveSupplier(SupplierModel supplierModel) {
 		 return supplierRepository.save(supplierModel);
 	}
+	
+	/*
+	 * public List<SupplierModel> getSuppliersWithUserActionMAndRoleQM() { return
+	 * supplierRepository.findByUserActionAndUserRole("M", "QM"); }
+	 */
+	
 	@Override
 	public List<SupplierModel> getAllProducts() {
 		 return supplierRepository.findAll();
@@ -180,5 +186,19 @@ public class SupplierServiceImpl implements SupplierService {
 	        return supplierRepository.save(updateExisting);
 	    }).orElse(null); 
 	}
+
+	@Override
+	public List<SupplierModel> getAllPendingSupplierList(String userRole, String userName) {
+		 return supplierRepository.findByUserActionAndUserRole(userRole, userName);
+	}
+	
+	
+
+	 @Override
+	    public int approveSupplier(Long supplierId, String checkerBy) {
+	        int rowsInserted = supplierRepository.moveToSupplierHistory(supplierId, checkerBy);
+	        return rowsInserted;
+	    }
+
 }
 
