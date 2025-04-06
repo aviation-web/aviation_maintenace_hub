@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -16,7 +19,12 @@ import lombok.Data;
 public class SupplierDto {
 	
     //@Column(name = "form_id")
-    private Long formId;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+//    private Long formId;
+	
+//    @Column(name = "supplier_Id")
+    private Long supplierId;
 
    //@Column(name = "rev")
     private Integer rev;
@@ -229,4 +237,5 @@ public class SupplierDto {
     private String userRole;
     private String userId;
     private String userAction;
+    private String checkerBy;
 }

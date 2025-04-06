@@ -24,12 +24,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "SuppRegist_temp")
+@Table(name = "supp_regist_temp")
 public class SupplierModel {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY) 
-	@Column(name = "form_id")
-    private Long formId;
+	@Column(name = "supplier_id")
+    private Long supplierId;
 
     @Column(name = "rev")
     private Integer rev;

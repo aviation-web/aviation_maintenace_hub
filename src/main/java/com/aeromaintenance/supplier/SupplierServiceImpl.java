@@ -11,6 +11,9 @@ public class SupplierServiceImpl implements SupplierService {
 	@Autowired
     private SupplierRepository supplierRepository;
 	
+	 @Autowired
+	    private SupplierRepositoryImpl supplierRepositoryImpl;
+	
 	@Override
 	public SupplierModel saveSupplier(SupplierModel supplierModel) {
 		 return supplierRepository.save(supplierModel);
@@ -191,14 +194,68 @@ public class SupplierServiceImpl implements SupplierService {
 	public List<SupplierModel> getAllPendingSupplierList(String userRole, String userName) {
 		 return supplierRepository.findByUserActionAndUserRole(userRole, userName);
 	}
-	
-	
+	@Override
+	public List<SupplierModel> getAllEditingSupplierList(String userRole, String userName) {
+		 return supplierRepository.findByUserActionAndUserRole(userRole, userName);
+	}
+//	public int approveSupplier(SupplierDto supplierDto) {
+//	    try {
+//	        int result = 0;
+//	        
+//	        if (supplierDto.getAction().equals("S")) {
+//	            // Print supplierId for debugging
+//	            System.out.println("Checking supplierId: " + supplierDto.getSupplierId());
+//	            
+//	            // Check if supplier already exists
+//	            boolean isExists = supplierRepositoryImpl.existsBySupplierId(supplierDto.getSupplierId());
+//	            
+//	            if (isExists) {
+//	                System.out.println("Data is already in the database for supplierId: " + supplierDto.getSupplierId());
+//	                return 0; // No insertion as supplier already exists
+//	            } else {
+//	                result = supplierRepositoryImpl.insertSupplierForm(supplierDto);
+//	            }
+//	        } else if (supplierDto.getAction().equals("E")) {
+//	            // maker table update supplier_Reg action="M" change "E"
+//	        }
+//	        
+//	        return result;
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//
+//	    return 0;
+//	}
 
-	 @Override
-	    public int approveSupplier(Long supplierId, String checkerBy) {
-	        int rowsInserted = supplierRepository.moveToSupplierHistory(supplierId, checkerBy);
-	        return rowsInserted;
-	    }
+	@Override
+	public int approveSupplier(SupplierDto supplierDto) {
+		 try {
+			 int result=0;
+			 int count=0;
+			 if(supplierDto.getUserAction().equalsIgnoreCase("2")) {
+				 System.out.println(supplierDto.getSupplierId());
+				 if(!supplierRepositoryImpl.existsBySupplierId(supplierDto.getSupplierId())) {
+					 result = supplierRepositoryImpl.insertSupplierForm(supplierDto);
+					  if(result>0) {
+						 count=supplierRepositoryImpl.updateSupplierTemp(supplierDto.getUserAction(), supplierDto.getSupplierId());
+						 }
+				 }else {
+					 //duplicate records
+					 System.out.println("Allredy SuppilerId present in the database");	
+				return -1;	 
+				 }
+			}else if(supplierDto.getUserAction().equals("3")) {
+				
+				result =supplierRepositoryImpl.updateEditSupplierTemp(supplierDto.getUserAction(), supplierDto.getSupplierId());
+				 }
+			 return result;
+			 
+		 }catch(Exception e) {
+			 e.printStackTrace();	 }
+		 
+		 return 0;
+	 }
 
+	
 }
 

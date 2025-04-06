@@ -12,6 +12,10 @@ public interface SupplierService {
     public void deleteSupplierById(Long id);
     public List<SupplierModel> getAllPendingSupplierList(String userRole,String userName);
    // public int approveSupplier(String supplierId, String checkerBy);
-	int approveSupplier(Long supplierId, String checkerBy);
+	int approveSupplier(SupplierDto supplierDto);
+    public List<SupplierModel> getAllEditingSupplierList(String userRole,String userName);
+
+	
+	//public SupplierModel get
 
 }

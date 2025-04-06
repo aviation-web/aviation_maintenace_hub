@@ -54,21 +54,43 @@ public class SupplierController {
 	        return ResponseEntity.ok(suppliers);
 	    }
 	 
-	 @PostMapping("/approve/{supplierId}")
-	    public ResponseEntity<ResponseBean<Void>> approveSupplier(
-	            @PathVariable Long supplierId,
-	            @RequestParam String checkerBy) {
+	 @GetMapping("/getEditingSupplierList")
+	    public ResponseEntity<List<SupplierModel>> getEditingSupplierList(
+	            @RequestParam(required = false) String userAction,
+	            @RequestParam(required = false) String userRole) {
 	        
-	        int rowsInserted = supplierService.approveSupplier(supplierId, checkerBy);
-	        
-	        if (rowsInserted == 1) {
-	            ResponseBean<Void> response = new ResponseBean<>("200", "Supplier approved and moved to history successfully", null);
-	            return ResponseEntity.ok(response);
-	        } else {
-	            ResponseBean<Void> response = new ResponseBean<>("500", "Failed to move supplier to history", null);
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-	        }
+	        List<SupplierModel> suppliers = supplierService.getAllEditingSupplierList(userAction, userRole);
+	        return ResponseEntity.ok(suppliers);
 	    }
+	 
+	 @PostMapping("/approve")
+	 public ResponseEntity<ResponseBean<Void>> approveSupplier(@RequestBody SupplierDto supplierDto) {
+	     
+	     //SupplierModel supplierModel = supplierService.getSupplierById(supplierDto.getSupplierId());
+		 ResponseBean<Void> response=null;
+	     if (supplierDto == null) {
+	         response = new ResponseBean<>("404", "Supplier not found", null);
+	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	     }
+
+	     int rowsInserted = supplierService.approveSupplier(supplierDto);
+
+	     if (rowsInserted >= 1) {
+	    	 if(supplierDto.getUserAction().equals("2")){
+	    		 response = new ResponseBean<>("200", "Supplier approved and moved to history successfully", null);
+	    	 }if(supplierDto.getUserAction().equals("3")){
+	    		response = new ResponseBean<>("200", "Supplier Edited  successfully", null);
+	    	 }	 	        
+	         return ResponseEntity.ok(response);
+	     }else if(rowsInserted == -1) {
+	    	response = new ResponseBean<>("409", "Supplier already exists in the database", null);
+	         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	     } else {
+	    	 response= new ResponseBean<>("500", "Failed to move supplier to history", null);
+	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	     }
+	 }
+
 	// Get All Products
     @GetMapping
     public ResponseEntity<List<SupplierModel>> getAllProducts() {
