@@ -33,15 +33,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
+        .cors().and()
             .authorizeHttpRequests()
                 // Allow public access to /auth/** endpoints
                 .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
                 
                 // Require ADMIN role for /admin/** endpoints
-                .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
+                //.requestMatchers(new AntPathRequestMatcher("/api/roles/**")).hasRole("ADMIN")
                 
                 // Allow USER and ADMIN roles for /user/** endpoints
-                .requestMatchers(new AntPathRequestMatcher("/user/**")).hasAnyRole("USER", "ADMIN")
+                //.requestMatchers(new AntPathRequestMatcher("/user/**")).hasAnyRole("USER", "ADMIN")
                 
                 // All other requests must be authenticated
                 .anyRequest().authenticated()
