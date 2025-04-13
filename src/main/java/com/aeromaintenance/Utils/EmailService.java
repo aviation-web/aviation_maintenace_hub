@@ -25,7 +25,7 @@ public class EmailService {
 	private JavaMailSender mailSender;
 	
 	public void sendEmail(String email,String username, String password) throws MessagingException{
-		String to = "nasreenkhan7980@gmail.com"; 
+		String to = email.trim();
 		String from ="aviationteam28@gmail.com"; 
 		String host = "smtp.gmail.com";
 				  System.out.println("Password: "+password);

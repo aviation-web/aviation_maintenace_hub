@@ -68,7 +68,7 @@ public class LoginController {
 			 */
 
             String token = jwtUtil.generateToken(user.getUsername(), roles);
-            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername())); // Return token wrapped in response
+            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),roles)); // Return token wrapped in response
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
         } catch (Exception e) {
@@ -79,29 +79,6 @@ public class LoginController {
     public List<Login> getAllUser() {
         return loginService.getAllUser();
     }
-	/*
-	 * @PostMapping("/login") public ResponseEntity<String> login(@RequestBody Login
-	 * authRequest) { Authentication authentication =
-	 * authenticationManager.authenticate( new
-	 * UsernamePasswordAuthenticationToken(authRequest.getUsername(),
-	 * authRequest.getPassword()) );
-	 * SecurityContextHolder.getContext().setAuthentication(authentication);
-	 * 
-	 * Optional<Login> user =
-	 * userRepository.findByUsername(authRequest.getUsername()); Set<String> roles =
-	 * user .map(Login::getRoles) // Get roles from the user if present
-	 * .orElse(Collections.emptySet()) // Return empty set if user is not present
-	 * .stream() .map(Role::getRoleName) // Extract role names
-	 * .collect(Collectors.toSet());
-	 * //user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
-	 * 
-	 * String token = jwtUtil.generateToken(authRequest.getUsername(), roles);
-	 * return ResponseEntity.ok(token); }
-	 */
-    
-//    public LoginController() {
-//        System.out.println("LoginController Initialized");
-//    }
 	
 	  //Register user 
 	 @PostMapping("/addUser") 
@@ -110,18 +87,7 @@ public class LoginController {
 		 loginService.addUser(user); 
 	      return ResponseEntity.ok("User Registered Successfully!"); 
 	  }
-	 
-//    // Login user
-//    @PostMapping("/login")
-//    public String login(@RequestParam String username, @RequestParam String password) {
-//        return loginService.validateLogin(username, password);
-//    }
-		/*
-		 * @PostMapping("/login") public String validateLogin(@RequestBody LoginService
-		 * request) { if ("admin".equals(request.getUsername()) &&
-		 * "admin@123".equals(request.getPassword())) { return "Login Successful!"; }
-		 * else { return "Login Failed!"; } }
-		 */
+
 	 
 	 @PostMapping("/passwordChange") 
 	 public ResponseEntity<String> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest, @AuthenticationPrincipal UserDetails userDetails) {

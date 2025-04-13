@@ -1,14 +1,18 @@
 package com.aeromaintenance.login;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/roles")
 @CrossOrigin(origins = "http://localhost:5173")
 public class RoleMenuController {
+	
+	@Autowired
+    private MenuService menuService;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -28,12 +35,13 @@ public class RoleMenuController {
     @Autowired
     private RoleMenuMappingRepository roleMenuMappingRepository;
 
-    // Get roles and their accessible menus
-    @GetMapping("/role")
-    public ResponseEntity<List<Role>> getRolesWithMenus() {
-        List<Role> roles = roleRepository.findAll();  // Fetch all roles
-        return ResponseEntity.ok(roles);
-    }
+	/*
+	 * // Get roles and their accessible menus
+	 * 
+	 * @GetMapping("/role") public ResponseEntity<List<Role>> getRolesWithMenus() {
+	 * List<Role> roles = roleRepository.findAll(); // Fetch all roles
+	 * System.out.println(roles.toString()); return ResponseEntity.ok(roles); }
+	 */
     
     @PostMapping("/addRole")
    // @PreAuthorize("hasRole('ADMIN')")
@@ -41,27 +49,44 @@ public class RoleMenuController {
         Role createdRole = roleRepository.save(role);
         return ResponseEntity.ok(createdRole);
     }
-
-    // Get root menus (menus with no parent) and their submenus
+    
     @GetMapping("/menus")
-    public ResponseEntity<List<Menu>> getMenus() {
-        List<Menu> rootMenus = menuRepository.findByParentIsNull();  // Fetch root menus
-        return ResponseEntity.ok(rootMenus);
+    public ResponseEntity<List<MenuDTO>> getRootMenusWithSubMenus() {
+        return ResponseEntity.ok(menuService.getRootMenusWithSubMenus());
     }
 
-    // Save role-menu mapping (mapping roles to menus and submenus)
-    @PostMapping("/saveMapping")
-    public ResponseEntity<Void> saveRoleMenuMapping(@RequestBody List<RoleMenuMappingRequest> mappings) {
-        for (RoleMenuMappingRequest mapping : mappings) {
-            RoleMenuMapping roleMenuMapping = new RoleMenuMapping();
-            Role role = roleRepository.findById(mapping.getRoleId());
-            Menu menu = menuRepository.findById(mapping.getMenuId());
-            roleMenuMapping.setRole(role);
-            roleMenuMapping.setMenu(menu);
-            roleMenuMapping.setAccessibleFlag(mapping.isAccessible());
+    @GetMapping("/role")
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<Role> roles = roleRepository.findAll();
 
-            roleMenuMappingRepository.save(roleMenuMapping);
+        if (roles.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().build();
+
+        List<RoleDTO> roleDTOs = roles.stream()
+                .map(role -> new RoleDTO(role.getId(), role.getRoleName()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(roleDTOs);
+    }
+    
+    @PostMapping("/saveMapping")
+    public ResponseEntity<String> saveRoleMenuMapping(@RequestBody List<RoleMenuMappingRequest> mappings) {
+    	menuService.saveMappings(mappings);
+        return ResponseEntity.ok("Mappings saved successfully.");
+    }
+    
+    @GetMapping("/roleMenus/{roleId}")
+    public ResponseEntity<List<MenuDTO>> getMenusByRole(@PathVariable Long roleId) {
+    	List<MenuDTO> menus = menuService.getMenuByRole(roleId); // This will return parent + submenus
+        return ResponseEntity.ok(menus);
+    }
+    
+    @GetMapping("/byname/{role}")
+    public ResponseEntity<RoleDTO> getRoleByName(@PathVariable String role) {
+    	Optional<Role> roleOptional = roleRepository.findByRoleName(role);
+        Role roles = roleOptional.orElseThrow(() -> new RuntimeException("Roles not found"));
+
+        return ResponseEntity.ok(new RoleDTO(roles.getId(), roles.getRoleName()));
     }
 }

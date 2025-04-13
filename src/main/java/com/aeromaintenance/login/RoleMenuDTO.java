@@ -1,19 +1,20 @@
 package com.aeromaintenance.login;
 
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
-
-	private String token;
-	private boolean passwordExpired;
-	private String username;
-	private String role;
+public class RoleMenuDTO {
+	 private Long id;
+	    private MenuDTO menu;
+	    private boolean accessibleFlag;
 }
