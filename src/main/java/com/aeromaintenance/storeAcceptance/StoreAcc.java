@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
-
+@ToString
 @Entity
 @Table(name = "STORE_ACCEPTANCE")
 @Getter
@@ -13,11 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreAcc {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    
+    private Long id;
     
     @Column(name = "part_num", nullable = false)
     private String partNum;

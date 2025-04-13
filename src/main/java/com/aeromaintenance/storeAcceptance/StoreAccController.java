@@ -26,8 +26,10 @@ System.out.println("StoreAccController Initialized");
     }
 
     @GetMapping("/{id}")
-    public StoreAcc getStoreAcceptanceById(@PathVariable String id) {
-        return service.getStoreAcceptanceById(id);
+    public ResponseEntity<StoreAcc> getStoreAcceptanceById(@PathVariable Long id) {
+    	StoreAcc storeAcc = service.getStoreAcceptanceById(id);
+        return ResponseEntity.ok(storeAcc);
+        //return service.getStoreAcceptanceById(id);
     }
 
     @PostMapping
@@ -36,7 +38,7 @@ System.out.println("StoreAccController Initialized");
     }
 
     @PutMapping("/{id}")
-    public StoreAcc updateStoreAcceptance(@PathVariable String id, @RequestBody StoreAcc storeAcceptance) {
+    public StoreAcc updateStoreAcceptance(@PathVariable Long id, @RequestBody StoreAcc storeAcceptance) {
         return service.updateStoreAcceptance(id, storeAcceptance);
     }
 
@@ -46,7 +48,7 @@ System.out.println("StoreAccController Initialized");
 //        return "Record deleted successfully!";
 //    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStoreAcceptance(@PathVariable String id) {
+    public ResponseEntity<String> deleteStoreAcceptance(@PathVariable Long id) {
       service.deleteStoreAcceptance(id);
         return ResponseEntity.ok("Deleted storeAcceptance with ID: " + id);
     }
