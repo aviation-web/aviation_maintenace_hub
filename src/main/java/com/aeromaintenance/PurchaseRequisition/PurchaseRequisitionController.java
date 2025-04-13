@@ -1,11 +1,13 @@
 package com.aeromaintenance.PurchaseRequisition;
 
+import com.common.ResponseBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/purchase-requisitions")
@@ -84,6 +86,40 @@ public class PurchaseRequisitionController {
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
             .body(exportData);
     }
+
+    @PostMapping("/batch")
+    public ResponseEntity<ResponseBean<Void>> saveBatch(@RequestBody List<PurchaseRequisitionDTO> requisitionDTOs) {
+        List<PurchaseRequisition> entities = requisitionDTOs.stream()
+                .map(PurchaseRequisitionDTO::toEntity)
+                .collect(Collectors.toList());
+
+        if(entities.size()<=10 && !entities.isEmpty()) {
+            service.saveInBatches(entities, entities.size());
+            ResponseBean<Void> response = new ResponseBean<>("200","Saved in batches of 10 successfully.",null);
+            return ResponseEntity.ok(response);
+        }else {
+            ResponseBean<Void> response = new ResponseBean<>("401","At a time 10 records can be added only",null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    // Export CSV file to disk
+    @GetMapping("/csv")
+    public ResponseEntity<String> exportToCSV() {
+        String result = service.exportToCSV();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/batch/{batchNumber}")
+    public ResponseEntity<List<PurchaseRequisitionDTO>> getByBatchNumber(@PathVariable String batchNumber) {
+        List<PurchaseRequisition> requisitions = service.getByBatchNumber(batchNumber);
+        List<PurchaseRequisitionDTO> dtoList = requisitions.stream()
+                .map(PurchaseRequisitionDTO::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
+    }
+
 
     // Helper methods for export (simplified placeholders)
     private byte[] generateCsvFile(List<PurchaseRequisitionDTO> requisitions) {

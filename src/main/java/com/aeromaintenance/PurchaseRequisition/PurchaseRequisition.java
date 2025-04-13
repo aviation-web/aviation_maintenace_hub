@@ -50,6 +50,9 @@ public class PurchaseRequisition {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+    @Column(name = "batch_number")
+    private String batchNumber;
+
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDateTime.now();
