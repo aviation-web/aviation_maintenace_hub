@@ -23,7 +23,7 @@ public class StoreAccService {
         return storeAcceptances;
     }
 
-    public StoreAcc getStoreAcceptanceById(String id) {
+    public StoreAcc getStoreAcceptanceById(Long id) {
         logger.info("Fetching store acceptance with ID: {}", id);
         return repository.findById(id)
                 .orElseGet(() -> {
@@ -39,11 +39,12 @@ public class StoreAccService {
         return savedStoreAcc;
     }
 
-    public StoreAcc updateStoreAcceptance(String id, StoreAcc storeAcceptance) {
+    public StoreAcc updateStoreAcceptance(Long id, StoreAcc storeAcceptance) {
         logger.info("Updating store acceptance with ID: {}", id);
         Optional<StoreAcc> existingData = repository.findById(id);
         if (existingData.isPresent()) {
-            storeAcceptance.setPartNum(id);
+            ///storeAcceptance.setPartNum(id);
+        	storeAcceptance.getId();
             StoreAcc updatedStoreAcc = repository.save(storeAcceptance);
             logger.debug("Store acceptance updated successfully with ID: {}", id);
             return updatedStoreAcc;
@@ -52,7 +53,7 @@ public class StoreAccService {
         return null;
     }
 
-    public void deleteStoreAcceptance(String id) {
+    public void deleteStoreAcceptance(Long id) {
         logger.info("Deleting store acceptance with ID: {}", id);
         repository.deleteById(id);
         logger.debug("Store acceptance deleted successfully with ID: {}", id);
