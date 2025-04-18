@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupplierRepository  extends JpaRepository<SupplierModel, Long>{
-	// Fetch suppliers where userAction = "M" and userRole = "QM"
-    List<SupplierModel> findByUserActionAndUserRole(String userAction, String userRole);
+	// Fetch suppliers where userAction = "1" and userRole = "M"
+	List<SupplierModel> findByUserRoleAndUserAction(String userRole, String userAction);
+	
     
 }

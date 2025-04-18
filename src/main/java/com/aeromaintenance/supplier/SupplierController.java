@@ -37,29 +37,57 @@ public class SupplierController {
  }
 	
 	
-	@PostMapping("/supplierReg")
-	public ResponseEntity<ResponseBean<Void>> addSupplier(@Valid@RequestBody SupplierDto supplierDto) {
-	   SupplierModel supplierModel = modelMapper.map(supplierDto, SupplierModel.class);
-	   supplierService.saveSupplier(supplierModel);
-	   ResponseBean<Void> responseBean = new ResponseBean<>("200", "Supplier added successfully", null);
-	    return ResponseEntity.ok(responseBean);
-    }
+//	@PostMapping("/supplierReg")
+//	public ResponseEntity<ResponseBean<Void>> addSupplier(@Valid@RequestBody SupplierDto supplierDto) {
+//	   SupplierModel supplierModel = modelMapper.map(supplierDto, SupplierModel.class);
+//	   supplierService.saveSupplier(supplierModel);
+//	   ResponseBean<Void> responseBean = new ResponseBean<>("200", "Supplier added successfully", null);
+//	    return ResponseEntity.ok(responseBean);
+//    }
 	
+	@PostMapping("/supplierReg")
+	public ResponseEntity<ResponseBean<SupplierModel>> addSupplier(@Valid @RequestBody SupplierDto supplierDto) {
+	    SupplierModel supplierModel = modelMapper.map(supplierDto, SupplierModel.class);
+	    supplierService.saveSupplier(supplierModel);
+	    
+	    ResponseBean<SupplierModel> responseBean = new ResponseBean<>(
+	        "200", 
+	        "Supplier added successfully", 
+	        supplierModel // हे actual data return करत आहे
+	    );
+	     System.out.println(responseBean);
+	    return ResponseEntity.ok(responseBean);
+	}
+
+	
+//	 @GetMapping("/getPendingSupplierList")
+//	    public ResponseEntity<List<SupplierModel>> getPendingSupplierList(
+//	            @RequestParam(required = false) String userAction,
+//	            @RequestParam(required = false) String userRole) {
+//	        
+//	        List<SupplierModel> suppliers = supplierService.getAllPendingSupplierList(userRole, userAction);
+//	        System.out.println("userAction = " + userAction + ", userRole = " + userRole);
+//
+//	        return ResponseEntity.ok(suppliers);
+//	    }
+	 
 	 @GetMapping("/getPendingSupplierList")
-	    public ResponseEntity<List<SupplierModel>> getPendingSupplierList(
-	            @RequestParam(required = false) String userAction,
-	            @RequestParam(required = false) String userRole) {
-	        
-	        List<SupplierModel> suppliers = supplierService.getAllPendingSupplierList(userAction, userRole);
-	        return ResponseEntity.ok(suppliers);
-	    }
+	 public ResponseEntity<List<SupplierModel>> getPendingSupplierList(
+	         @RequestParam(required = false) String userAction,
+	         @RequestParam(required = false) String userRole) {
+	        System.out.println("userAction = " + userAction + ", userRole = " + userRole);
+	     List<SupplierModel> suppliers = supplierService.getAllPendingSupplierList(userRole, userAction);
+	     return ResponseEntity.ok(suppliers);
+	 }
+
 	 
 	 @GetMapping("/getEditingSupplierList")
 	    public ResponseEntity<List<SupplierModel>> getEditingSupplierList(
-	            @RequestParam(required = false) String userAction,
-	            @RequestParam(required = false) String userRole) {
-	        
-	        List<SupplierModel> suppliers = supplierService.getAllEditingSupplierList(userAction, userRole);
+	            @RequestParam(required = false) String userRole,
+	            @RequestParam(required = false) String userAction) {
+	        System.out.println("userAction = " + userAction + ", userRole = " + userRole);
+
+	        List<SupplierModel> suppliers = supplierService.getAllEditingSupplierList(userRole, userAction);
 	        return ResponseEntity.ok(suppliers);
 	    }
 	 
@@ -86,7 +114,7 @@ public class SupplierController {
 	    	response = new ResponseBean<>("409", "Supplier already exists in the database", null);
 	         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	     } else {
-	    	 response= new ResponseBean<>("500", "Failed to move supplier to history", null);
+	    	 response= new ResponseBean<>("500", "Failed ", null);
 	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	     }
 	 }

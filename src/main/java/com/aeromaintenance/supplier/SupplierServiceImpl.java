@@ -191,12 +191,13 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	@Override
-	public List<SupplierModel> getAllPendingSupplierList(String userRole, String userName) {
-		 return supplierRepository.findByUserActionAndUserRole(userRole, userName);
+	public List<SupplierModel> getAllPendingSupplierList(String userRole, String userAction) {
+	    return supplierRepository.findByUserRoleAndUserAction(userRole, userAction);
 	}
+
 	@Override
-	public List<SupplierModel> getAllEditingSupplierList(String userRole, String userName) {
-		 return supplierRepository.findByUserActionAndUserRole(userRole, userName);
+	public List<SupplierModel> getAllEditingSupplierList(String userRole, String userAction) {
+		 return supplierRepository.findByUserRoleAndUserAction(userRole, userAction);
 	}
 //	public int approveSupplier(SupplierDto supplierDto) {
 //	    try {
