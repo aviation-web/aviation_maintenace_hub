@@ -28,7 +28,7 @@ import com.aeromaintenance.Utils.JwtUtil;
 import com.aeromaintenance.storeAcceptance.StoreAcc;
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:8089")
+//@CrossOrigin(origins = "http://localhost:8089")
 public class LoginController {
 
     @Autowired
