@@ -32,10 +32,10 @@ public class MenuService {
         for (Menu menu : rootMenus) {
             List<Menu> subMenus = menuRepository.findSubMenusByParentId(menu.getId());
             List<MenuDTO> subMenuDTOs = subMenus.stream()
-                .map(sub -> new MenuDTO(sub.getId(), sub.getName(),sub.getPath(), sub.getComponent(), new ArrayList<>()))
+                .map(sub -> new MenuDTO(sub.getId(), sub.getName(),sub.getPath(),sub.getIcon(), sub.getComponent(), new ArrayList<>()))
                 .collect(Collectors.toList());
 
-            MenuDTO menuDTO = new MenuDTO(menu.getId(), menu.getName(),menu.getPath(), menu.getComponent(), subMenuDTOs);
+            MenuDTO menuDTO = new MenuDTO(menu.getId(), menu.getName(),menu.getPath(),menu.getIcon(), menu.getComponent(), subMenuDTOs);
             rootMenuDTOs.add(menuDTO);
         }
 
@@ -72,22 +72,22 @@ public class MenuService {
         	    String parentName = (String) result[1];
         	    String parentPath = (String) result[2];
         	    String parentComponent = (String) result[3];
-
-        	    Long submenuId = result[4] != null ? ((Number) result[4]).longValue() : null;
-        	    String submenuName = (String) result[5];
-        	    String submenuPath = (String) result[6];
-        	    String submenuComponent = (String) result[7];
-
+        	    String parentIcon = (String) result[4];
+        	    Long submenuId = result[5] != null ? ((Number) result[5]).longValue() : null;
+        	    String submenuName = (String) result[6];
+        	    String submenuPath = (String) result[7];
+        	    String submenuComponent = (String) result[8];
+        	    String submenuIcon = (String) result[9];
         	    MenuDTO parentMenu = menuMap.computeIfAbsent(
         	        parentId,
-        	        id -> new MenuDTO(id, parentName, parentPath, parentComponent, new ArrayList<>())
+        	        id -> new MenuDTO(id, parentName, parentPath, parentComponent, parentIcon, new ArrayList<>())
         	    );
 
         	    if (submenuId != null && submenuName != null) {
         	        boolean alreadyExists = parentMenu.getSubMenus().stream()
         	            .anyMatch(sub -> sub.getId().equals(submenuId));
         	        if (!alreadyExists) {
-        	            MenuDTO submenu = new MenuDTO(submenuId, submenuName, submenuPath, submenuComponent, new ArrayList<>());
+        	            MenuDTO submenu = new MenuDTO(submenuId, submenuName, submenuPath, submenuComponent, submenuIcon, new ArrayList<>());
         	            parentMenu.getSubMenus().add(submenu);
         	        }
         	    }

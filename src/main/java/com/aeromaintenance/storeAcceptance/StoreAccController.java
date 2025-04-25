@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/storeAcceptance")
-@CrossOrigin(origins = "http://localhost:8089")
+//@CrossOrigin(origins = "http://localhost:8089")
 public class StoreAccController {
 
     public StoreAccController() {

@@ -13,15 +13,16 @@ import java.util.List;
 @RequestMapping("/api/parts")
 public class PartDescController {
 
-    @Autowired
+	@Autowired
     private PurchaseRequisitionRepository repository;
 
     @GetMapping
-    public List<PartInfoDTO> getAllPartNumbersAndDescriptions() {
+    public List<PurchaseRequisitionDTO> getAllPartNumbersAndDescriptions() {
+        List<PurchaseRequisitionDTO> partList = repository.findAllPartNumbersAndDescriptions();
         if (repository.findAllPartNumbersAndDescriptions().isEmpty()){
             ResponseBean<Void> response = new ResponseBean<>("500","No Entries in database",null);
-            return (List<PartInfoDTO>) ResponseEntity.badRequest().body(response);
+            return (List<PurchaseRequisitionDTO>) ResponseEntity.badRequest().body(response);
         }
-        return repository.findAllPartNumbersAndDescriptions();
+        return ResponseEntity.ok(partList).getBody();
     }
 }

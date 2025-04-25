@@ -185,6 +185,9 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getHouseKeeping() != null) {
 	            updateExisting.setHouseKeeping(supplierModel.getHouseKeeping());
 	        }
+	        if (supplierModel.getUserAction() != null) {
+	            updateExisting.setUserAction(supplierModel.getUserAction());
+	        }
 
 	        return supplierRepository.save(updateExisting);
 	    }).orElse(null); 

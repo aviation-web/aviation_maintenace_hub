@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseRequisition, Long> {
-
-    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PartInfoDTO(p.partNumber, p.description) FROM PurchaseRequisition p")
-    List<PartInfoDTO> findAllPartNumbersAndDescriptions();
+    
+    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.id,p.partNumber, p.description) FROM PurchaseRequisition p")
+    List<PurchaseRequisitionDTO> findAllPartNumbersAndDescriptions();
 
     List<PurchaseRequisition> findByBatchNumber(String batchNumber);
 }

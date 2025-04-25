@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/roles")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class RoleMenuController {
 	
 	@Autowired
     private MenuService menuService;
+	
+	@Autowired
+    private LoginService loginService;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -35,13 +38,18 @@ public class RoleMenuController {
     @Autowired
     private RoleMenuMappingRepository roleMenuMappingRepository;
 
-	/*
-	 * // Get roles and their accessible menus
-	 * 
-	 * @GetMapping("/role") public ResponseEntity<List<Role>> getRolesWithMenus() {
-	 * List<Role> roles = roleRepository.findAll(); // Fetch all roles
-	 * System.out.println(roles.toString()); return ResponseEntity.ok(roles); }
-	 */
+    @GetMapping("/viewUser")
+    public List<Login> getAllUser() {
+        return loginService.getAllUser();
+    }
+	
+	  //Register user 
+	 @PostMapping("/addUser") 
+	 public ResponseEntity<String>   addUser(@RequestBody Login user) { 
+		 System.out.println("Creating user: " + user);
+		 loginService.addUser(user); 
+	      return ResponseEntity.ok("User Registered Successfully!"); 
+	  }
     
     @PostMapping("/addRole")
    // @PreAuthorize("hasRole('ADMIN')")

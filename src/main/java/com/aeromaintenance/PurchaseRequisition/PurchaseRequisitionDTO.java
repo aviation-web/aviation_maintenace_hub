@@ -51,4 +51,10 @@ public class PurchaseRequisitionDTO {
                 .remark(entity.getRemark())
                 .build();
     }
+    
+    public PurchaseRequisitionDTO(Long id, String partNumber, String description) {
+        this.id = id;
+        this.partNumber = partNumber;
+        this.description = description;
+    }
 }

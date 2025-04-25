@@ -38,6 +38,7 @@ public class Menu {
     private String name;
     private String path;
     private String component;
+    private String icon;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parentId")

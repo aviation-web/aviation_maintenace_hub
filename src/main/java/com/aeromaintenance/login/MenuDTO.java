@@ -19,6 +19,7 @@ public class MenuDTO {
 	    private String name;
 	    private String path;
 	    private String component;
+	    private String icon;
 	    private List<MenuDTO> subMenus;
 	}
 	

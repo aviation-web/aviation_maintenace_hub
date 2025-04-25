@@ -28,7 +28,7 @@ import com.aeromaintenance.Utils.JwtUtil;
 import com.aeromaintenance.storeAcceptance.StoreAcc;
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:8089")
+//@CrossOrigin(origins = "http://localhost:8089")
 public class LoginController {
 
     @Autowired
@@ -75,18 +75,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred. Please try again.");
         }
     }
-    @GetMapping("/viewUser")
-    public List<Login> getAllUser() {
-        return loginService.getAllUser();
-    }
-	
-	  //Register user 
-	 @PostMapping("/addUser") 
-	 public ResponseEntity<String>   addUser(@RequestBody Login user) { 
-		 System.out.println("Creating user: " + user);
-		 loginService.addUser(user); 
-	      return ResponseEntity.ok("User Registered Successfully!"); 
-	  }
+    
 
 	 
 	 @PostMapping("/passwordChange") 

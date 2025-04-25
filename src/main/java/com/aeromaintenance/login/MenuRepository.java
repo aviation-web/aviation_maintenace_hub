@@ -34,10 +34,12 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     	            "parent.name AS parent_name, " +
     	            "parent.path AS parent_path, " +
     	            "parent.component AS parent_component, " +
+    	            "parent.icon AS parent_icon, " +
     	            "child.id AS submenu_id, " +
     	            "child.name AS submenu_name, " +
     	            "child.path AS submenu_path, " +
-    	            "child.component AS submenu_component " +
+    	            "child.component AS submenu_component, " +
+    	            "child.icon AS submenu_icon " +
     	            "FROM menu parent " +
     	            "LEFT JOIN menu child ON child.parent_id = parent.id " +
     	            "LEFT JOIN role_menu_mapping rm_parent ON rm_parent.menu_id = parent.id " +
