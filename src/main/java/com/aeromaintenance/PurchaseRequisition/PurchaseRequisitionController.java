@@ -95,10 +95,10 @@ public class PurchaseRequisitionController {
 
         if(entities.size()<=10 && !entities.isEmpty()) {
             service.saveInBatches(entities, entities.size());
-            ResponseBean<Void> response = new ResponseBean<>("200","Saved in batches of 10 successfully.",null);
+            ResponseBean<Void> response = new ResponseBean<>("200","Saved in batche " + entities.size() + " successfully.",null);
             return ResponseEntity.ok(response);
         }else {
-            ResponseBean<Void> response = new ResponseBean<>("401","At a time 10 records can be added only",null);
+            ResponseBean<Void> response = new ResponseBean<>("401","At a time 10 records can be added only Your Records count is :-  " + entities.size() ,null);
             return ResponseEntity.badRequest().body(response);
         }
     }

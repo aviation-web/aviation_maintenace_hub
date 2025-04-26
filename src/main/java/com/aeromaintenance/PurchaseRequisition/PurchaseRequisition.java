@@ -54,7 +54,7 @@ public class PurchaseRequisition {
     private String batchNumber;
 
     @Column(name = "pr_flag")
-    private String prflag;
+    private String prflag = "Pending";
 
     @PrePersist
     public void prePersist() {

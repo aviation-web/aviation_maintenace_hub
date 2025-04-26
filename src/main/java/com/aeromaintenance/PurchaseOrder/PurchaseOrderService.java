@@ -1,0 +1,149 @@
+package com.aeromaintenance.PurchaseOrder;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class PurchaseOrderService {
+
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+
+    // Helper method to calculate totals and taxes
+    private PurchaseOrder calculateTotals(PurchaseOrder purchaseOrder) {
+        // 1. Calculate gross amount
+        double grossAmount = 0.0;
+        if (purchaseOrder.getCurrentStoke() != null && purchaseOrder.getRatePerUnit() != null) {
+            grossAmount = purchaseOrder.getCurrentStoke() * purchaseOrder.getRatePerUnit();
+        }
+        purchaseOrder.setGrossAmount(grossAmount);
+
+        // 2. Use 0.0 only if fields are null, but don't overwrite them with 0 if you want null to be used in calculations
+        double pf = purchaseOrder.getPF() == null ? 0.0 : purchaseOrder.getPF();
+        double transport = purchaseOrder.getTransportation() == null ? 0.0 : purchaseOrder.getTransportation();
+        double insurance = purchaseOrder.getInsurance() == null ? 0.0 : purchaseOrder.getInsurance();
+        double otherCharges = purchaseOrder.getOther_Charges() == null ? 0.0 : purchaseOrder.getOther_Charges();
+
+        double total = grossAmount + pf + transport + insurance + otherCharges;
+        purchaseOrder.setTotal(total);
+
+        // 3. Calculate taxes on grossAmount
+        double sgst = grossAmount * 0.09;
+        double cgst = grossAmount * 0.09;
+        double igst = grossAmount * 0.18;
+//        System.out.println("PF: " + purchaseOrder.getPF());
+//        System.out.println("Transport: " + purchaseOrder.getTransportation());
+//        System.out.println("Insurance: " + purchaseOrder.getInsurance());
+//        System.out.println("Other Charges: " + purchaseOrder.getOther_Charges());
+
+        purchaseOrder.setSgst(sgst);
+        purchaseOrder.setCgst(cgst);
+        purchaseOrder.setIgst(igst);
+
+        // 4. Calculate grand total
+        double grandTotal = total + sgst + cgst + igst;
+        purchaseOrder.setGrandTotal(grandTotal);
+
+        return purchaseOrder;
+    }
+
+    // Add a new Purchase Order
+//    public PurchaseOrder addPurchaseOrder(PurchaseOrder purchaseOrder) {
+//        PurchaseOrder calculatedOrder = calculateTotals(purchaseOrder);
+//        return purchaseOrderRepository.save(calculatedOrder);
+//    }
+
+    public void saveOrder(PurchaseOrder order) {
+        PurchaseOrder calculatedOrder = calculateTotals(order);
+        purchaseOrderRepository.save(order);
+    }
+    // Delete a Purchase Order by ID
+    public void deletePurchaseOrder(Long id) {
+        purchaseOrderRepository.deleteById(id);
+    }
+
+    // View a Purchase Order by ID
+    public PurchaseOrder viewPurchaseOrderById(Long id) {
+        Optional<PurchaseOrder> purchaseOrder = purchaseOrderRepository.findById(id);
+        return purchaseOrder.orElse(null); // return null or handle it as per your needs
+    }
+
+    // View all Purchase Orders
+    public List<PurchaseOrder> viewAllPurchaseOrders() {
+        return purchaseOrderRepository.findAll();
+    }
+
+    public PurchaseOrder updatePurchaseOrder(Long id, PurchaseOrderDTO updatedPurchaseOrderDTO) {
+        Optional<PurchaseOrder> existingOrder = purchaseOrderRepository.findById(id);
+        if (existingOrder.isPresent()) {
+            PurchaseOrder purchaseOrder = existingOrder.get();
+
+            // Update fields only if they are non-null
+            // Basic information
+            if (updatedPurchaseOrderDTO.getPoNumber() != null) {
+                purchaseOrder.setPoNumber(updatedPurchaseOrderDTO.getPoNumber());
+            }
+            if (updatedPurchaseOrderDTO.getPoDate() != null) {
+                purchaseOrder.setPoDate(updatedPurchaseOrderDTO.getPoDate());
+            }
+            if (updatedPurchaseOrderDTO.getOurReference() != null) {
+                purchaseOrder.setOurReference(updatedPurchaseOrderDTO.getOurReference());
+            }
+            if (updatedPurchaseOrderDTO.getYourReference() != null) {
+                purchaseOrder.setYourReference(updatedPurchaseOrderDTO.getYourReference());
+            }
+            if (updatedPurchaseOrderDTO.getDelivery() != null) {
+                purchaseOrder.setDelivery(updatedPurchaseOrderDTO.getDelivery());
+            }
+            if (updatedPurchaseOrderDTO.getDeliveryAddress() != null) {
+                purchaseOrder.setDeliveryAddress(updatedPurchaseOrderDTO.getDeliveryAddress());
+            }
+            if (updatedPurchaseOrderDTO.getPaymentTerms() != null) {
+                purchaseOrder.setPaymentTerms(updatedPurchaseOrderDTO.getPaymentTerms());
+            }
+
+            // Line item details
+            if (updatedPurchaseOrderDTO.getPartNumber() != null) {
+                purchaseOrder.setPartNumber(updatedPurchaseOrderDTO.getPartNumber());
+            }
+            if (updatedPurchaseOrderDTO.getDescription() != null) {
+                purchaseOrder.setDescription(updatedPurchaseOrderDTO.getDescription());
+            }
+            if (updatedPurchaseOrderDTO.getCurrentStoke() != null) {
+                purchaseOrder.setCurrentStoke(updatedPurchaseOrderDTO.getCurrentStoke());
+            }
+            if (updatedPurchaseOrderDTO.getUnit() != null) {
+                purchaseOrder.setUnit(updatedPurchaseOrderDTO.getUnit());
+            }
+            if (updatedPurchaseOrderDTO.getRatePerUnit() != null) {
+                purchaseOrder.setRatePerUnit(updatedPurchaseOrderDTO.getRatePerUnit());
+            }
+
+            // Taxes & totals fields
+            if (updatedPurchaseOrderDTO.getPF() != null) {
+                purchaseOrder.setPF(updatedPurchaseOrderDTO.getPF());
+            }
+            if (updatedPurchaseOrderDTO.getTransportation() != null) {
+                purchaseOrder.setTransportation(updatedPurchaseOrderDTO.getTransportation());
+            }
+            if (updatedPurchaseOrderDTO.getInsurance() != null) {
+                purchaseOrder.setInsurance(updatedPurchaseOrderDTO.getInsurance());
+            }
+            if (updatedPurchaseOrderDTO.getOther_Charges() != null) {
+                purchaseOrder.setOther_Charges(updatedPurchaseOrderDTO.getOther_Charges());
+            }
+
+            // Recalculate totals and taxes after updates
+            PurchaseOrder calculatedOrder = calculateTotals(purchaseOrder);
+            return purchaseOrderRepository.save(calculatedOrder);
+        } else {
+            return null; // or handle the case when the order is not found
+        }
+    }
+
+ 
+    
+}
