@@ -53,6 +53,9 @@ public class PurchaseRequisition {
     @Column(name = "batch_number")
     private String batchNumber;
 
+    @Column(name = "pr_flag")
+    private String prflag;
+
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDateTime.now();

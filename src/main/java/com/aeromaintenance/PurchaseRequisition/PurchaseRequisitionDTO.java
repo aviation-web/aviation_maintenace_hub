@@ -23,6 +23,8 @@ public class PurchaseRequisitionDTO {
     private Integer requiredQty;
     private LocalDate requiredDate;
     private String remark;
+    private String batchnumber;
+    private String prflag;
 
     // Convert DTO to Entity
     public PurchaseRequisition toEntity() {
@@ -35,6 +37,8 @@ public class PurchaseRequisitionDTO {
         entity.setRequiredQty(this.requiredQty);
         entity.setRequiredDate(this.requiredDate);
         entity.setRemark(this.remark);
+        entity.setBatchNumber(this.batchnumber);
+        entity.setPrflag(this.prflag);
         return entity;
     }
 
@@ -49,6 +53,8 @@ public class PurchaseRequisitionDTO {
                 .requiredQty(entity.getRequiredQty())
                 .requiredDate(entity.getRequiredDate())
                 .remark(entity.getRemark())
+                .batchnumber(entity.getBatchNumber())
+                .prflag(entity.getPrflag())
                 .build();
     }
     
