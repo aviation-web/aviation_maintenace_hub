@@ -153,6 +153,8 @@ public class PurchaseRequisitionService {
     public List<PurchaseRequisition> getRequisitionsByBatchNo(String batchNumber) {
         return repository.findByBatchNumber(batchNumber);
     }
+    
+
 
     // Creating downloadable file
     public String exportRequisitionsToPDFFile() {
@@ -221,7 +223,7 @@ public class PurchaseRequisitionService {
         return repository.findAll(); // This should return your actual data
     }
 
-    public List<PurchaseRequisition> getByBatchNumber(String batchNumber) {
+    public List<PurchaseRequisition> getByBatchNumberForPurchaseOrder(String batchNumber) {
         return repository.findByBatchNumber(batchNumber);
     }
 

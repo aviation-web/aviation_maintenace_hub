@@ -1,10 +1,16 @@
 package com.aeromaintenance.PurchaseOrder;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aeromaintenance.PurchaseRequisition.PurchaseRequisition;
+import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
+import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PurchaseOrderService {
@@ -12,6 +18,9 @@ public class PurchaseOrderService {
     @Autowired
     private PurchaseOrderRepository purchaseOrderRepository;
 
+    @Autowired
+    private PurchaseRequisitionService purchaseRequisitionService;
+    
     // Helper method to calculate totals and taxes
     private PurchaseOrder calculateTotals(PurchaseOrder purchaseOrder) {
         // 1. Calculate gross amount
@@ -74,6 +83,18 @@ public class PurchaseOrderService {
     // View all Purchase Orders
     public List<PurchaseOrder> viewAllPurchaseOrders() {
         return purchaseOrderRepository.findAll();
+    }
+    
+    public List<PurchaseRequisitionDTO> getRequisitionsByBatchNumber(String batchNumber) {
+        List<PurchaseRequisition> requisitions = purchaseRequisitionService.getByBatchNumberForPurchaseOrder(batchNumber);
+
+        return requisitions.stream()
+                .map(req -> {
+                    PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
+                    BeanUtils.copyProperties(req, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public PurchaseOrder updatePurchaseOrder(Long id, PurchaseOrderDTO updatedPurchaseOrderDTO) {

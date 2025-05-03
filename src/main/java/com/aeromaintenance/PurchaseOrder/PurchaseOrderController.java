@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisition;
+import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
 
 import java.util.List;
@@ -81,6 +82,12 @@ public class PurchaseOrderController {
 	        }
 
 	        return ResponseEntity.ok("Purchase Orders Created Successfully");
+	    }
+	 
+	 @GetMapping("/requisitions-by-batch/{batchNumber}")
+	    public ResponseEntity<List<PurchaseRequisitionDTO>> getRequisitionsByBatch(@PathVariable String batchNumber) {
+	        List<PurchaseRequisitionDTO> list = purchaseOrderService.getRequisitionsByBatchNumber(batchNumber);
+	        return ResponseEntity.ok(list);
 	    }
 
     // Update an existing Purchase Order

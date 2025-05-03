@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+
+import com.aeromaintenance.PurchaseOrder.PurchaseOrder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -66,4 +69,9 @@ public class PurchaseRequisition {
     public void preUpdate() {
         this.updatedDate = LocalDateTime.now();
     }
+
+	public static PurchaseOrder orElse(Object object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
