@@ -56,7 +56,7 @@ public class AppConfig {
 	                        .allowedOrigins(
 	                        	"http://localhost:5173",
 	                        	"http://43.204.71.108:5173",
-	                            "http://43.204.71.108/",
+	                            "http://43.204.71.108",
 	                            "http://43.204.71.108:8082",
 	                            "http://43.204.71.108:8080",
 	                            "http://43.204.71.108:3000",  // React dev
@@ -65,7 +65,7 @@ public class AppConfig {
 	                        )
 	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 	                        .allowedHeaders("*")
-	                        .exposedHeaders("Authorization") 
+	                        //.exposedHeaders("Authorization") 
 	                        .allowCredentials(true);
 	            }
 	        };

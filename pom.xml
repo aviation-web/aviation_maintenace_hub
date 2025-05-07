@@ -9,6 +9,7 @@
 		<version>2.7.18</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>war</packaging>
 	<groupId>com.aeromaintenance</groupId>
 	<artifactId>aero-maint-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
