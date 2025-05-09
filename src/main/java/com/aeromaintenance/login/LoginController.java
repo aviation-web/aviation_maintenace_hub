@@ -55,18 +55,7 @@ public class LoginController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             Optional<Login> userDetails = userRepository.findByUsername(user.getUsername());
-//            if (userDetails.get().isPasswordExpired()) {
-//                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                        .body("Please change your password.");
-//            }
             String roles = userDetails.get().getRole();
-            //Optional<Login> user = userRepository.findByUsername(authRequest.getUsername());
-			/*
-			 * Set<String> roles = userDetails .map(Login::getRoles)
-			 * .orElse(Collections.emptySet()) .stream() .map(Role::getRoleName)
-			 * .collect(Collectors.toSet());
-			 */
-
             String token = jwtUtil.generateToken(user.getUsername(), roles);
             return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),roles)); // Return token wrapped in response
         } catch (BadCredentialsException e) {
@@ -79,7 +68,7 @@ public class LoginController {
 
 	 
 	 @PostMapping("/passwordChange") 
-	 public ResponseEntity<String> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest, @AuthenticationPrincipal UserDetails userDetails) {
+	 public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest, @AuthenticationPrincipal UserDetails userDetails) {
 		         // Validate the old password
 		         Optional<Login> user = userRepository.findByUsername(userDetails.getUsername());
 		         
