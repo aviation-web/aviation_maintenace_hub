@@ -4,19 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aeromaintenance.product.Product;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -41,6 +37,37 @@ public class RoleMenuController {
     @GetMapping("/viewUser")
     public List<Login> getAllUser() {
         return loginService.getAllUser();
+    }
+
+    @PutMapping("/userUpdate/{id}")
+    public ResponseEntity<Login> updatedUserById(@PathVariable Long id, @RequestBody Login updateUser) {
+        Login login = loginService.UpdateUser(id,updateUser);
+        if (login != null) {
+            return ResponseEntity.ok(login);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/userById/{id}")
+    public ResponseEntity<Login> getUserById(@PathVariable Long id) {
+        Login login = loginService.getUserById(id);
+        if (login != null) {
+            return ResponseEntity.ok(login);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/userDelete/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
+        Login login = loginService.getUserById(id);
+        if (login != null) {
+            loginService.deleteProductById(id);
+            return ResponseEntity.ok("User deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 	
 	  //Register user 

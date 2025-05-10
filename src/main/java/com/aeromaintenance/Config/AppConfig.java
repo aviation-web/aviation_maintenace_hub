@@ -65,7 +65,7 @@ public class AppConfig {
 	                        )
 	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 	                        .allowedHeaders("*")
-	                        //.exposedHeaders("Authorization") 
+	                        //.exposedHeaders("Authorization")
 	                        .allowCredentials(true);
 	            }
 	        };

@@ -156,6 +156,24 @@ public class PurchaseRequisitionService {
     
 
 
+    public List<PurchaseRequisition> getRequisitionsByBatchNo(String batchNumber) {
+        return repository.findByBatchNumber(batchNumber);
+    }
+
+
+
+    public List<PurchaseRequisition> getRequisitionsByBatchNo(String batchNumber) {
+        return repository.findByBatchNumber(batchNumber);
+    }
+
+
+
+    public List<PurchaseRequisition> getRequisitionsByBatchNo(String batchNumber) {
+        return repository.findByBatchNumber(batchNumber);
+    }
+
+
+
     // Creating downloadable file
     public String exportRequisitionsToPDFFile() {
         try {

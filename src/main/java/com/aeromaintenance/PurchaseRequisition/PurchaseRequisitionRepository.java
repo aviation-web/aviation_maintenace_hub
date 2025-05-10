@@ -13,8 +13,8 @@ public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseReq
     List<PurchaseRequisitionDTO> findAllPartNumbersAndDescriptions();
 
     List<PurchaseRequisition> findByBatchNumber(String batchNumber);
-    
-//    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.srNo,p.partNumber, p.description, p.currentStock) FROM PurchaseRequisition p where p.flag = Pending ") 
-//    List<PurchaseRequisitionDTO> findAllOrderByBatchNumber();	
-    
+
+//    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.srNo,p.partNumber, p.description, p.currentStock) FROM PurchaseRequisition p where p.flag = Pending ")
+//    List<PurchaseRequisitionDTO> findAllOrderByBatchNumber();
+
 }

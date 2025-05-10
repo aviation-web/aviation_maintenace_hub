@@ -112,7 +112,7 @@ public class PurchaseRequisitionController {
 
     @GetMapping("/batch/{batchNumber}")
     public ResponseEntity<List<PurchaseRequisitionDTO>> getByBatchNumber(@PathVariable String batchNumber) {
-        List<PurchaseRequisition> requisitions = service.getByBatchNumber(batchNumber);
+        List<PurchaseRequisition> requisitions = service.getByBatchNumberForPurchaseOrder(batchNumber);
         List<PurchaseRequisitionDTO> dtoList = requisitions.stream()
                 .map(PurchaseRequisitionDTO::fromEntity)
                 .toList();

@@ -81,6 +81,33 @@ public class LoginService {
 		
 		
 	}
+
+	public Login UpdateUser(Long id, Login updateLogin){
+		return loginRepository.findById(id)
+				.map(existingLogin -> {
+					existingLogin.setFirstName(updateLogin.getFirstName());
+					existingLogin.setMiddleName(updateLogin.getMiddleName());
+					existingLogin.setLastName(updateLogin.getLastName());
+					existingLogin.setUsername(updateLogin.getUsername());
+					existingLogin.setDob(updateLogin.getDob());
+					existingLogin.setMobileNumber(updateLogin.getMobileNumber());
+					existingLogin.setEmail(updateLogin.getEmail());
+					existingLogin.setAddress(updateLogin.getAddress());
+					existingLogin.setCity(updateLogin.getCity());
+					existingLogin.setState(updateLogin.getState());
+					existingLogin.setCountry(updateLogin.getCountry());
+					return loginRepository.save(existingLogin);
+				})
+				.orElse(null);
+	}
+
+	public Login getUserById(Long id) {
+		return loginRepository.findById(id).orElse(null);
+	}
+
+	public void deleteProductById(Long id) {
+		loginRepository.deleteById(id);
+	}
 	
 	public String generateRandomPassword(int length) {
 
