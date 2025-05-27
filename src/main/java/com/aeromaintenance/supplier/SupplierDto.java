@@ -232,6 +232,9 @@ public class SupplierDto {
 
     @Size(max = 255, message = "Housekeeping procedure cannot exceed 255 characters")
    // @Column(name = "housekeeping_procedure")
+    @Column(name="remark")
+    private String remark;
+    
     private String houseKeeping;
     private String userName;
     private String userRole;

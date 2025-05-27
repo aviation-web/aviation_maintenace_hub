@@ -196,5 +196,8 @@ public class SupplierModel {
     
     @Column(name="userAction")
     private String userAction;
+    
+    @Column(name="remark")
+    private String remark;
 
 }
