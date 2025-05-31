@@ -245,6 +245,7 @@ public class SupplierServiceImpl implements SupplierService {
 					 result = supplierRepositoryImpl.insertSupplierForm(supplierDto);
 					  if(result>0) {
 						 count=supplierRepositoryImpl.updateSupplierTemp(supplierDto.getUserAction(), supplierDto.getSupplierId());
+						 supplierDto.setRemark(supplierDto.getRemark());
 						 }
 				 }else {
 					 //duplicate records
@@ -254,7 +255,8 @@ public class SupplierServiceImpl implements SupplierService {
 			}else if(supplierDto.getUserAction().equals("3")) {
 				
 				result =supplierRepositoryImpl.updateEditSupplierTemp(supplierDto.getUserAction(), supplierDto.getSupplierId());
-				 }
+				 supplierDto.setRemark(supplierDto.getRemark());
+			}
 			 return result;
 			 
 		 }catch(Exception e) {
