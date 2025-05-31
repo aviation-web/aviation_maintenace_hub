@@ -188,6 +188,9 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getUserAction() != null) {
 	            updateExisting.setUserAction(supplierModel.getUserAction());
 	        }
+	        if (supplierModel.getRemark() != null) {
+	            updateExisting.setRemark(supplierModel.getRemark());
+	        }
 
 	        return supplierRepository.save(updateExisting);
 	    }).orElse(null); 

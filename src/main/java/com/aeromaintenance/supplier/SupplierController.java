@@ -53,7 +53,7 @@ public class SupplierController {
 	    ResponseBean<SupplierModel> responseBean = new ResponseBean<>(
 	        "200", 
 	        "Supplier added successfully", 
-	        supplierModel // हे actual data return करत आहे
+	        supplierModel 
 	    );
 	     System.out.println(responseBean);
 	    return ResponseEntity.ok(responseBean);
