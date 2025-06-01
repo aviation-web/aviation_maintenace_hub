@@ -1,10 +1,13 @@
 package com.aeromaintenance.product;
 
+import com.common.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
@@ -67,5 +70,31 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
+    // Fetch Product Name and Product Desc
+    @GetMapping("/prodNameDesc")
+    public ResponseEntity<List<ProductDTO>> getPartNumPartDesc(){
+        return ResponseEntity.ok(productService.getProdNumProdDesc());
+    }
+
+    @DeleteMapping("/{id}/soft-delete")
+    public ResponseEntity<String> softDeleteProduct(@PathVariable Long id) {
+        Optional<Product> optionalProduct = Optional.ofNullable(productService.getProductById(id));
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setFlag(0);  // soft delete
+            productService.saveProduct(product);
+            return ResponseEntity.ok("Product soft deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+        }
+    }
+
+    @GetMapping("/active")
+    public List<Product> getActiveProducts() {
+        return productService.getActiveProduct();
+    }
+
+
+
 }

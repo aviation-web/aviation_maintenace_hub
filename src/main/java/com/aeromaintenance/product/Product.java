@@ -45,5 +45,15 @@ public class Product {
     @Column(nullable = false, length = 255)
     private String registeredBy;
 
+    @Column(nullable = false)
+    private int flag = 1;  // 1 = active, 0 = deleted
+
+
     // Getters and Setters
+
+
+    public Product(String productName, String productDescription) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+    }
 }
