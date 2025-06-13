@@ -1,5 +1,6 @@
 package com.aeromaintenance.product;
 
+import com.common.ProductDTO;
 import org.springframework.stereotype.Service;
 
 
@@ -53,4 +54,11 @@ public class ProductService {
             .orElse(null);
     }
 
+    public List<ProductDTO> getProdNumProdDesc(){
+        return productRepository.findAllProductNameAndDescriptionDTO();
+    }
+
+    public List<Product> getActiveProduct(){
+        return productRepository.findAllActiveProducts();
+    }
 }

@@ -50,8 +50,8 @@ public class StoreAcc {
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "inspection_report", length = 500)
-    private String document;
+//    @Column(name = "inspection_report", length = 500)
+//    private String document;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date_of_receipt")

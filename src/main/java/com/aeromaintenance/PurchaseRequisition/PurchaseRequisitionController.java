@@ -1,5 +1,7 @@
 package com.aeromaintenance.PurchaseRequisition;
 
+import com.common.ProductDTO;
+import com.aeromaintenance.product.ProductRepository;
 import com.common.ResponseBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,10 @@ import java.util.stream.Collectors;
 public class PurchaseRequisitionController {
     @Autowired
     private PurchaseRequisitionService service;
+
+    @Autowired
+    private ProductRepository productRepository;
+
 
     public PurchaseRequisitionController(){
     	System.out.println("PurchaseRequisitionController Initilizing..");
@@ -140,5 +146,11 @@ public class PurchaseRequisitionController {
     private byte[] generateTextFile(List<PurchaseRequisitionDTO> requisitions) {
         // Implement Text file generation logic
         return "Purchase Requisition Details".getBytes();
+    }
+
+    // Fetch Product Name and Product Desc
+    @GetMapping("/prodNameDesc")
+    public ResponseEntity<List<ProductDTO>> getPartNumPartDesc(){
+        return ResponseEntity.ok(productRepository.findAllProductNameAndDescriptionDTO());
     }
 }
