@@ -115,7 +115,27 @@ public class PurchaseRequisitionController {
         String result = service.exportToCSV();
         return ResponseEntity.ok(result);
     }
+    
+ // Export CSV file to disk
+    @GetMapping("/pdf")
+    public ResponseEntity<String> exportToPDF() {
+        String result = service.exportRequisitionsToPDFFile();
+        return ResponseEntity.ok(result);
+    }
 
+    @PostMapping("/csv")
+    public ResponseEntity<String> exportSelectedToCSV(@RequestBody List<Long> selectedIds) {
+        String result = service.exportSelectedToCSV(selectedIds);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/pdf")
+    public ResponseEntity<String> exportSelectedToPDF(@RequestBody List<Long> selectedIds) {
+        String result = service.exportSelectedToPDFFile(selectedIds);
+        return ResponseEntity.ok(result);
+    }
+
+    
     @GetMapping("/batch/{batchNumber}")
     public ResponseEntity<List<PurchaseRequisitionDTO>> getByBatchNumber(@PathVariable String batchNumber) {
         List<PurchaseRequisition> requisitions = service.getByBatchNumberForPurchaseOrder(batchNumber);

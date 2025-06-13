@@ -216,6 +216,70 @@ public class PurchaseRequisitionService {
         }
     }
 
+    public String exportSelectedToPDFFile(List<Long> selectedIds) {
+        try {
+            // Create directory if not exists
+            File folder = new File("D:/download");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // Generate unique filename
+            DateTimeFormatter fileFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String timestamp = LocalDateTime.now().format(fileFormatter);
+            String filePath = "D:/download/purchase_requisitions_" + timestamp + ".pdf";
+
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            Paragraph title = new Paragraph("Selected Purchase Requisitions Report", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(20);
+            document.add(title);
+
+            PdfPTable table = new PdfPTable(9);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10);
+
+            Stream.of("ID", "SR No", "Part Number", "Description", "Current Stock", "Required Qty", "Required Date", "Remark", "Created Date")
+                    .forEach(header -> {
+                        PdfPCell cell = new PdfPCell(new Phrase(header));
+                        cell.setBackgroundColor(Color.LIGHT_GRAY);
+                        table.addCell(cell);
+                    });
+
+            // Fetch only selected IDs
+            List<PurchaseRequisition> requisitions = repository.findAllById(selectedIds);
+
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+            for (PurchaseRequisition pr : requisitions) {
+                table.addCell(pr.getId().toString());
+                table.addCell(pr.getSrNo().toString());
+                table.addCell(pr.getPartNumber());
+                table.addCell(pr.getDescription());
+                table.addCell(pr.getCurrentStock().toString());
+                table.addCell(pr.getRequiredQty().toString());
+                table.addCell(pr.getRequiredDate().format(dateFormat));
+                table.addCell(pr.getRemark() != null ? pr.getRemark() : "-");
+                table.addCell(pr.getCreatedDate().format(dtFormat));
+            }
+
+            document.add(table);
+            document.close();
+
+            return "PDF saved at: " + filePath;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "PDF generation failed: " + e.getMessage();
+        }
+    }
+
+    
     private List<PurchaseRequisition> getAllRequisitions() {
         // ACTUAL IMPLEMENTATION TO GET DATA FROM DATABASE
         return repository.findAll(); // This should return your actual data
@@ -266,6 +330,50 @@ public class PurchaseRequisitionService {
         }
     }
 
+    
+    public String exportSelectedToCSV(List<Long> selectedIds) {
+        try {
+            // Ensure the folder exists
+            File folder = new File("D:/download");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // Create unique filename
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+            String timestamp = LocalDateTime.now().format(formatter);
+            String filePath = "D:/download/purchase_requisitions_" + timestamp + ".csv";
+
+            FileWriter writer = new FileWriter(filePath);
+
+            // CSV header
+            writer.write("ID,SR No,Part Number,Description,Current Stock,Required Qty,Required Date,Remark,Created Date\n");
+
+            // Fetch only selected data
+            List<PurchaseRequisition> requisitions = repository.findAllById(selectedIds);
+
+            for (PurchaseRequisition pr : requisitions) {
+                writer.write(pr.getId() + "," +
+                        pr.getSrNo() + "," +
+                        escapeCSV(pr.getPartNumber()) + "," +
+                        escapeCSV(pr.getDescription()) + "," +
+                        pr.getCurrentStock() + "," +
+                        pr.getRequiredQty() + "," +
+                        pr.getRequiredDate() + "," +
+                        escapeCSV(pr.getRemark()) + "," +
+                        pr.getCreatedDate() + "\n");
+            }
+
+            writer.close();
+            return "CSV saved at: " + filePath;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "CSV generation failed: " + e.getMessage();
+        }
+    }
+
+    
     private String escapeCSV(String input) {
         if (input == null) return "";
         return "\"" + input.replace("\"", "\"\"") + "\"";
