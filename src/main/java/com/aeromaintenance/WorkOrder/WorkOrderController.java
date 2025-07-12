@@ -5,6 +5,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.aeromaintenance.customerOrder.CustomerOrder;
+import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,9 +53,9 @@ public class WorkOrderController {
     }
 
     // from the customer_order_histry_table
-    @GetMapping("/workordersFromChecker")
-    public ResponseEntity<List<Object[]>> getPendingWorkOrders() {
-        List<Object[]> pendingOrders = workOrderService.getPendingWorkOrderHistory();
+   @GetMapping("/workordersFromChecker")
+    public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
+        List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
         return ResponseEntity.ok(pendingOrders);
     }
 }

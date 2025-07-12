@@ -4,7 +4,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 import org.springframework.stereotype.Repository;
 
@@ -85,8 +88,36 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 
 //Query for the work ordr data calling in the work order
 	@Override
-	public List<Object[]> findAllHistoryWithWorkOrderZero() {
-    Query query = entityManager.createNativeQuery("SELECT * FROM customer_order_history WHERE workOrder = 0");
-    	return query.getResultList();
-	}
+public List<CustomerOrderHistoryDTO> findAllHistoryWithWorkOrderZero() {
+    Query query = entityManager.createNativeQuery(
+        "SELECT order_no, sr_no, customer_name, part_desc, part_no, qty, status, workOrder, document_path, maker_user_name, maker_date, checker_user_name, checker_date, user_role, user_action, remark FROM customer_order_history WHERE workOrder = 0");
+
+    List<Object[]> rows = query.getResultList();
+    List<CustomerOrderHistoryDTO> list = new ArrayList<>();
+
+    for (Object[] row : rows) {
+        CustomerOrderHistoryDTO dto = new CustomerOrderHistoryDTO(
+            (String) row[0],   // order_no
+            (String) row[1],   // sr_no
+            (String) row[2],   // customer_name
+            (String) row[3],   // part_desc
+            (String) row[4],   // part_no
+            row[5] != null ? ((Number) row[5]).longValue() : null, // ✅ FIX: qty (cast safely)
+            (String) row[6],   // status
+            row[7] != null ? (Boolean) row[7] : false,             // ✅ Handle possible null
+            (String) row[8],   // document_path
+            (String) row[9],   // maker_user_name
+            (Timestamp) row[10], // maker_date
+            (String) row[11],  // checker_user_name
+            (Timestamp) row[12], // checker_date
+            (String) row[13],  // user_role
+            (String) row[14],  // user_action
+            (String) row[15]   // remark
+        );
+        list.add(dto);
+    }
+
+    return list;
+}
+
 }

@@ -1,5 +1,6 @@
 package com.aeromaintenance.WorkOrder;
 
+import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 import com.aeromaintenance.customerOrder.CustomerOrderRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +141,7 @@ public class WorkOrderService {
     }
 
     // Fetch Pending Customer Orders (workorder = 0)
-    public List<Object[]> getPendingWorkOrderHistory() {
+    public List<CustomerOrderHistoryDTO> getPendingWorkOrderHistory() {
         return customerOrderRepositoryCustom.findAllHistoryWithWorkOrderZero();
     }
 }
