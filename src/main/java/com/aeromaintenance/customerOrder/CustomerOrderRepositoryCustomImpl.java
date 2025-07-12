@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -82,4 +83,10 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 		return 0;
 	}
 
+//Query for the work ordr data calling in the work order
+	@Override
+	public List<Object[]> findAllHistoryWithWorkOrderZero() {
+    Query query = entityManager.createNativeQuery("SELECT * FROM customer_order_history WHERE workOrder = 0");
+    	return query.getResultList();
+	}
 }

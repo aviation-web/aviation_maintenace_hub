@@ -1,14 +1,15 @@
 package com.aeromaintenance.WorkOrder;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,42 +22,37 @@ public class WorkOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String repairOrderNo;
-    private String issueDate;
-    private String operatorName;
-    private String serialNumber;
-    private String batchNumber;
-    private int quantity;
+    private String workOrderNo;
+    private String repairOrder;
+    private String customerName;
+    private String partNumber;
     private String description;
-    private String cmmRef;
-    private String revNo;
+    private Integer quantity;
+    private String cmmRefNo;
+    private String serialNumber;
+    private String revisionNo;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+    @Column(length = 500)
     private String workshopManagerRemarks;
 
-    // ElementCollection for WorkStep
-    @ElementCollection
-    @CollectionTable(
-            name = "workorder_steps",
-            joinColumns = @JoinColumn(name = "workorder_id")
-    )
-    private List<WorkStep> workSteps = new ArrayList<>();
-
-    // ElementCollection for MaterialRequisitionOrder
-    @ElementCollection
-    @CollectionTable(
-            name = "workorder_materials",
-            joinColumns = @JoinColumn(name = "workorder_id")
-    )
-    private List<MaterialRequisitionOrder> materials = new ArrayList<>();
-
+    private String issuedBy;
+    private String tools;
+    private Integer manHours;
     private String certifyingStaff;
-    private String certifyingDate;
-    private int technicianHours;
-    private int certifyingStaffHours;
-    private int totalManHours;
-    private boolean documentsVerified;
-    private String finalApprovalByWorkshopManager;
-    private String finalApprovalByQualityManager;
-    private String finalDate;
+    private String technician;
+    private Integer totalManhour;
 
-    // Getters and Setters
+    @Transient
+    private Long customerOrderSrNo;
+
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<WorkDoneStep> workDoneSteps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<PartsUsed> partsUsed = new ArrayList<>();
 }
