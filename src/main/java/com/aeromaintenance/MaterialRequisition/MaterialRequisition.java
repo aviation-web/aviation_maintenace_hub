@@ -50,5 +50,8 @@ public class MaterialRequisition {
 
     @Column(name = "batch_lot_no", nullable = false)
     private String batchLotNo;
+
+    @Column(name = "unit_of_measurement", nullable = false)
+    private String unitOfMeasurement;
 }
 

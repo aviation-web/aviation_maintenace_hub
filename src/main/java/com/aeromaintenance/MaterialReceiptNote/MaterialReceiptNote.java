@@ -50,7 +50,11 @@ public class MaterialReceiptNote {
     
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
-    
+
+    @Column(name = "unit_of_measurement", length = 20, nullable = false)
+    private String unitOfMeasurement;
+
+
     @Column(name = "store_incharge_sign")
     private String storeInchargeSign;
     

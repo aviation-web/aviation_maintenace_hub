@@ -20,5 +20,6 @@ public class MaterialRequisitionDTO {
     private Integer requestedQty;
     private Integer issuedQty;
     private String batchLotNo;
+    private String unitOfMeasurement;
 }
 

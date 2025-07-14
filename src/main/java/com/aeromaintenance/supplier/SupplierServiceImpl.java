@@ -2,6 +2,7 @@ package com.aeromaintenance.supplier;
 
 import java.util.List;
 
+import com.common.SupplierNameDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -265,6 +266,8 @@ public class SupplierServiceImpl implements SupplierService {
 		 return 0;
 	 }
 
-	
+	public List<SupplierNameDto> getAllSupplierNames() {
+		return supplierRepository.findAllSupplierNames();
+	}
 }
 

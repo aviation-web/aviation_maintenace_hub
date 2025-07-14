@@ -65,7 +65,8 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 entity.getDescription(),
                 entity.getRequestedQty(),
                 entity.getIssuedQty(),
-                entity.getBatchLotNo()
+                entity.getBatchLotNo(),
+                entity.getUnitOfMeasurement()
         );
     }
 
@@ -79,7 +80,8 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 dto.getDescription(),
                 dto.getRequestedQty(),
                 dto.getIssuedQty(),
-                dto.getBatchLotNo()
+                dto.getBatchLotNo(),
+                dto.getUnitOfMeasurement()
         );
     }
 }
