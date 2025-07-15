@@ -2,7 +2,6 @@ package com.aeromaintenance.supplier;
 
 import java.util.List;
 
-import com.common.SupplierNameDto;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface SupplierService {
@@ -15,7 +14,7 @@ public interface SupplierService {
    // public int approveSupplier(String supplierId, String checkerBy);
 	int approveSupplier(SupplierDto supplierDto);
     public List<SupplierModel> getAllEditingSupplierList(String userRole,String userAction);
-    public List<SupplierNameDto> getAllSupplierNames();
+    public List<String> getAllSupplierNames();
 	//public SupplierModel get
 
 }

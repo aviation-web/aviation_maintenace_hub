@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-
+import com.aeromaintenance.storeAcceptance.StoreAcc;
+import com.aeromaintenance.storeAcceptance.StoreAccRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ public class InspectionReportService {
 	
 	@Autowired
 	private InspectionReportRepository inspectionReportRepository;
+
+	@Autowired
+	private StoreAccRepository storeAccRepository;
 
 	public int approveReport(InspectionReportDto report) {
 		try {
@@ -167,6 +170,11 @@ public class InspectionReportService {
         }
 
         return result;
+	}
+
+	public void saveInspectionDataInStore(InspectionReport dto) {
+		StoreAcc storeAcc = StoreAccMapper.fromInspectionReport(dto);
+		storeAccRepository.save(storeAcc);
 	}
 
 }

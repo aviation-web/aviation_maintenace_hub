@@ -13,10 +13,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SupplierRepository  extends JpaRepository<SupplierModel, Long>{
+public interface SupplierRepository  extends JpaRepository<SupplierModel, Long> {
 	// Fetch suppliers where userAction = "1" and userRole = "M"
 	List<SupplierModel> findByUserRoleAndUserAction(String userRole, String userAction);
 
-	@Query("SELECT new com.aeromaintenance.supplier.SupplierNameDto(s.supplierName) FROM Supplier s")
-	List<SupplierNameDto> findAllSupplierNames();
+	@Query("SELECT s.supplierName FROM SupplierModel s")
+	List<String> findAllSupplierNames();
 }

@@ -14,15 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aeromaintenance.login.MenuService;
-import com.aeromaintenance.login.Role;
-import com.aeromaintenance.login.RoleDTO;
-import com.aeromaintenance.supplier.SupplierDto;
-import com.aeromaintenance.supplier.SupplierModel;
-import com.aeromaintenance.supplier.SupplierService;
 import com.common.ResponseBean;
 
 @RestController
@@ -59,6 +52,7 @@ public class InspectionReportController {
 	@PostMapping("/saveInspectionReport")
     public ResponseEntity<?> submitReport(@RequestBody InspectionReport report) {
 		inspectionReportRepository.save(report);
+		reportService.saveInspectionDataInStore(report);
         return ResponseEntity.ok("Submitted");
     }
 	

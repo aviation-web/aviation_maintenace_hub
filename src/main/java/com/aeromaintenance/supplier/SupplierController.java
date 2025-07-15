@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.common.SupplierNameDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -161,7 +160,7 @@ public class SupplierController {
     }
 
 	@GetMapping("/suppliernames")
-	public List<SupplierNameDto> getSupplierNames() {
-		return supplierService.getAllSupplierNames();
+	public ResponseEntity<List<String>> getSupplierNames() {
+		return ResponseEntity.ok(supplierService.getAllSupplierNames());
 	}
 }
