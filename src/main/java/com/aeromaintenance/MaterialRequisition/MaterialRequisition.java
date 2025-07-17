@@ -37,7 +37,7 @@ public class MaterialRequisition {
     private Date date;
 
     @Column(name = "part_no", nullable = false)
-    private Long partNo;
+    private Long partNumber;
 
     @Column(name = "description", nullable = false)
     private String description;

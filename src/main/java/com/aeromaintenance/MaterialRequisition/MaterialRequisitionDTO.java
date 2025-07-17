@@ -15,7 +15,7 @@ public class MaterialRequisitionDTO {
     private Long materialRequisitionNo;
     private Long workOrderNo;
     private Date date;
-    private Long partNo;
+    private Long partNumber;
     private String description;
     private Integer requestedQty;
     private Integer issuedQty;

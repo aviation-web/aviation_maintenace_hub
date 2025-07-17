@@ -27,7 +27,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
             MaterialRequisition entity = existing.get();
             entity.setWorkOrderNo(dto.getWorkOrderNo());
             entity.setDate(dto.getDate());
-            entity.setPartNo(dto.getPartNo());
+            entity.setPartNumber(dto.getPartNumber());
             entity.setDescription(dto.getDescription());
             entity.setRequestedQty(dto.getRequestedQty());
             entity.setIssuedQty(dto.getIssuedQty());
@@ -61,7 +61,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 entity.getMaterialRequisitionNo(),
                 entity.getWorkOrderNo(),
                 entity.getDate(),
-                entity.getPartNo(),
+                entity.getPartNumber(),
                 entity.getDescription(),
                 entity.getRequestedQty(),
                 entity.getIssuedQty(),
@@ -76,7 +76,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 dto.getMaterialRequisitionNo(),
                 dto.getWorkOrderNo(),
                 dto.getDate(),
-                dto.getPartNo(),
+                dto.getPartNumber(),
                 dto.getDescription(),
                 dto.getRequestedQty(),
                 dto.getIssuedQty(),
