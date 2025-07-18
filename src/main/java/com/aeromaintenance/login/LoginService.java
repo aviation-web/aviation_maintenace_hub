@@ -89,7 +89,7 @@ public class LoginService {
 					existingLogin.setMiddleName(updateLogin.getMiddleName());
 					existingLogin.setLastName(updateLogin.getLastName());
 					existingLogin.setUsername(updateLogin.getUsername());
-					existingLogin.setDob(updateLogin.getDob());
+					existingLogin.setDateOfBirth(updateLogin.getDateOfBirth());
 					existingLogin.setMobileNumber(updateLogin.getMobileNumber());
 					existingLogin.setEmail(updateLogin.getEmail());
 					existingLogin.setAddress(updateLogin.getAddress());

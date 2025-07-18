@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -168,5 +169,23 @@ public class CustomerOrderController {
         List<CustomerOrderDto> reports = orderService.getAllViewOrderList();
         return ResponseEntity.ok(reports);
     }
+	
+	@GetMapping("/getEditOrderList")
+    public ResponseEntity<List<CustomerOrder>> getEditReportList() {
+        //System.out.println("userAction = " + userAction + ", userRole = " + userRole);
+
+        List<CustomerOrder> orders = customerOrderRepository.getAllEditReportList();
+        return ResponseEntity.ok(orders);
+    }
+	
+	 @PutMapping("/updateOrder/{id}")
+	    public ResponseEntity<CustomerOrder> updateReportrById(@PathVariable Long id, @RequestBody  CustomerOrder updateOrder) {
+	    	CustomerOrder order = orderService.updateOrder(id, updateOrder);
+	        if (order != null) {
+	            return ResponseEntity.ok(order);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
 	
 }

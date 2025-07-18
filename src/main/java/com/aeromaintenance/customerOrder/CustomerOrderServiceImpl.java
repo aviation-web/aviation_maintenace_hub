@@ -121,4 +121,68 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
         return result;
 	}
 
+	@Override
+	public CustomerOrder updateOrder(Long id, CustomerOrder updateOrder) {
+
+		return customerOrderRepository.findById(id).map(updateExisting -> {
+	    	  // Only update the fields that should be updated
+	        if (updateOrder.getSrNo()!= null) {
+	            updateExisting.setSrNo(updateOrder.getSrNo());
+	        }
+	        if (updateOrder.getPartDescription()!= null) {
+	            updateExisting.setPartDescription(updateOrder.getPartDescription());
+	        }
+	        if (updateOrder.getOrderNo()!= null) {
+	            updateExisting.setOrderNo(updateOrder.getOrderNo());
+	        }
+	        
+	        if (updateOrder.getPartNo() != null) {
+	            updateExisting.setPartNo(updateOrder.getPartNo());
+	        }
+	        
+	        if (updateOrder.getRoNo()!= null) {
+	            updateExisting.setRoNo(updateOrder.getRoNo());
+	        }
+	        
+	        if (updateOrder.getRoReceiveDate()!= null) {
+	            updateExisting.setRoReceiveDate(updateOrder.getRoReceiveDate());
+	        }
+	        
+	        if (updateOrder.getCustomerName()!= null) {
+	            updateExisting.setCustomerName(updateOrder.getCustomerName());
+	        }
+	        
+	        if (updateOrder.getQuantity() != null) {
+	            updateExisting.setQuantity(updateOrder.getQuantity());
+	        }
+	        
+	        if (updateOrder.getStatus()!= null) {
+	            updateExisting.setStatus(updateOrder.getStatus());
+	        }
+	        
+	        if (updateOrder.getBatchNo()!= null) {
+	            updateExisting.setBatchNo(updateOrder.getBatchNo());
+	        }
+	        
+	        if (updateOrder.getRemark() != null) {
+	            updateExisting.setRemark(updateOrder.getRemark());
+	        }
+	        if (updateOrder.getMakerUserName() != null) {
+	            updateExisting.setMakerUserName(updateOrder.getMakerUserName());
+	        }
+	        if (updateOrder.getMakerDate() != null) {
+	            updateExisting.setMakerDate(updateOrder.getMakerDate());
+	        }
+	        if (updateOrder.getUserAction() != null) {
+	        	 updateExisting.setUserAction(updateOrder.getUserAction());
+	        }
+	        if (updateOrder.getUserRole() != null) {
+	            updateExisting.setUserRole(updateOrder.getUserRole());
+	        }
+
+	        return customerOrderRepository.save(updateExisting);
+	    }).orElse(null); 
+	
+	}
+
 }

@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aeromaintenance.Config.LocationBasedRoutingDataSourceContextHolder;
 import com.aeromaintenance.Utils.JwtUtil;
 import com.aeromaintenance.storeAcceptance.StoreAcc;
 @RestController
@@ -48,20 +50,41 @@ public class LoginController {
     
   
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Login user) {
+    public ResponseEntity<?> login(@RequestBody Login user,
+            @RequestHeader("X-User-Location") String location) {
         try {
+        	String requestedLocation = location.toLowerCase();
+        	System.out.println(requestedLocation);
+            LocationBasedRoutingDataSourceContextHolder.setLocation(requestedLocation);
+
+            Optional<Login> userDetails = userRepository.findByUsername(user.getUsername());
+
+            if (userDetails.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found.");
+            }
+
+            Login userDetail = userDetails.get();
+
+            if (!userDetail.getLocation().equalsIgnoreCase(requestedLocation)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Access denied: You are not allowed to log in from " + requestedLocation.toUpperCase());
+            }
+            
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            Optional<Login> userDetails = userRepository.findByUsername(user.getUsername());
-            String roles = userDetails.get().getRole();
-            String token = jwtUtil.generateToken(user.getUsername(), roles);
-            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),roles)); // Return token wrapped in response
+    
+            String token = jwtUtil.generateToken(user.getUsername(), userDetail.getRole());
+            
+            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),userDetail.getRole())); // Return token wrapped in response
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred. Please try again.");
+        }
+        finally {
+            LocationBasedRoutingDataSourceContextHolder.clear();
         }
     }
     

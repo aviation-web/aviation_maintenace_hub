@@ -2,6 +2,8 @@ package com.aeromaintenance.inspectionReport;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -30,6 +32,8 @@ public class InspectionReportDto {
 		
 		private Integer qty;
 		
+		private Integer qtyReceive;
+		
 		private String invoiceObservation;
 		
 		private String manufacturerCertObservation;
@@ -41,6 +45,8 @@ public class InspectionReportDto {
 		private String batchNumberObservation;
 		
 		private String dateOfManufacturingObservation;
+		
+		private String dateOfExpiryObservation;
 		
 		private String selfLifeObservation;
 		
@@ -71,6 +77,8 @@ public class InspectionReportDto {
 		private String userAction;
 		
 		private String userRole;
+		
+		private String documentPath;
 
 	}
 
