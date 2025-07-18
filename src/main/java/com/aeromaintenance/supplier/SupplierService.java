@@ -14,8 +14,7 @@ public interface SupplierService {
    // public int approveSupplier(String supplierId, String checkerBy);
 	int approveSupplier(SupplierDto supplierDto);
     public List<SupplierModel> getAllEditingSupplierList(String userRole,String userAction);
-
-	
+    public List<String> getAllSupplierNames();
 	//public SupplierModel get
 
 }

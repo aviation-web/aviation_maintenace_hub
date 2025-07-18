@@ -82,8 +82,10 @@ public class InspectionReportController {
 			    InspectionReport reports = objectMapper.readValue(report,
 			        new TypeReference<InspectionReport>() {});
 		        reports.setDocumentPath("uploads/" + filePath);
-		inspectionReportRepository.save(reports);
-        return ResponseEntity.ok("Submitted");
+		        inspectionReportRepository.save(reports);
+                reportService.saveInspectionDataInStore(report);
+
+                return ResponseEntity.ok("Submitted");
     }
 	
 	@GetMapping("/getpendingInpectionReportList")

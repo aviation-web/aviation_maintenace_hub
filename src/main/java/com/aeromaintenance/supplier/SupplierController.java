@@ -158,4 +158,9 @@ public class SupplierController {
             return ResponseEntity.notFound().build();
         }
     }
+
+	@GetMapping("/suppliernames")
+	public ResponseEntity<List<String>> getSupplierNames() {
+		return ResponseEntity.ok(supplierService.getAllSupplierNames());
+	}
 }
