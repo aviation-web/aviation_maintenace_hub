@@ -48,6 +48,9 @@ public class InspectionReport {
 	private Integer qty;
 	
 	@Column
+	private Integer qtyReceive;
+	
+	@Column
 	private String invoiceObservation;
 	
 	@Column
@@ -64,6 +67,9 @@ public class InspectionReport {
 	
 	@Column
 	private String dateOfManufacturingObservation;
+	
+	@Column
+	private String dateOfExpiryObservation;
 	
 	@Column
 	private String selfLifeObservation;
@@ -109,5 +115,7 @@ public class InspectionReport {
 	
 	@Column
 	private String userRole;
-
+	
+	@Column
+	private String documentPath;
 }

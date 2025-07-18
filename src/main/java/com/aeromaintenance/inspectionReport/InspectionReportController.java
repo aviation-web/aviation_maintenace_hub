@@ -1,5 +1,12 @@
 package com.aeromaintenance.inspectionReport;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,9 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.common.ResponseBean;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @RestController
 @RequestMapping("/api/inspectionReport")
@@ -50,10 +62,30 @@ public class InspectionReportController {
 	}
 	
 	@PostMapping("/saveInspectionReport")
-    public ResponseEntity<?> submitReport(@RequestBody InspectionReport report) {
-		inspectionReportRepository.save(report);
-		reportService.saveInspectionDataInStore(report);
-        return ResponseEntity.ok("Submitted");
+    public ResponseEntity<?> submitReport(@RequestParam("document") MultipartFile file,
+    	    @RequestParam("report") String report) throws IOException {
+		// Save the file
+				SecureRandom secureRandom = new SecureRandom();
+			    long orderNumber = Math.abs(secureRandom.nextLong());
+		        String uploadDir = "D:/InspectionReports/uploads/" + orderNumber + "/";
+		        Path uploadPath = Paths.get(uploadDir);
+		        Files.createDirectories(uploadPath);
+		        String fileName = file.getOriginalFilename();
+		        Path filePath = uploadPath.resolve(fileName);
+		        //Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+		        try (InputStream is = file.getInputStream()) {
+		            Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
+		        }
+		        ObjectMapper objectMapper = new ObjectMapper();
+			    objectMapper.registerModule(new JavaTimeModule());
+			    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+			    InspectionReport reports = objectMapper.readValue(report,
+			        new TypeReference<InspectionReport>() {});
+		        reports.setDocumentPath("uploads/" + filePath);
+		        inspectionReportRepository.save(reports);
+                reportService.saveInspectionDataInStore(report);
+
+                return ResponseEntity.ok("Submitted");
     }
 	
 	@GetMapping("/getpendingInpectionReportList")

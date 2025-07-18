@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -56,6 +56,11 @@
 			<version>1.18.30</version>  <!-- Specify the latest version -->
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+    		<groupId>org.reflections</groupId>
+    		<artifactId>reflections</artifactId>
+    		<version>0.10.2</version>
+		</dependency>
 
 		<!--<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -91,6 +96,11 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>hibernate-core</artifactId>
+		</dependency>
 
 		<!-- Spring Security for Authentication and Authorization -->
 		<dependency>
@@ -100,9 +110,21 @@
 
 		<!-- JWT (JSON Web Token) Library -->
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.12.6</version>
+  			<groupId>io.jsonwebtoken</groupId>
+  			<artifactId>jjwt-api</artifactId>
+  			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+  			<groupId>io.jsonwebtoken</groupId>
+  			<artifactId>jjwt-impl</artifactId>
+ 			<version>0.11.5</version>
+  			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+  			<groupId>io.jsonwebtoken</groupId>
+  			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if using Gson -->
+  			<version>0.11.5</version>
+  			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -110,11 +132,11 @@
 			<artifactId>openpdf</artifactId>
 			<version>1.3.30</version>
 		</dependency>
-<dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-tomcat</artifactId>
-     <scope>provided</scope>
- </dependency>
+		<dependency>
+     		<groupId>org.springframework.boot</groupId>
+     		<artifactId>spring-boot-starter-tomcat</artifactId>
+     		<scope>provided</scope>
+ 		</dependency>
 	</dependencies>
 
 	<build>
