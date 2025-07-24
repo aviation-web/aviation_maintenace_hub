@@ -4,45 +4,58 @@ package com.aeromaintenance.WorkOrder;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.aeromaintenance.customerOrder.CustomerOrder;
+import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 @RestController
 @RequestMapping("/api/workorders")
-@CrossOrigin
 public class WorkOrderController {
 
-    private final WorkOrderService service;
+    @Autowired
+    private WorkOrderService workOrderService;
 
-    public WorkOrderController(WorkOrderService service) {
-        this.service = service;
-    }
-
+    //  Create WorkOrder
     @PostMapping
-    public ResponseEntity<WorkOrder> create(@RequestBody WorkOrder workOrder) {
-        return new ResponseEntity<>(service.saveWorkOrder(workOrder), HttpStatus.CREATED);
+    public ResponseEntity<WorkOrder> createWorkOrder(@RequestBody WorkOrder workOrder) {
+        WorkOrder created = workOrderService.saveWorkOrder(workOrder);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
+    //  Get All WorkOrders
     @GetMapping
-    public List<WorkOrder> getAll() {
-        return service.getAllWorkOrders();
+    public ResponseEntity<List<WorkOrder>> getAllWorkOrders() {
+        List<WorkOrder> list = workOrderService.getAll();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    //  Get WorkOrder by ID
     @GetMapping("/{id}")
-    public ResponseEntity<WorkOrder> getOne(@PathVariable Long id) {
-        WorkOrder wo = service.getById(id);
-        return wo != null ? ResponseEntity.ok(wo) : ResponseEntity.notFound().build();
+    public ResponseEntity<WorkOrder> getWorkOrderById(@PathVariable Long id) {
+        WorkOrder order = workOrderService.getById(id);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
+    //  Update WorkOrder by ID
     @PutMapping("/{id}")
-    public ResponseEntity<WorkOrder> updateWorkOrder(@PathVariable Long id, @RequestBody WorkOrder workOrder) {
-        workOrder.setId(id); // Ensure the path ID is set to the object
-        WorkOrder updated = service.saveWorkOrder(workOrder);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<WorkOrder> updateWorkOrder(@PathVariable Long id, @RequestBody WorkOrder updatedOrder) {
+        WorkOrder updated = workOrderService.updateWorkOrder(id, updatedOrder);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    //  Delete WorkOrder by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWorkOrder(@PathVariable Long id) {
+        workOrderService.deleteWorkOrder(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // from the customer_order_histry_table
+   @GetMapping("/workordersFromChecker")
+    public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
+        List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
+        return ResponseEntity.ok(pendingOrders);
+    }
 }
