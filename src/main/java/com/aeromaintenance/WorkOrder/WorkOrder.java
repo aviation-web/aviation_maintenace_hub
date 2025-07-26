@@ -1,58 +1,57 @@
 package com.aeromaintenance.WorkOrder;
 
-import javax.persistence.*;
-import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
-@Table(name = "WorkOrder")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class WorkOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String workOrderNo; // Primary Key
 
-    private String workOrderNo;
-    private String repairOrder;
+    private LocalDate issueDate;
     private String customerName;
+    private String repairOrderNo;
     private String partNumber;
+    private Integer qty;
     private String description;
-    private Integer quantity;
     private String cmmRefNo;
-    private String serialNumber;
-    private String revisionNo;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @Column(length = 500)
+    private String revNo;
     private String workshopManagerRemarks;
-
     private String issuedBy;
-    private String tools;
-    private Integer manHours;
     private String certifyingStaff;
     private String technician;
-    private Integer totalManhour;
+    private String totalManHour;
+    private String actionTaken;
+    private String toolsUsed;
+    private LocalDate qualityManagerSignDate;
+    private LocalDate workshopManagerSignDate;
+    private String snBn;
 
-    @Transient
-    private Long customerOrderSrNo;
 
-    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+
     @JsonManagedReference
-    private List<WorkDoneStep> workDoneSteps = new ArrayList<>();
-
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkOrderStep> workOrderSteps = new ArrayList<>();
+
     @JsonManagedReference
-    private List<PartsUsed> partsUsed = new ArrayList<>();
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MaterialRequisitionNew> materialRequisitions = new ArrayList<>();
+
+
 }

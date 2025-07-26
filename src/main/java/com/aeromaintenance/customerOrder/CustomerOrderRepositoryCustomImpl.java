@@ -102,9 +102,9 @@ public List<CustomerOrderHistoryDTO> findAllHistoryWithWorkOrderZero() {
             (String) row[2],   // customer_name
             (String) row[3],   // part_desc
             (String) row[4],   // part_no
-            row[5] != null ? ((Number) row[5]).longValue() : null, // ✅ FIX: qty (cast safely)
+            row[5] != null ? ((Number) row[5]).longValue() : null, //  FIX: qty (cast safely)
             (String) row[6],   // status
-            row[7] != null ? (Boolean) row[7] : false,             // ✅ Handle possible null
+            row[7] != null ? (Boolean) row[7] : false,             //  Handle possible null
             (String) row[8],   // document_path
             (String) row[9],   // maker_user_name
             (Timestamp) row[10], // maker_date
