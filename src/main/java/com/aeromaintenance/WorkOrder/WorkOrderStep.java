@@ -17,6 +17,7 @@ public class WorkOrderStep {
 
     @Id
     private Integer stepNo;
+    @Column(length = 1000)
     private String detailOfWorkDone;
     private String technicianSign;
     private String certifyingStaffSign;
