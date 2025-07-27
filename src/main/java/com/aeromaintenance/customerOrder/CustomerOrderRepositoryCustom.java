@@ -11,4 +11,7 @@ public interface CustomerOrderRepositoryCustom {
 	public int updateEditCustomerOrderTemp(String userAction, Long srNo);
 	//  New method added for fetching workOrder=0 records
 	List<CustomerOrderHistoryDTO> findAllHistoryWithWorkOrderZero();
+
+
+	CustomerOrderShortDTO findOrderShortBySrNo(String srNo);
 }

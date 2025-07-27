@@ -2,9 +2,13 @@ package com.aeromaintenance.WorkOrder;
 
 import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 import com.aeromaintenance.customerOrder.CustomerOrderRepositoryCustom;
+import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,15 +25,27 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Autowired
     private CustomerOrderRepositoryCustom customerOrderRepositoryCustom;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Transactional
     @Override
     public WorkOrder createWorkOrder(WorkOrderDTO dto) {
         WorkOrder entity = mapToEntity(dto);
 
         //  Custom formatted work order number like "AMC0001"
         entity.setWorkOrderNo(generateNextWorkOrderNo());
+        WorkOrder savedOrder = repository.save(entity);
 
-        return repository.save(entity);
+        // Update workorder flag = 1 in customer_order_history
+        if (savedOrder.getRepairOrderNo() != null) {
+            entityManager.createNativeQuery(
+                            "UPDATE customer_order_history SET workorder = 1 WHERE order_no = :orderNo")
+                    .setParameter("orderNo", savedOrder.getRepairOrderNo())
+                    .executeUpdate();
+        }
+
+        return savedOrder;
     }
 
     @Override
@@ -168,6 +184,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return customerOrderRepositoryCustom.findAllHistoryWithWorkOrderZero();
     }
 
+    public CustomerOrderShortDTO getShortOrderBySrNo(String srNo) {
+        return customerOrderRepositoryCustom.findOrderShortBySrNo(srNo);
+    }
 
 
     private String generateNextWorkOrderNo() {

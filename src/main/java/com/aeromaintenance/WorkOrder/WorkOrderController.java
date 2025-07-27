@@ -1,7 +1,9 @@
 package com.aeromaintenance.WorkOrder;
 
 import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
+import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +48,18 @@ public class WorkOrderController {
     public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
         List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
         return ResponseEntity.ok(pendingOrders);
+    }
+
+    @GetMapping("/workorders-short/{srNo}")
+    public ResponseEntity<?> getShortWorkOrderBySrNo(@PathVariable String srNo) {
+        CustomerOrderShortDTO dto = workOrderService.getShortOrderBySrNo(srNo);
+
+        if (dto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No order found with sr_no = " + srNo);
+        }
+
+        return ResponseEntity.ok(dto);
     }
 
 
