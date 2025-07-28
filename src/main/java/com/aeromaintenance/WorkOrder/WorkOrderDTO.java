@@ -18,7 +18,7 @@ public class WorkOrderDTO {
     private String revNo;
     private String workshopManagerRemarks;
     private String issuedBy;
-    private Integer certifyingStaff;
+    private String certifyingStaff;
     private String technician;
     private String totalManHour;
     private String actionTaken;
