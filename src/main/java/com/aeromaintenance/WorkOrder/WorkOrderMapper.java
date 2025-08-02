@@ -21,7 +21,7 @@ public class WorkOrderMapper {
         dto.setRevNo(entity1.getRevNo());
         dto.setWorkshopManagerRemarks(entity1.getWorkshopManagerRemarks());
         dto.setIssuedBy(entity1.getIssuedBy());
-        dto.setCertifyingStaff(entity1.getCertifyingStaff());
+        dto.setCertifyingstaffhours(entity1.getCertifyingstaffhours());
         dto.setTechnician(entity1.getTechnician());
         dto.setTotalManHour(entity1.getTotalManHour());
         dto.setActionTaken(entity1.getActionTaken());
