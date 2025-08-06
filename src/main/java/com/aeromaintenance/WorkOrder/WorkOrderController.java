@@ -1,15 +1,14 @@
 package com.aeromaintenance.WorkOrder;
 
-
-import org.springframework.http.*;
+import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
+import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aeromaintenance.customerOrder.CustomerOrder;
-import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/workorders")
 public class WorkOrderController {
@@ -17,45 +16,51 @@ public class WorkOrderController {
     @Autowired
     private WorkOrderService workOrderService;
 
-    //  Create WorkOrder
     @PostMapping
-    public ResponseEntity<WorkOrder> createWorkOrder(@RequestBody WorkOrder workOrder) {
-        WorkOrder created = workOrderService.saveWorkOrder(workOrder);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    public ResponseEntity<WorkOrder> createWorkOrder(@RequestBody WorkOrderDTO dto) {
+        return ResponseEntity.ok(workOrderService.createWorkOrder(dto));
     }
 
-    //  Get All WorkOrders
     @GetMapping
     public ResponseEntity<List<WorkOrder>> getAllWorkOrders() {
-        List<WorkOrder> list = workOrderService.getAll();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return ResponseEntity.ok(workOrderService.getAllWorkOrders());
     }
 
-    //  Get WorkOrder by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<WorkOrder> getWorkOrderById(@PathVariable Long id) {
-        WorkOrder order = workOrderService.getById(id);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+    @GetMapping("/{workOrderNo}")
+    public ResponseEntity<WorkOrder> getWorkOrderByNo(@PathVariable String workOrderNo) {
+        return ResponseEntity.ok((WorkOrder) workOrderService.getWorkOrderByNo(workOrderNo));
     }
 
-    //  Update WorkOrder by ID
-    @PutMapping("/{id}")
-    public ResponseEntity<WorkOrder> updateWorkOrder(@PathVariable Long id, @RequestBody WorkOrder updatedOrder) {
-        WorkOrder updated = workOrderService.updateWorkOrder(id, updatedOrder);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    @PutMapping("/{workOrderNo}")
+    public ResponseEntity<WorkOrder> updateWorkOrder(@PathVariable String workOrderNo,
+                                                     @RequestBody WorkOrderDTO dto) {
+        return ResponseEntity.ok(workOrderService.updateWorkOrder(workOrderNo, dto));
     }
 
-    //  Delete WorkOrder by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWorkOrder(@PathVariable Long id) {
-        workOrderService.deleteWorkOrder(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{workOrderNo}")
+    public ResponseEntity<Void> deleteWorkOrder(@PathVariable String workOrderNo) {
+        workOrderService.deleteWorkOrder(workOrderNo);
+        return ResponseEntity.noContent().build();
     }
 
     // from the customer_order_histry_table
-   @GetMapping("/workordersFromChecker")
+    @GetMapping("/workordersFromChecker")
     public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
         List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
         return ResponseEntity.ok(pendingOrders);
     }
+
+    @GetMapping("/workorders-short/{srNo}")
+    public ResponseEntity<?> getShortWorkOrderBySrNo(@PathVariable String srNo) {
+        CustomerOrderShortDTO dto = workOrderService.getShortOrderBySrNo(srNo);
+
+        if (dto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No order found with sr_no = " + srNo);
+        }
+
+        return ResponseEntity.ok(dto);
+    }
+
+
 }

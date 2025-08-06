@@ -26,7 +26,9 @@ public class GlobalExceptionHandler {
 
 	        // ✅ Convert 400 to String to match ResponseBean<String>
 	        ResponseBean<String> responseBean = new ResponseBean<>("400", errorMessage, null);
-	        
+
 	        return new ResponseEntity<>(responseBean, HttpStatus.BAD_REQUEST);
+
+			
 	    }
 }

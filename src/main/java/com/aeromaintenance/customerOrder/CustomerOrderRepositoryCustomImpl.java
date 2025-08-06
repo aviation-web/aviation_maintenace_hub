@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
@@ -113,9 +114,9 @@ public List<CustomerOrderHistoryDTO> findAllHistoryWithWorkOrderZero() {
             (String) row[2],   // customer_name
             (String) row[3],   // part_desc
             (String) row[4],   // part_no
-            row[5] != null ? ((Number) row[5]).longValue() : null, // ✅ FIX: qty (cast safely)
+            row[5] != null ? ((Number) row[5]).longValue() : null, //  FIX: qty (cast safely)
             (String) row[6],   // status
-            row[7] != null ? (Boolean) row[7] : false,             // ✅ Handle possible null
+            row[7] != null ? (Boolean) row[7] : false,             //  Handle possible null
             (String) row[8],   // document_path
             (String) row[9],   // maker_user_name
             (Timestamp) row[10], // maker_date
@@ -130,5 +131,38 @@ public List<CustomerOrderHistoryDTO> findAllHistoryWithWorkOrderZero() {
 
     return list;
 }
+
+
+	@Override
+	public CustomerOrderShortDTO findOrderShortBySrNo(String srNo) {
+		Query query = entityManager.createNativeQuery(
+				"SELECT order_no, customer_name, part_desc, part_no, qty " +
+						"FROM customer_order_history WHERE sr_no = :srNo AND workOrder = 0");
+
+		query.setParameter("srNo", srNo);
+
+		List<Object[]> result = query.getResultList();
+
+		if (result.isEmpty()) {
+			return null;
+		}
+
+		Object[] row = result.get(0);
+
+		String orderNo = row[0] != null ? row[0].toString() : null;
+		String customerName = row[1] != null ? row[1].toString() : null;
+		String partDesc = row[2] != null ? row[2].toString() : null;
+		String partNo = row[3] != null ? row[3].toString() : null;
+
+		Long qty = null;
+		if (row[4] instanceof BigInteger) {
+			qty = ((BigInteger) row[4]).longValue();
+		} else if (row[4] instanceof Number) {
+			qty = ((Number) row[4]).longValue();
+		}
+
+		return new CustomerOrderShortDTO(orderNo, customerName, partDesc, partNo, qty);
+	}
+
 
 }

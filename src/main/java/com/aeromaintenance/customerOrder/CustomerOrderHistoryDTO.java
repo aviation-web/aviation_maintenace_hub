@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 @Getter
 @Setter
@@ -27,7 +28,7 @@ public class CustomerOrderHistoryDTO {
     private String userAction;
     private String remark;
 
-    // ✅ Constructor to handle raw Object[] from native SQL
+    //  Constructor to handle raw Object[] from native SQL
     public CustomerOrderHistoryDTO(Object orderNo, Object srNo, Object customerName,
                                    Object partDesc, Object partNo, Object qty,
                                    Object status, Object workOrder, Object documentPath,
@@ -69,6 +70,18 @@ public class CustomerOrderHistoryDTO {
         this.userAction = userAction != null ? userAction.toString() : null;
         this.remark = remark != null ? remark.toString() : null;
     }
+
+    public CustomerOrderHistoryDTO(String orderNo, String srNo, String customerName,
+                                   String partDesc, String partNo, Long qty) {
+        this.orderNo = orderNo;
+        this.srNo = srNo;
+        this.customerName = customerName;
+        this.partDesc = partDesc;
+        this.partNo = partNo;
+        this.qty = qty;
+    }
+
+
 
     // (Optional: Add getters & setters if needed)
 }
