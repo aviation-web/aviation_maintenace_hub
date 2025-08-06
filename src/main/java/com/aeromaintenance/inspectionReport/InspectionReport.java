@@ -66,10 +66,10 @@ public class InspectionReport {
 	private String batchNumberObservation;
 	
 	@Column
-	private String dateOfManufacturingObservation;
+	private LocalDate dateOfManufacturingObservation;
 	
 	@Column
-	private String dateOfExpiryObservation;
+	private LocalDate dateOfExpiryObservation;
 	
 	@Column
 	private String selfLifeObservation;

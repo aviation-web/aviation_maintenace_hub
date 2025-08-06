@@ -18,7 +18,7 @@ public class StoreAccMapper {
         }
 
         if (dto.getSelfLifeObservation() != null) {
-            storeAcc.setDoe(Date.valueOf(dto.getSelfLifeObservation()));
+            storeAcc.setDoe(Date.valueOf(dto.getDateOfExpiryObservation()));
         }
 
         storeAcc.setQuantity(dto.getQty());

@@ -20,7 +20,7 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 			    " part_number, batch_number_observation, purchase_order_no, qty, qty_receive, supplier_name, "+
 			    " date, maker_date, checker_date, date_of_manufacturing_observation, "+
 			    " maker_user_id, maker_user_name, checker_user_id, checker_user_name, user_role, user_action, "+
-			    " document_observation, invoice_obervation, manufacturer_cert_observation, supplier_cert_observation, "+
+			    " document_observation, invoice_observation, manufacturer_cert_observation, supplier_cert_observation, "+
 			    " tds_observation, specification_observation, material_condition_observation, self_life_observation, "+
 			    " full_traceability_observation, lot_accepted, remark, inspection_report_id, date_of_expiry_observation, document_path "+
 			    " ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"	   
