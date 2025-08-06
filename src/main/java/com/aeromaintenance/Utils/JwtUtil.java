@@ -1,58 +1,68 @@
 package com.aeromaintenance.Utils;
 
+import java.security.Key;
 import java.util.Date;
-
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
 public class JwtUtil {
 
-    private String secretKey = "hjkloibbmf567tyuyutyuiohjkloibbmf567tyuyutyuio";
+    // Use a secure random secret key (at least 256-bit for HS256)
+    private static final String SECRET_KEY = "hjkloibbmf567tyuyutyuiohjkloibbmf567tyuyutyuio";
+    private static final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
 
-    @SuppressWarnings("deprecation")
+    private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+
+    // Generate JWT Token
     public String generateToken(String username, String roles) {
         return Jwts.builder()
-                .setSubject(username)
+        		.setSubject(username)
                 .claim("roles", roles)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    @SuppressWarnings("deprecation")
+ // Extract all claims from the token
     public Claims extractClaims(String token) {
         try {
-            return Jwts.parser()
-                    .setSigningKey(secretKey)
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            System.out.println("Token is expired: " + e.getMessage());
+            System.out.println("Token expired: " + e.getMessage());
+            return e.getClaims(); // Return claims even if expired
         } catch (JwtException e) {
-            System.out.println("Invalid token: " + e.getMessage());
+            System.out.println("Invalid JWT: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
+    // Extract username from token
     public String extractUsername(String token) {
         Claims claims = extractClaims(token);
-        return (claims != null) ? claims.getSubject() : null;
+        return claims != null ? claims.getSubject() : null;
     }
 
+    // Check if token is expired
     public boolean isTokenExpired(String token) {
         Claims claims = extractClaims(token);
-        return (claims != null) && claims.getExpiration().before(new Date());
+        return claims == null || claims.getExpiration().before(new Date());
     }
 
+    // Validate token with username
     public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
-        return (extractedUsername != null && extractedUsername.equals(username) && !isTokenExpired(token));
+        return extractedUsername != null && extractedUsername.equals(username) && !isTokenExpired(token);
     }
 }

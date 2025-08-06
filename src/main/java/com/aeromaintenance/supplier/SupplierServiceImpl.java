@@ -265,6 +265,8 @@ public class SupplierServiceImpl implements SupplierService {
 		 return 0;
 	 }
 
-	
+	public List<String> getAllSupplierNames() {
+		return supplierRepository.findAllSupplierNames();
+	}
 }
 

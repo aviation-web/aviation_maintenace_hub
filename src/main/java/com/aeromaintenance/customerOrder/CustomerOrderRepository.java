@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.aeromaintenance.inspectionReport.InspectionReport;
+
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
 
@@ -17,5 +19,8 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
 			+ " checker_date, user_role, user_action, remark "
 		    + " FROM customer_order_history", nativeQuery = true)
 			List<Object[]> getRawReportList();
+
+	@Query("SELECT i FROM CustomerOrder i WHERE i.userAction = '4'")
+	List<CustomerOrder> getAllEditReportList();
 
 }

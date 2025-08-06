@@ -21,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-@EntityScan(basePackages = " com.aeromaintenance")
+@EntityScan(basePackages = "com.aeromaintenance")
 @EnableJpaRepositories(basePackages = "com.aeromaintenance")
 @SpringBootApplication(scanBasePackages = "com.aeromaintenance")
 public class AeroMaintCoreApplication extends SpringBootServletInitializer {

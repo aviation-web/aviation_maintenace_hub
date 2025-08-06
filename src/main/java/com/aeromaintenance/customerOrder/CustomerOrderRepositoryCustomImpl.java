@@ -82,9 +82,20 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 	}
 
 	@Override
-	public int updateEditCustomerOrderTemp(String userAction, Long srNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateEditCustomerOrderTemp(String actionCode, Long srNo) {
+		
+			 int result =0;
+			 try {
+				 Query query = entityManager.createNativeQuery("UPDATE customer_order SET user_action = ? WHERE sr_no =?");
+			     query.setParameter(1,actionCode);
+			     query.setParameter(2,srNo);
+			     result = query.executeUpdate();
+			     System.out.println("UserAction:-" + actionCode);
+			     }catch(Exception e) {
+			    	 e.printStackTrace();
+			     }
+			 System.out.println(result);
+			 return result;
 	}
 
 //Query for the work ordr data calling in the work order

@@ -44,18 +44,9 @@ public class Login {
  	@Column(nullable = false, length = 50,unique = true)
     private String username;
  	 
-	/*
-	 * @ManyToMany(fetch = FetchType.EAGER)
-	 * 
-	 * @JoinTable( name = "user_roles", // the name of the join table joinColumns
-	 * = @JoinColumn(name = "user_id"), // foreign key to user_login table
-	 * inverseJoinColumns = @JoinColumn(name = "role_id") // foreign key to role
-	 * table ) private Set<Role> roles;
-	 */
- 	 
- 	@Column(name = "DateOfBirth", nullable = false, updatable = false)
+ 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.DATE)
-    private Date dob;
+    private Date dateOfBirth;
  	 
  	@Column(nullable = false, length = 12)
     private String mobileNumber;
@@ -83,6 +74,9 @@ public class Login {
  	
  	@Column(nullable = false, length = 50)
     private String role;
+ 	
+ 	@Column
+ 	private String location;
 
     // Getters and setters
 }

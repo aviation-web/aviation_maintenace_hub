@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-
+import com.aeromaintenance.storeAcceptance.StoreAcc;
+import com.aeromaintenance.storeAcceptance.StoreAccRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ public class InspectionReportService {
 	
 	@Autowired
 	private InspectionReportRepository inspectionReportRepository;
+
+	@Autowired
+	private StoreAccRepository storeAccRepository;
 
 	public int approveReport(InspectionReportDto report) {
 		try {
@@ -67,6 +70,15 @@ public class InspectionReportService {
 	        if (updateReport.getDate() != null) {
 	            updateExisting.setDate(updateReport.getDate());
 	        }
+	        
+	        if (updateReport.getQty() != null) {
+	            updateExisting.setQty(updateReport.getQty());
+	        }
+	        
+	        if (updateReport.getQtyReceive()!= null) {
+	            updateExisting.setQtyReceive(updateReport.getQtyReceive());
+	        }
+	        
 	        if (updateReport.getInvoiceObservation() != null) {
 	            updateExisting.setInvoiceObservation(updateReport.getInvoiceObservation());
 	        }
@@ -85,6 +97,10 @@ public class InspectionReportService {
 	        }
 	        if (updateReport.getDateOfManufacturingObservation() != null) {
 	            updateExisting.setDateOfManufacturingObservation(updateReport.getDateOfManufacturingObservation());
+	        }
+	        
+	        if (updateReport.getDateOfExpiryObservation() != null) {
+	            updateExisting.setDateOfExpiryObservation(updateReport.getDateOfExpiryObservation());
 	        }
 	        if (updateReport.getSelfLifeObservation() != null) {
 	            updateExisting.setSelfLifeObservation(updateReport.getSelfLifeObservation());
@@ -138,35 +154,41 @@ public class InspectionReportService {
         	String reportNo = (String) row[5];
         	LocalDate date = ((java.sql.Date) row[6]).toLocalDate();
             Integer qty = (Integer) row[7];
-        	String invoiceObservation = (String) row[8];
-        	String manufacturerCertObservation = (String) row[9];
-        	String supplierCertObservation = (String) row[10];	
-        	String fullTraceabilityObservation = (String) row[11];
-            String batchNumberObservation = (String) row[12];
-            String dateOfManufacturingObservation = (String) row[13];
-            String selfLifeObservation = (String) row[14];
-            String tdsObservation = (String) row[15];
-            String materialConditionObservation = (String) row[16];
-        	String specificationObservation = (String) row[17];
-            String documentObservation = (String) row[18];
-        	String lotAccepted = (String) row[19];
-        	String remark = (String) row[20];
-        	String makerUserName = (String) row[21];
+            Integer qtyReceive = (Integer) row[8];
+        	String invoiceObservation = (String) row[9];
+        	String manufacturerCertObservation = (String) row[10];
+        	String supplierCertObservation = (String) row[11];	
+        	String fullTraceabilityObservation = (String) row[12];
+            String batchNumberObservation = (String) row[13];
+            String dateOfManufacturingObservation = (String) row[14];
+            String selfLifeObservation = (String) row[15];
+            String tdsObservation = (String) row[16];
+            String materialConditionObservation = (String) row[17];
+        	String specificationObservation = (String) row[18];
+            String documentObservation = (String) row[19];
+        	String lotAccepted = (String) row[20];
+        	String remark = (String) row[21];
+        	String makerUserName = (String) row[22];
         	//String makerUserId = (String) row[22];
-        	LocalDate makerDate = row[22] != null ? ((java.sql.Date) row[22]).toLocalDate() : null;
-        	String checkerUserName = (String) row[23];
+        	LocalDate makerDate = row[23] != null ? ((java.sql.Date) row[23]).toLocalDate() : null;
+        	String checkerUserName = (String) row[24];
         	//String checkerUserId = (String) row[25];
-        	LocalDate checkerDate = row[24] != null ? ((java.sql.Date) row[24]).toLocalDate() : null;
-        	//String userAction = (String) row[27];
+        	LocalDate checkerDate = row[25] != null ? ((java.sql.Date) row[25]).toLocalDate() : null;
+        	String dateOfExpiryObservation = (String) row[26];
         	//String userRole = (String) row[28];
             result.add(new InspectionReportDto(id, partNumber, partDesc, purchaseOrderNo, supplierName, reportNo,
-            		date, qty, invoiceObservation, manufacturerCertObservation, supplierCertObservation, fullTraceabilityObservation,
-            		batchNumberObservation, dateOfManufacturingObservation, selfLifeObservation, tdsObservation, materialConditionObservation,
+            		date, qty, qtyReceive,invoiceObservation, manufacturerCertObservation, supplierCertObservation, fullTraceabilityObservation,
+            		batchNumberObservation, dateOfManufacturingObservation, dateOfExpiryObservation,selfLifeObservation, tdsObservation, materialConditionObservation,
             		specificationObservation, documentObservation, lotAccepted, remark, makerUserName, "",
-            		makerDate, checkerUserName, "", checkerDate, "", "" ));
+            		makerDate, checkerUserName, "", checkerDate, "", "" ,""));
         }
 
         return result;
+	}
+
+	public void saveInspectionDataInStore(InspectionReport dto) {
+		StoreAcc storeAcc = StoreAccMapper.fromInspectionReport(dto);
+		storeAccRepository.save(storeAcc);
 	}
 
 }

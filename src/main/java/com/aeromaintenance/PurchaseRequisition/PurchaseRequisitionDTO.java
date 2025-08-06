@@ -21,6 +21,7 @@ public class PurchaseRequisitionDTO {
     private String description;
     private Integer currentStock;
     private Integer requiredQty;
+    private String unitOfMeasurement;
     private LocalDate requiredDate;
     private String remark;
     private String batchnumber;
@@ -34,6 +35,7 @@ public class PurchaseRequisitionDTO {
         entity.setDescription(this.description);
         entity.setCurrentStock(this.currentStock);
         entity.setRequiredQty(this.requiredQty);
+        entity.setUnitOfMeasurement(this.unitOfMeasurement);
         entity.setRequiredDate(this.requiredDate);
         entity.setRemark(this.remark);
         entity.setBatchNumber(this.batchnumber);
@@ -49,6 +51,7 @@ public class PurchaseRequisitionDTO {
                 .description(entity.getDescription())
                 .currentStock(entity.getCurrentStock())
                 .requiredQty(entity.getRequiredQty())
+                .unitOfMeasurement(entity.getUnitOfMeasurement())
                 .requiredDate(entity.getRequiredDate())
                 .remark(entity.getRemark())
                 .batchnumber(entity.getBatchNumber())

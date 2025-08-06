@@ -41,6 +41,9 @@ public class PurchaseRequisition {
     @Column(name = "required_qty")
     private Integer requiredQty;
 
+    @Column(name = "unit_of_measurement")
+    private String unitOfMeasurement;
+
     @Column(name = "required_date")
     private LocalDate requiredDate;
 
