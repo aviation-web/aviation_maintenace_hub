@@ -17,8 +17,12 @@ public class WorkOrderStep {
 
     @Id
     private Integer stepNo;
+    
+    @Column(columnDefinition = "TEXT")
     private String detailOfWorkDone;
+    
     private String technicianSign;
+    
     private String certifyingStaffSign;
 
     @JsonBackReference

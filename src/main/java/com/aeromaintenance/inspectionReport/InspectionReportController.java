@@ -83,7 +83,7 @@ public class InspectionReportController {
 			        new TypeReference<InspectionReport>() {});
 		        reports.setDocumentPath("uploads/" + filePath);
 		        inspectionReportRepository.save(reports);
-                reportService.saveInspectionDataInStore(report);
+                reportService.saveInspectionDataInStore(reports);
 
                 return ResponseEntity.ok("Submitted");
     }
