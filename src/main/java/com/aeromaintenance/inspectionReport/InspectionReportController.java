@@ -108,7 +108,7 @@ public class InspectionReportController {
 	     //SupplierModel supplierModel = supplierService.getSupplierById(supplierDto.getSupplierId());
 		 ResponseBean<Void> response=null;
 	     if (report == null) {
-	         response = new ResponseBean<>("404", "Supplier not found", null);
+	         response = new ResponseBean<>("404", "Report not found", null);
 	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	     }
 
@@ -116,13 +116,13 @@ public class InspectionReportController {
 
 	     if (rowsInserted >= 1) {
 	    	 if(report.getUserAction().equals("2")){
-	    		 response = new ResponseBean<>("200", "Supplier approved and moved to history successfully", null);
+	    		 response = new ResponseBean<>("200", "Report approved and moved to history successfully", null);
 	    	 }if(report.getUserAction().equals("3")){
-	    		response = new ResponseBean<>("200", "Supplier Edited  successfully", null);
+	    		response = new ResponseBean<>("200", "Report Edited  successfully", null);
 	    	 }	 	        
 	         return ResponseEntity.ok(response);
 	     }else if(rowsInserted == -1) {
-	    	response = new ResponseBean<>("409", "Supplier already exists in the database", null);
+	    	response = new ResponseBean<>("409", "Report already exists in the database", null);
 	         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 	     } else {
 	    	 response= new ResponseBean<>("500", "Failed ", null);

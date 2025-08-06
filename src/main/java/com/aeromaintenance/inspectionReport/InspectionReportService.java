@@ -160,7 +160,7 @@ public class InspectionReportService {
         	String supplierCertObservation = (String) row[11];	
         	String fullTraceabilityObservation = (String) row[12];
             String batchNumberObservation = (String) row[13];
-            String dateOfManufacturingObservation = (String) row[14];
+            LocalDate dateOfManufacturingObservation = ((java.sql.Date) row[14]).toLocalDate();
             String selfLifeObservation = (String) row[15];
             String tdsObservation = (String) row[16];
             String materialConditionObservation = (String) row[17];
@@ -174,7 +174,7 @@ public class InspectionReportService {
         	String checkerUserName = (String) row[24];
         	//String checkerUserId = (String) row[25];
         	LocalDate checkerDate = row[25] != null ? ((java.sql.Date) row[25]).toLocalDate() : null;
-        	String dateOfExpiryObservation = (String) row[26];
+        	LocalDate dateOfExpiryObservation = ((java.sql.Date) row[26]).toLocalDate();
         	//String userRole = (String) row[28];
             result.add(new InspectionReportDto(id, partNumber, partDesc, purchaseOrderNo, supplierName, reportNo,
             		date, qty, qtyReceive,invoiceObservation, manufacturerCertObservation, supplierCertObservation, fullTraceabilityObservation,

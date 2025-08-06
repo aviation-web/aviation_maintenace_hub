@@ -14,7 +14,7 @@ public interface CAFormRepository extends JpaRepository<CAForm, Long>{
 	@Query("Select m.workOrderNo from WorkOrder m")
 	List<String> findAllWorkOrder();
 
-	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(m.description, m.partNumber, m.quantity, m.serialNumber) " +
+	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(m.description, m.partNumber, m.qty, m.snBn) " +
 		       "FROM WorkOrder m WHERE m.workOrderNo = :workOrderNo")
 	Optional<workOrderDetailDto> findDetailsByWorkOrder(@Param("workOrderNo") String workOrderNo);
 

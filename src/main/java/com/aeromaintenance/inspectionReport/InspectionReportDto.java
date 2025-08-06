@@ -44,9 +44,9 @@ public class InspectionReportDto {
 		
 		private String batchNumberObservation;
 		
-		private String dateOfManufacturingObservation;
+		private LocalDate dateOfManufacturingObservation;
 		
-		private String dateOfExpiryObservation;
+		private LocalDate dateOfExpiryObservation;
 		
 		private String selfLifeObservation;
 		
