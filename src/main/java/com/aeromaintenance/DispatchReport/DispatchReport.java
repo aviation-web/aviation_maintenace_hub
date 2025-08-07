@@ -34,9 +34,17 @@ public class DispatchReport {
     private String batchNo;
 
     private String challanNo;
+    private String challanDate;
+    private String challanRemark;
     private String invoiceNo;
+    private String invoiceDate;
+    private String invoiceRemark;
     private String caForm;
+    private String caFormDate;
+    private String caFormRemark;
     private String ewayBill;
+    private String ewayBillDate;
+    private String ewayBillRemark;
 
     private String storesInChargeName;
     private String storesInChargeSign;
