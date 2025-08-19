@@ -6,7 +6,7 @@ import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
 import java.util.List;
 
 public interface WorkOrderService {
-    WorkOrder createWorkOrder(WorkOrderDTO dto);
+    String createWorkOrder(WorkOrderDTO dto);
     Object getWorkOrderByNo(String workOrderNo);
     List<WorkOrder> getAllWorkOrders();
     WorkOrder updateWorkOrder(String workOrderNo, WorkOrderDTO dto);
@@ -15,6 +15,7 @@ public interface WorkOrderService {
     List<CustomerOrderHistoryDTO> getPendingWorkOrderHistory();
     CustomerOrderShortDTO getShortOrderBySrNo(String srNo);
 
+    public List<WorkOrder> getAllWorkOrdersWithDetails();
 
     // Fetch Pending Customer Orders (workorder = 0)
 //    public List<CustomerOrderHistoryDTO> getPendingWorkOrderHistory() {

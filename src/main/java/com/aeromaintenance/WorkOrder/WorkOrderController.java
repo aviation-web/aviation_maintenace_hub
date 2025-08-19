@@ -17,13 +17,13 @@ public class WorkOrderController {
     private WorkOrderService workOrderService;
 
     @PostMapping
-    public ResponseEntity<WorkOrder> createWorkOrder(@RequestBody WorkOrderDTO dto) {
+    public ResponseEntity<String> createWorkOrder(@RequestBody WorkOrderDTO dto) {
         return ResponseEntity.ok(workOrderService.createWorkOrder(dto));
     }
 
     @GetMapping
     public ResponseEntity<List<WorkOrder>> getAllWorkOrders() {
-        return ResponseEntity.ok(workOrderService.getAllWorkOrders());
+        return ResponseEntity.ok(workOrderService.getAllWorkOrdersWithDetails());
     }
 
     @GetMapping("/{workOrderNo}")

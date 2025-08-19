@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,6 +39,9 @@ public class InspectionReportController {
 	
 	@Autowired
     private InspectionReportRepository inspectionReportRepository;
+	
+	@Value("${inspection.report.upload-dir}")
+	private String uploadDir;
 	
 	@GetMapping("/partNo")
     public ResponseEntity<List<PartDetailsDTO>> getAllPartNo() {
@@ -66,13 +70,13 @@ public class InspectionReportController {
     	    @RequestParam("report") String report) throws IOException {
 		// Save the file
 				SecureRandom secureRandom = new SecureRandom();
-			    long orderNumber = Math.abs(secureRandom.nextLong());
-		        String uploadDir = "D:/InspectionReports/uploads/" + orderNumber + "/";
-		        Path uploadPath = Paths.get(uploadDir);
-		        Files.createDirectories(uploadPath);
-		        String fileName = file.getOriginalFilename();
-		        Path filePath = uploadPath.resolve(fileName);
-		        //Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+				long orderNumber = System.currentTimeMillis();
+		        //String uploadDir = "D:/InspectionReports/uploads/" + orderNumber + "/";
+			    Path basePath = Paths.get(System.getProperty("user.home")).resolve(uploadDir);
+			    Path uploadPath = basePath.resolve(String.valueOf(orderNumber));
+			    Files.createDirectories(uploadPath);
+			    String fileName = file.getOriginalFilename();
+			    Path filePath = uploadPath.resolve(fileName);
 		        try (InputStream is = file.getInputStream()) {
 		            Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
 		        }

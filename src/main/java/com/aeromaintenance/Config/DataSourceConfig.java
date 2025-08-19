@@ -24,13 +24,17 @@ public class DataSourceConfig {
     @Bean
     @ConfigurationProperties("db.mumbai")
     public DataSource mumbaiDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+        		.driverClassName("com.mysql.cj.jdbc.Driver")
+        		.build();
     }
 
     @Bean
     @ConfigurationProperties("db.delhi")
     public DataSource delhiDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+        		.driverClassName("com.mysql.cj.jdbc.Driver")
+        		.build();
     }
 
     @Bean
@@ -58,6 +62,7 @@ public class DataSourceConfig {
                 .persistenceUnit("mumbai")
                 .properties(Map.of(
                         "hibernate.hbm2ddl.auto", "update",
+                        "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect",
                         "hibernate.physical_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy",
                         "hibernate.implicit_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
                 ))
@@ -74,6 +79,7 @@ public class DataSourceConfig {
                 .persistenceUnit("delhi")
                 .properties(Map.of(
                         "hibernate.hbm2ddl.auto", "update",
+                        "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect",
                         "hibernate.physical_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy",
                         "hibernate.implicit_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
                 ))

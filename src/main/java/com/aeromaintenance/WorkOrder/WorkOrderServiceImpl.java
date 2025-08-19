@@ -1,20 +1,29 @@
 package com.aeromaintenance.WorkOrder;
 
+import com.aeromaintenance.MaterialRequisition.MaterialRequisition;
+import com.aeromaintenance.WorkOrder.WorkOrderDTO.WorkOrderStepDTO;
 import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 import com.aeromaintenance.customerOrder.CustomerOrderRepositoryCustom;
 import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+
 public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Autowired
@@ -30,7 +39,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Transactional
     @Override
-    public WorkOrder createWorkOrder(WorkOrderDTO dto) {
+    public String createWorkOrder(WorkOrderDTO dto) {
         WorkOrder entity = mapToEntity(dto);
 
         //  Custom formatted work order number like "AMC0001"
@@ -45,7 +54,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
                     .executeUpdate();
         }
 
-        return savedOrder;
+        return "WorkOrder Saved Successfully";
     }
 
     @Override
@@ -55,8 +64,18 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public WorkOrder getWorkOrderByNo(String workOrderNo) {
-        return repository.findByWorkOrderNo(workOrderNo)
-                .orElseThrow(() -> new RuntimeException("WorkOrder not found"));
+    	// First fetch WorkOrder with steps
+        WorkOrder workOrder = repository.findWithStepsByWorkOrderNo(workOrderNo)
+                .orElseThrow(() -> new RuntimeException("WorkOrder not found: " + workOrderNo));
+
+        // Then fetch the materials for the same WorkOrder
+        WorkOrder workOrderWithMaterials = repository.findWithMaterialsByWorkOrderNo(workOrderNo)
+                .orElseThrow(() -> new RuntimeException("WorkOrder not found: " + workOrderNo));
+
+        // Merge material requisitions into the original entity
+        workOrder.setMaterialRequisitions(workOrderWithMaterials.getMaterialRequisitions());
+
+        return workOrder;
     }
 
 
@@ -207,4 +226,30 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return String.format("AMC%04d", nextNumber); // e.g., AMC0046
     }
 
+    
+
+    public List<WorkOrder> getAllWorkOrdersWithDetails() {
+    	// First query: WorkOrders + Steps
+        List<WorkOrder> workOrders = repository.findAllWithWorkOrderSteps();
+
+        // Second query: WorkOrders + Material Requisitions
+        List<WorkOrder> workOrdersWithMaterials = repository.findAllWithMaterialRequisitions();
+
+        // Merge MaterialRequisitions into the first list
+        Map<String, List<MaterialRequisitionNew>> materialMap = workOrdersWithMaterials.stream()
+            .collect(Collectors.toMap(
+                WorkOrder::getWorkOrderNo,
+                WorkOrder::getMaterialRequisitions
+            ));
+
+        workOrders.forEach(wo -> 
+            wo.setMaterialRequisitions(
+                materialMap.getOrDefault(wo.getWorkOrderNo(), List.of())
+            )
+        );
+
+        return workOrders; // Fully initialized entities
+    }
+
+    
 }

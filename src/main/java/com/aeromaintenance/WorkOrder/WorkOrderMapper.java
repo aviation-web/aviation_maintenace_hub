@@ -2,6 +2,10 @@ package com.aeromaintenance.WorkOrder;
 
 import org.springframework.stereotype.Component;
 
+import com.aeromaintenance.WorkOrder.WorkOrderDTO.MaterialRequisitionDTO;
+import com.aeromaintenance.WorkOrder.WorkOrderDTO.WorkOrderStepDTO;
+
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,7 +36,7 @@ public class WorkOrderMapper {
 
         // Steps
         if (entity1.getWorkOrderSteps() != null) {
-            dto.setWorkOrderSteps(entity1.getWorkOrderSteps().stream().map(step -> {
+            dto.setWorkOrderSteps((Set<WorkOrderStepDTO>) entity1.getWorkOrderSteps().stream().map(step -> {
                 WorkOrderDTO.WorkOrderStepDTO s = new WorkOrderDTO.WorkOrderStepDTO();
                 s.setStepNo(step.getStepNo());
                 s.setDetailOfWorkDone(step.getDetailOfWorkDone());
@@ -44,7 +48,7 @@ public class WorkOrderMapper {
 
         // Material Requisitions
         if (entity1.getMaterialRequisitions() != null) {
-            dto.setMaterialRequisitions(entity1.getMaterialRequisitions().stream().map(mat -> {
+            dto.setMaterialRequisitions((Set<MaterialRequisitionDTO>) entity1.getMaterialRequisitions().stream().map(mat -> {
                 WorkOrderDTO.MaterialRequisitionDTO m = new WorkOrderDTO.MaterialRequisitionDTO();
                 m.setSrNo(mat.getSrNo());
                 m.setDescription(mat.getDescription());

@@ -55,11 +55,11 @@ public class AppConfig {
 	                registry.addMapping("/**")
 	                        .allowedOrigins(
 	                        	"http://localhost:5173",
-	                        	"http://43.204.71.108:5173",
-	                            "http://43.204.71.108",
-	                            "http://43.204.71.108:8082",
-	                            "http://43.204.71.108:8080",
-	                            "http://43.204.71.108:3000",  // React dev
+	                        	"http://13.234.95.189:5173",
+	                            "http://13.234.95.189",
+	                            "http://13.234.95.189:8082",
+	                            "http://13.234.95.189:8080",
+	                            "http://13.234.95.189:3000",  // React dev
 	                            "http://localhost:3000",     // Local dev
 	                            "http://localhost:8089"     // Other dev
 	                        )

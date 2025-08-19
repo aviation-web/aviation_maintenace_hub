@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -46,11 +47,11 @@ public class WorkOrder {
 
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workOrder", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkOrderStep> workOrderSteps = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workOrder",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaterialRequisitionNew> materialRequisitions = new ArrayList<>();
 
 

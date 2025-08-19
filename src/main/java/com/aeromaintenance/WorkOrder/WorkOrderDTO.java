@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class WorkOrderDTO {
@@ -27,8 +28,8 @@ public class WorkOrderDTO {
     private LocalDate workshopManagerSignDate;
     private String snBn;
 
-    private List<WorkOrderStepDTO> workOrderSteps;
-    private List<MaterialRequisitionDTO> materialRequisitions;
+    private Set<WorkOrderStepDTO> workOrderSteps;
+    private Set<MaterialRequisitionDTO> materialRequisitions;
 
     public void setWorkOrderNo(String workOrderNo) {
     }

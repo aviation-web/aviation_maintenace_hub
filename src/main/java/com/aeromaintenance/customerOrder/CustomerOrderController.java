@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +45,9 @@ public class CustomerOrderController {
 	
 	@Autowired
 	private CustomerOrderService orderService;
+	
+	@Value("${customer.order.upload-dir}")
+	private String uploadDir;
 	
 	@PostMapping("/addCustomerOrder")
 	public ResponseEntity<ResponseBean<Void>> saveBatch(@RequestBody List<CustomerOrderDto> orderDto) {
@@ -125,12 +129,12 @@ public class CustomerOrderController {
 	    // Save the file
 		SecureRandom secureRandom = new SecureRandom();
 	    long orderNumber = Math.abs(secureRandom.nextLong());
-        String uploadDir = "D:/CustomerOrders/uploads/" + orderNumber + "/";
-        Path uploadPath = Paths.get(uploadDir);
-        Files.createDirectories(uploadPath);
-        String fileName = file.getOriginalFilename();
-        Path filePath = uploadPath.resolve(fileName);
-        //Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+       // String uploadDir = "D:/CustomerOrders/uploads/" + orderNumber + "/";
+	    Path basePath = Paths.get(System.getProperty("user.home")).resolve(uploadDir);
+	    Path uploadPath = basePath.resolve(String.valueOf(orderNumber));
+	    Files.createDirectories(uploadPath);
+	    String fileName = file.getOriginalFilename();
+	    Path filePath = uploadPath.resolve(fileName);
         try (InputStream is = file.getInputStream()) {
             Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
         }
