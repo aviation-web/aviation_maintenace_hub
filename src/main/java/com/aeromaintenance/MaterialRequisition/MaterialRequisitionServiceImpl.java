@@ -30,6 +30,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
             entity.setPartNumber(dto.getPartNumber());
             entity.setDescription(dto.getDescription());
             entity.setRequestedQty(dto.getRequestedQty());
+            entity.setIssueQty(dto.getIssueQty());
             entity.setIssuedQty(dto.getIssuedQty());
             entity.setBatchLotNo(dto.getBatchLotNo());
             repository.save(entity);
@@ -64,6 +65,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 entity.getPartNumber(),
                 entity.getDescription(),
                 entity.getRequestedQty(),
+                entity.getIssueQty(),
                 entity.getIssuedQty(),
                 entity.getBatchLotNo(),
                 entity.getUnitOfMeasurement()
@@ -79,6 +81,7 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 dto.getPartNumber(),
                 dto.getDescription(),
                 dto.getRequestedQty(),
+                dto.getIssueQty(),
                 dto.getIssuedQty(),
                 dto.getBatchLotNo(),
                 dto.getUnitOfMeasurement()
