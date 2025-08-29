@@ -78,7 +78,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return workOrder;
     }
 
-
+    @Transactional
     @Override
     public WorkOrder updateWorkOrder(String workOrderNo, WorkOrderDTO dto) {
         WorkOrder existing = repository.findByWorkOrderNo(workOrderNo)
@@ -95,7 +95,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         existing.setRevNo(dto.getRevNo());
         existing.setWorkshopManagerRemarks(dto.getWorkshopManagerRemarks());
         existing.setIssuedBy(dto.getIssuedBy());
-        existing.setCertifyingstaffhours(dto.getCertifyingstaffhours());
+        existing.setCertifyingStaffhours(dto.getCertifyingStaffhours());
         existing.setTechnician(dto.getTechnician());
         existing.setTotalManHour(dto.getTotalManHour());
         existing.setActionTaken(dto.getActionTaken());
@@ -160,7 +160,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         entity.setRevNo(dto.getRevNo());
         entity.setWorkshopManagerRemarks(dto.getWorkshopManagerRemarks());
         entity.setIssuedBy(dto.getIssuedBy());
-        entity.setCertifyingstaffhours(dto.getCertifyingstaffhours());
+        entity.setCertifyingStaffhours(dto.getCertifyingStaffhours());
         entity.setTechnician(dto.getTechnician());
         entity.setTotalManHour(dto.getTotalManHour());
         entity.setActionTaken(dto.getActionTaken());
