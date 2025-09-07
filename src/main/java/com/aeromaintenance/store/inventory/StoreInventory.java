@@ -15,25 +15,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StoreInventory {
 	
-	private Long productId;
+	private Long id;
+	
+	private String partNum;
 
-    private String productName;
+    private String description;
 
-    private String productDescription;
+    private Date dom;
 
-    private String unitOfMeasurement;
+    private Date doe;
 
-    private String oem;
+    private int quantity;
 
-    private String nha;
-
-    private int cmmReferenceNumber;
-
-    private String materialClassification;
-
-    private Date registrationDate = new Date();
-
-    private String registeredBy;
+    private Date dateOfRecipet;
 
     private String location;
 

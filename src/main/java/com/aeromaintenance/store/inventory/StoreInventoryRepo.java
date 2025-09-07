@@ -13,7 +13,7 @@ import com.aeromaintenance.product.Product;
 public interface StoreInventoryRepo extends JpaRepository <Product, Long>{
 	
 	//@Procedure(procedureName = "get_store_inventory_with_location")
-    @Query(value = "CALL get_store_inventory_with_location()", nativeQuery = true)
+    @Query(value = "CALL fetch_store_inventory_with_location()", nativeQuery = true)
 	List<StoreInventoryProjection> getInventoryWithLocation();
 
 }

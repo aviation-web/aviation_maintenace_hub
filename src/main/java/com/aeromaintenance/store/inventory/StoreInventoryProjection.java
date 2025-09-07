@@ -1,40 +1,33 @@
 package com.aeromaintenance.store.inventory;
 
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Value;
 
 public interface StoreInventoryProjection {
 	
-	@Value("#{target.product_id}")
-    Long getProductId();
+	@Value("#{target.id}")
+    Long getId();
 
-    @Value("#{target.cmm_reference_number}")
-    Integer getCmmReferenceNumber();
+    @Value("#{target.part_num}")
+    String getPartNum();
 
-    @Value("#{target.material_classification}")
-    String getMaterialClassification();
+    @Value("#{target.description}")
+    String getDescription();
 
-    @Value("#{target.nha}")
-    String getNha();
+    @Value("#{target.dom}")
+    Date getDom();
 
-    @Value("#{target.oem}")
-    String getOem();
+    @Value("#{target.doe}")
+    Date getDoe();
 
-    @Value("#{target.product_description}")
-    String getProductDescription();
+    @Value("#{target.date_of_receipt}")
+    Date getDateOfRecipet();
 
-    @Value("#{target.product_name}")
-    String getProductName();
+    @Value("#{target.quantity}")
+    int getQuantity();
 
-    @Value("#{target.registered_by}")
-    String getRegisteredBy();
-
-    @Value("#{target.registration_date}")
-    java.sql.Date getRegistrationDate();
-
-    @Value("#{target.unit_of_measurement}")
-    String getUnitOfMeasurement();
-
-    // Extra column from stored proc
+    
     @Value("#{target.location}")
     String getLocation();
 

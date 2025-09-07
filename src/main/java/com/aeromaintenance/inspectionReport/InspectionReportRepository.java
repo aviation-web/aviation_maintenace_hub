@@ -19,8 +19,8 @@ public interface InspectionReportRepository extends JpaRepository<InspectionRepo
 		       "FROM MaterialReceiptNote m WHERE m.partNumber = :partNumber")
 	Optional<PartDetailsDTO>findDetailsByPartNumber(@Param("partNumber") String partNumber);
 
-	@Query("SELECT i FROM InspectionReport i WHERE i.userAction = '1'")
-	List<InspectionReport> getAllPendingList();
+	@Query("SELECT i FROM InspectionReport i WHERE i.userAction = '1' AND makerUserName <> :makerUserName")
+	List<InspectionReport> getAllPendingList(@Param("makerUserName")String makerUserName);
 	
 	@Modifying
 	@Query("UPDATE InspectionReport i SET i.userAction = :userAction, i.checkerUserName = :checkerUserName WHERE i.inspectionReportId = :inspectionReportId")

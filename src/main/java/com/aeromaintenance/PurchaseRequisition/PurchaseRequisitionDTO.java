@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class PurchaseRequisitionDTO {
 
     private Long id;
@@ -24,7 +26,7 @@ public class PurchaseRequisitionDTO {
     private String unitOfMeasurement;
     private LocalDate requiredDate;
     private String remark;
-    private String batchnumber;
+    private String batchNumber;
 
     // Convert DTO to Entity
     public PurchaseRequisition toEntity() {
@@ -38,7 +40,7 @@ public class PurchaseRequisitionDTO {
         entity.setUnitOfMeasurement(this.unitOfMeasurement);
         entity.setRequiredDate(this.requiredDate);
         entity.setRemark(this.remark);
-        entity.setBatchNumber(this.batchnumber);
+        entity.setBatchNumber(this.batchNumber);
         return entity;
     }
 
@@ -54,7 +56,7 @@ public class PurchaseRequisitionDTO {
                 .unitOfMeasurement(entity.getUnitOfMeasurement())
                 .requiredDate(entity.getRequiredDate())
                 .remark(entity.getRemark())
-                .batchnumber(entity.getBatchNumber())
+                .batchNumber(entity.getBatchNumber())
                 .build();
     }
     
