@@ -18,6 +18,7 @@ public class MaterialRequisitionDTO {
     private Long partNumber;
     private String description;
     private Integer requestedQty;
+    private Integer issueQty;
     private Integer issuedQty;
     private String batchLotNo;
     private String unitOfMeasurement;

@@ -45,6 +45,9 @@ public class MaterialRequisition {
     @Column(name = "requested_qty", nullable = false)
     private Integer requestedQty;
 
+    @Column(name= "issue_qty", nullable = false)
+    private Integer issueQty;
+
     @Column(name = "issued_qty", nullable = false)
     private Integer issuedQty;
 
