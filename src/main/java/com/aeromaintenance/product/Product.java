@@ -21,6 +21,9 @@ public class Product {
     private String productName;
 
     @Column(nullable = false, length = 255)
+    private String alternateProduct;
+
+    @Column(nullable = false, length = 255)
     private String productDescription;
 
     @Column(nullable = false, length = 6)

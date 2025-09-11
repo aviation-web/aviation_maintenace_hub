@@ -49,6 +49,7 @@ public class ProductService {
                 existingProduct.setRegistrationDate(updatedProduct.getRegistrationDate());
                 existingProduct.setMaterialClassification(updatedProduct.getMaterialClassification());
                 existingProduct.setRegisteredBy(updatedProduct.getRegisteredBy());
+                existingProduct.setAlternateProduct(updatedProduct.getAlternateProduct());
                 return productRepository.save(existingProduct);
             })
             .orElse(null);

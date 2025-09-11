@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT new com.common.ProductDTO(p.productName, p.productDescription) FROM Product p")
+    @Query("SELECT new com.common.ProductDTO(p.productName, p.productDescription, p.alternateProduct, p.unitOfMeasurement) FROM Product p")
     List<ProductDTO> findAllProductNameAndDescriptionDTO();
 
     @Query("SELECT p FROM Product p WHERE p.flag = 1")
