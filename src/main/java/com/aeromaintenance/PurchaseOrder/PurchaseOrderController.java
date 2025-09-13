@@ -31,7 +31,7 @@ public class PurchaseOrderController {
             System.out.println("BatchNumber:- " + request.getBatchNumber());
             System.out.println("Fetched Purchase Requisition Records for BatchNo: " + request.getBatchNumber());
             for (PurchaseRequisition req : requisitions) {
-                System.out.println("SrNo: " + req.getSrNo() +
+                System.out.println("SrNo: " + req.getId() +
                                    ", CurrentStock: " + req.getCurrentStock() +
                                    ", PartNumber: " + req.getPartNumber() +
                                    ", Description: " + req.getDescription());
@@ -42,7 +42,7 @@ public class PurchaseOrderController {
 
 	        for (PurchaseRequisition req : requisitions) {
 	            PurchaseOrder order = new PurchaseOrder();
-	            order.setSrNo(req.getSrNo());
+	            order.setSrNo(Math.toIntExact(req.getId()));
 	            order.setCurrentStoke(req.getCurrentStock());
 	            order.setPartNumber(req.getPartNumber());
 	            order.setDescription(req.getDescription());

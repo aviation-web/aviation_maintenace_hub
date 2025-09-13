@@ -18,7 +18,6 @@ import java.time.LocalDate;
 public class PurchaseRequisitionDTO {
 
     private Long id;
-    private Integer srNo;
     private String partNumber;
     private String description;
     private Integer currentStock;
@@ -32,7 +31,6 @@ public class PurchaseRequisitionDTO {
     public PurchaseRequisition toEntity() {
         PurchaseRequisition entity = new PurchaseRequisition();
         entity.setId(this.id);
-        entity.setSrNo(this.srNo);
         entity.setPartNumber(this.partNumber);
         entity.setDescription(this.description);
         entity.setCurrentStock(this.currentStock);
@@ -48,7 +46,6 @@ public class PurchaseRequisitionDTO {
     public static PurchaseRequisitionDTO fromEntity(PurchaseRequisition entity) {
         return PurchaseRequisitionDTO.builder()
                 .id(entity.getId())
-                .srNo(entity.getSrNo())
                 .partNumber(entity.getPartNumber())
                 .description(entity.getDescription())
                 .currentStock(entity.getCurrentStock())

@@ -195,7 +195,6 @@ public class PurchaseRequisitionService {
 
             for (PurchaseRequisition pr : requisitions) {
                 table.addCell(pr.getId().toString());
-                table.addCell(pr.getSrNo().toString());
                 table.addCell(pr.getPartNumber());
                 table.addCell(pr.getDescription());
                 table.addCell(pr.getCurrentStock().toString());
@@ -258,7 +257,6 @@ public class PurchaseRequisitionService {
 
             for (PurchaseRequisition pr : requisitions) {
                 table.addCell(pr.getId().toString());
-                table.addCell(pr.getSrNo().toString());
                 table.addCell(pr.getPartNumber());
                 table.addCell(pr.getDescription());
                 table.addCell(pr.getCurrentStock().toString());
@@ -311,7 +309,6 @@ public class PurchaseRequisitionService {
 
             for (PurchaseRequisition pr : requisitions) {
                 writer.write(pr.getId() + "," +
-                        pr.getSrNo() + "," +
                         escapeCSV(pr.getPartNumber()) + "," +
                         escapeCSV(pr.getDescription()) + "," +
                         pr.getCurrentStock() + "," +
@@ -354,7 +351,6 @@ public class PurchaseRequisitionService {
 
             for (PurchaseRequisition pr : requisitions) {
                 writer.write(pr.getId() + "," +
-                        pr.getSrNo() + "," +
                         escapeCSV(pr.getPartNumber()) + "," +
                         escapeCSV(pr.getDescription()) + "," +
                         pr.getCurrentStock() + "," +

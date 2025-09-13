@@ -26,9 +26,6 @@ public class PurchaseRequisition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sr_no", nullable = false, unique = true)
-    private Integer srNo;
-
     @Column(name = "part_number", nullable = false)
     private String partNumber;
 
