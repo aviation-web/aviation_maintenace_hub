@@ -55,12 +55,10 @@ public class SupplierDto {
    // @Column(name = "email_id")
     private String email;
 
-    @NotBlank(message = "Quality manager name cannot be blank")
     @Size(max = 255, message = "Quality manager name cannot exceed 255 characters")
    // @Column(name = "qm_name")
     private String qualityManagerName;
-    
-    @NotBlank(message = "Quality manager phone number cannot be blank")
+
     @Size(max = 15, message = "Quality manager phone number cannot exceed 15 characters")
   //  @Column(name = "qm_phone_number")
     private String qualityManagerPhoneNumber;
@@ -181,7 +179,10 @@ public class SupplierDto {
     @Size(max = 255, message = "Statistical methods used cannot exceed 255 characters")
     //@Column(name = "statistical_methods_used")
     private String statisMethod;
-    
+
+    @Size(max = 50, message = "Payment Terms cannot exceed 50 characters")
+    // @Column(name = "payment_terms")
+    private String paymentTerms;
 
     @Size(max = 255, message = "Customer documents control cannot exceed 255 characters")
     //@Column(name = "customer_documents_control")

@@ -2,6 +2,7 @@ package com.aeromaintenance.supplier;
 
 import java.util.List;
 
+import com.common.SupplierNamePaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -158,7 +159,10 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getStatisMethod() != null) {
 	            updateExisting.setStatisMethod(supplierModel.getStatisMethod());
 	        }
-	        if (supplierModel.getSuppliedDocument() != null) {
+            if (supplierModel.getPaymentTerms() != null) {
+                updateExisting.setPaymentTerms(supplierModel.getPaymentTerms());
+            }
+            if (supplierModel.getSuppliedDocument() != null) {
 	            updateExisting.setSuppliedDocument(supplierModel.getSuppliedDocument());
 	        }
 	        if (supplierModel.getIncludeMethod()!= null) {
@@ -265,8 +269,8 @@ public class SupplierServiceImpl implements SupplierService {
 		 return 0;
 	 }
 
-	public List<String> getAllSupplierNames() {
-		return supplierRepository.findAllSupplierNames();
+	public List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms() {
+		return supplierRepository.findSupplierNamesAndPaymentTerms();
 	}
 }
 

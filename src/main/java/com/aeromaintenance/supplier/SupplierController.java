@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.common.SupplierNamePaymentDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -159,8 +160,9 @@ public class SupplierController {
         }
     }
 
-	@GetMapping("/suppliernames")
-	public ResponseEntity<List<String>> getSupplierNames() {
-		return ResponseEntity.ok(supplierService.getAllSupplierNames());
-	}
+    @GetMapping("/supplierNamePayment")
+    public ResponseEntity<List<SupplierNamePaymentDTO>> getSupplierNamesWithPaymentTerms() {
+        List<SupplierNamePaymentDTO> result = supplierService.findSupplierNamesAndPaymentTerms();
+        return ResponseEntity.ok(result);
+    }
 }

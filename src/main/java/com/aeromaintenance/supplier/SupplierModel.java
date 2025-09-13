@@ -144,7 +144,9 @@ public class SupplierModel {
     
     @Column(name = "statistical_methods_used")
     private String statisMethod;
-    
+
+    @Column(name = "payment_terms")
+    private String paymentTerms;
 
     @Column(name = "customer_documents_control")
     private String suppliedDocument;
