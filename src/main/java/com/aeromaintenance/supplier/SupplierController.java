@@ -160,6 +160,7 @@ public class SupplierController {
         }
     }
 
+
     @GetMapping("/supplierNamePayment")
     public ResponseEntity<List<SupplierNamePaymentDTO>> getSupplierNamesWithPaymentTerms() {
         List<SupplierNamePaymentDTO> result = supplierService.findSupplierNamesAndPaymentTerms();
