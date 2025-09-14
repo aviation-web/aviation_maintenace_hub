@@ -26,6 +26,7 @@ public class PurchaseRequisitionDTO {
     private LocalDate requiredDate;
     private String remark;
     private String batchNumber;
+    private String status;
 
     // Convert DTO to Entity
     public PurchaseRequisition toEntity() {
@@ -39,6 +40,7 @@ public class PurchaseRequisitionDTO {
         entity.setRequiredDate(this.requiredDate);
         entity.setRemark(this.remark);
         entity.setBatchNumber(this.batchNumber);
+        entity.setStatus(this.status);
         return entity;
     }
 
@@ -54,6 +56,7 @@ public class PurchaseRequisitionDTO {
                 .requiredDate(entity.getRequiredDate())
                 .remark(entity.getRemark())
                 .batchNumber(entity.getBatchNumber())
+                .status(entity.getStatus())
                 .build();
     }
     

@@ -59,10 +59,14 @@ public class PurchaseRequisition {
     @Column(name = "pr_flag")
     private String prflag = "Pending";
 
+    @Column(name = "status", nullable = false)
+    private String status = "Open";
+
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
+        this.status = "Open";
     }
 
     @PreUpdate
