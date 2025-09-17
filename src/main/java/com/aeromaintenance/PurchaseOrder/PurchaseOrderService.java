@@ -125,6 +125,9 @@ public class PurchaseOrderService {
             if (updatedPurchaseOrderDTO.getPaymentTerms() != null) {
                 purchaseOrder.setPaymentTerms(updatedPurchaseOrderDTO.getPaymentTerms());
             }
+            if (updatedPurchaseOrderDTO.getStatus() != null){
+                purchaseOrder.setStatus(updatedPurchaseOrderDTO.getStatus());
+            }
 
             // Line item details
             if (updatedPurchaseOrderDTO.getPartNumber() != null) {
