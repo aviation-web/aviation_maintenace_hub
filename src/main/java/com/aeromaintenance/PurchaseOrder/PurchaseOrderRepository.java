@@ -12,8 +12,11 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 
     // You can add custom query methods if needed
     // Example: List<PurchaseOrder> findByPoNumber(String poNumber);
-	
-	
+
+    @Query("SELECT p.poNumber FROM PurchaseOrder p WHERE p.poNumber LIKE CONCAT('PO-', :year, '%') ORDER BY p.id DESC")
+    List<String> findLastPoNumberForYear(@Param("year") String year);
+
+
 	@Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.poNumber) from PurchaseOrder p")
 	List<PurchaseOrderDTO> getAllPurchaseOrderNo();
 
