@@ -33,6 +33,9 @@ public class PurchaseOrder {
     @NotNull(message = "PO Date is required")
     private LocalDate poDate;
 
+    @Column(name = "status", nullable = false)
+    private String status = "Open";
+
     private String ourReference;
     private String yourReference;
     private String delivery;
