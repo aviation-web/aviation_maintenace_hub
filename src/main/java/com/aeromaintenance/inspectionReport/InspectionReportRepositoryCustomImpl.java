@@ -104,4 +104,52 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 		 System.out.println(result);
 		 return result;
 	 }
+
+	@Override
+	public boolean checkPartNoIsPresentInStore(String partNumber) {
+		Number count = (Number) entityManager.createNativeQuery(
+	            "SELECT COUNT(*) FROM store_inventory WHERE part_number = ?")
+	            .setParameter(1, partNumber)
+	            .getSingleResult();
+	    System.out.println("count is :-" + count);	
+	    return count.intValue() > 0;
+	}
+
+	@Override
+	public int getCurrentStokeFromInventory(String partNumber) {
+		int currentStoke = (int) entityManager.createNativeQuery(
+	            "SELECT quantity FROM store_inventory WHERE part_number = ?")
+	            .setParameter(1, partNumber)
+	            .getSingleResult();
+	    System.out.println("count is :-" + currentStoke);	
+	    
+			return currentStoke;
+	}
+
+	@Override
+	public int UpdateCurrentQuantity(String partNumber, int currentStoke) {
+			 int result=0;
+			 try {
+				  Query query = entityManager.createNativeQuery("UPDATE store_inventory SET quantity = ? WHERE part_number =?");
+				  query.setParameter(1, currentStoke);
+				 query.setParameter(2, partNumber);
+				 result=query.executeUpdate();
+			}catch(Exception e) {
+				 e.printStackTrace();
+			 }
+			 return result;
+		 }
+
+	@Override
+	public int insertInStoreInventory(InspectionReport reports) {
+		Query query = entityManager.createNativeQuery(" INSERT INTO store_inventory (part_number, part_description, quantity"+
+			    " ) VALUES (?, ?, ? )"	   
+			);
+		    
+		    query.setParameter(1, reports.getPartNumber());
+		    query.setParameter(2, reports.getPartDesc());
+		    query.setParameter(3, reports.getQtyReceive());
+		    int result =  query.executeUpdate();
+		     return result;
+	}
 	 }

@@ -166,4 +166,9 @@ public class SupplierController {
         List<SupplierNamePaymentDTO> result = supplierService.findSupplierNamesAndPaymentTerms();
         return ResponseEntity.ok(result);
     }
+    
+    @GetMapping("/suppliernames")
+	public ResponseEntity<List<String>> getSupplierNames() {
+		return ResponseEntity.ok(supplierService.getAllSupplierNames());
+	}
 }

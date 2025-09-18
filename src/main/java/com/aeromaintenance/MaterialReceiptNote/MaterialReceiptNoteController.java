@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.aeromaintenance.PurchaseOrder.PurchaseOrder;
+import com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO;
+
 import java.util.List;
 
 @RestController
@@ -49,4 +52,7 @@ public class MaterialReceiptNoteController {
         mrnService.deleteMRN(id);
         return ResponseEntity.ok().build();
     }
+    
+   
+                
 }

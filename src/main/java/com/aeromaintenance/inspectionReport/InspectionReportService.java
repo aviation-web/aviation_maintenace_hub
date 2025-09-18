@@ -4,9 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.aeromaintenance.storeAcceptance.StoreAcc;
 import com.aeromaintenance.storeAcceptance.StoreAccRepository;
+import com.common.ResponseBean;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,31 +28,33 @@ public class InspectionReportService {
 	private StoreAccRepository storeAccRepository;
 
 	public int approveReport(InspectionReportDto report) {
+		 int result=0;
 		try {
-			 int result=0;
-			 int count=0;
-			 if(report.getUserAction().equalsIgnoreCase("2")) {
-				 System.out.println(report.getInspectionReportId());
+			
+			 //int count=0;
+			// if(report.getUserAction().equalsIgnoreCase("2")) {
+				 //System.out.println(report.getInspectionReportId());
 				 if(!inspectionReportRepositoryCustom.existsByReportId(report.getInspectionReportId())) {
 					 result = inspectionReportRepositoryCustom.insertReportForm(report);
-					  if(result>0) {
-						 count=inspectionReportRepositoryCustom.updateReportTemp(report.getUserAction(), report.getInspectionReportId());
-						 }
+//					  if(result>0) {
+//						 count=inspectionReportRepositoryCustom.updateReportTemp(report.getUserAction(), report.getInspectionReportId());
+//						 }
 				 }else {
 					 //duplicate records
 					 System.out.println("Allredy ReportId present in the database");	
-				return -1;	 
+				result= -1;	 
 				 }
-			}else {  //if(report.getUserAction().equals("3")) {
-				
-				result =inspectionReportRepositoryCustom.updateEditReportTemp(report.getUserAction(), report.getInspectionReportId());
-				 }
-			 return result;
+//			}else {  //if(report.getUserAction().equals("3")) {
+//				
+//				result =inspectionReportRepositoryCustom.updateEditReportTemp(report.getUserAction(), report.getInspectionReportId());
+//				 }
+			 
 			 
 		 }catch(Exception e) {
-			 e.printStackTrace();	 }
+			 e.printStackTrace();	 
+		}
 		 
-		 return 0;
+		return result;
 
 	}
 
@@ -136,8 +145,27 @@ public class InspectionReportService {
 	        if (updateReport.getUserRole() != null) {
 	            updateExisting.setUserRole(updateReport.getUserRole());
 	        }
-
-	        return inspectionReportRepository.save(updateExisting);
+	        InspectionReport reported=inspectionReportRepository.save(updateExisting);
+	        InspectionReportDto reportDto = new InspectionReportDto();
+	        BeanUtils.copyProperties(updateExisting, reportDto);
+	        int rowsInserted = inspectionReportRepositoryCustom.insertReportForm(reportDto);
+	        if(rowsInserted >0) {
+	        saveInspectionDataInStore(updateExisting);
+	        }
+//	        ResponseBean<Void> response=null;
+//		     if (rowsInserted >= 1) {
+//		    	     reportService.saveInspectionDataInStore(reports);
+//		    		 response = new ResponseBean<>("200", "Report Submitted and moved to history successfully", null);	 	        
+//		         return ResponseEntity.status(HttpStatus.OK).body(response);
+//		     }else if(rowsInserted == -1) {
+//		    	response = new ResponseBean<>("409", "Report already exists in the database", null);
+//		         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+//		     } else {
+//		    	 response= new ResponseBean<>("500", "Failed ", null);
+//		         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//		     }
+	        //inspectionReportRepositoryCustom.insertReportForm(updateExisting);
+	        return reported;
 	    }).orElse(null); 
 	}
 
@@ -188,7 +216,28 @@ public class InspectionReportService {
 
 	public void saveInspectionDataInStore(InspectionReport dto) {
 		StoreAcc storeAcc = StoreAccMapper.fromInspectionReport(dto);
+		//int quantity = storeAccRepository.getReceiveQuantityByPartNO(dto.getPartNumber());
+		//storeAcc.setQuantity(storeAcc.getQuantity() + quantity);
 		storeAccRepository.save(storeAcc);
+	}
+
+	@Transactional
+	public void updateMrnNoStatus(String reportNo) {
+		
+		inspectionReportRepository.updateMrnNoStatus(reportNo);
+	}
+
+	public void updateInventoryCurrentStoke(InspectionReport reports) {
+		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber())){
+			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber());
+			int currentStoke = quantity + reports.getQtyReceive();
+			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber(),currentStoke);
+			
+		}else {
+			
+			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);
+			
+		}
 	}
 
 }

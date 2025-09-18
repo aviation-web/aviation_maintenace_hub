@@ -42,6 +42,25 @@ public class PurchaseOrderDTO {
     private String currency;
     private String forwarder;
 
-    // Getters and Setters
+    // Getters and Setter
+    
+    public PurchaseOrderDTO() { }
+    
+    public PurchaseOrderDTO(String description, Integer currentStoke, String unit) {
+        this.description = description;
+        this.currentStoke = currentStoke;
+        this.unit = unit;
+    }
+    
+    public PurchaseOrderDTO(String poNumber) {
+        this.poNumber = poNumber;
+        
+    }
+    
+    public PurchaseOrderDTO(String partNumber,String description) {
+        this.partNumber = partNumber;
+        this.description = description;
+        
+    }
 }
 

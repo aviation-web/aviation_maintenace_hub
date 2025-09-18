@@ -12,8 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartDetailsDTO {
-	public PartDetailsDTO(String partNumbers) {
+	public PartDetailsDTO(String mrnNo) {
+		this.reportNo = mrnNo;
+	}
+	
+	public PartDetailsDTO(String partNumbers,String partDescription) {
 		this.partNumber = partNumbers;
+		this.partDesc = partDescription;
 	}
 	private String partNumber;
 	private String partDesc;
@@ -22,14 +27,17 @@ public class PartDetailsDTO {
 	private String reportNo;
 	private LocalDate date;
 	private Integer qty;
+	private Integer qtyReceive;
+	
 	public PartDetailsDTO(String mrnNo, String supplierName, String orderNumber,
-            LocalDate receiptDate, String partDescription, Integer quantity) {
+            LocalDate receiptDate, String partDescription, Integer quantity, String qualityAcceptance) {
 			this.reportNo = mrnNo;
 			this.supplierName = supplierName;
 			this.purchaseOrderNo = orderNumber;
 			this.date = receiptDate;
 			this.partDesc = partDescription;
 			this.qty = quantity;
+			this.qtyReceive = Integer.valueOf(qualityAcceptance);
 }
 
 }

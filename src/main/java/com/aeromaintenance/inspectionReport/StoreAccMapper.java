@@ -21,7 +21,7 @@ public class StoreAccMapper {
             storeAcc.setDoe(Date.valueOf(dto.getDateOfExpiryObservation()));
         }
 
-        storeAcc.setQuantity(dto.getQty());
+        storeAcc.setQuantity(dto.getQtyReceive());
 
         if (dto.getDate() != null) {
             storeAcc.setDateOfRecipet(Date.valueOf(dto.getDate()));

@@ -21,4 +21,7 @@ public interface SupplierRepository  extends JpaRepository<SupplierModel, Long> 
     @Query("SELECT new com.common.SupplierNamePaymentDTO(s.supplierName, s.paymentTerms) " +
             "FROM SupplierModel s")
     List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms();
+    
+    @Query("SELECT s.supplierName FROM SupplierModel s")
+	List<String> findAllSupplierNames();
 }

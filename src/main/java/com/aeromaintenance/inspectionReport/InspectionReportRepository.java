@@ -12,11 +12,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InspectionReportRepository extends JpaRepository<InspectionReport, Long> {
 
-	@Query("Select m.partNumber from MaterialReceiptNote m")
-	List<String> findAllPartNumber();
+	@Query("Select m.mrnNo from MaterialReceiptNote m WHERE m.status = 'Open'")
+	List<String> findAllMrnNo();
 	
-	@Query("SELECT new com.aeromaintenance.inspectionReport.PartDetailsDTO(m.mrnNo, m.supplierName, m.orderNumber, m.receiptDate, m.partDescription, m.quantity) " +
-		       "FROM MaterialReceiptNote m WHERE m.partNumber = :partNumber")
+	@Query("Select m.partNumber from MaterialReceiptNote m WHERE m.mrnNo = :mrnNo")
+	List<String> findAllPartNumber(@Param("mrnNo") String mrnNo);
+	
+	@Query("SELECT new com.aeromaintenance.inspectionReport.PartDetailsDTO(m.mrnNo, m.supplierName, m.orderNumber, m.receiptDate, m.partDescription, m.quantity, m.qualityAcceptance) " +
+		       "FROM MaterialReceiptNote m WHERE trim(m.partNumber) = :partNumber")
 	Optional<PartDetailsDTO>findDetailsByPartNumber(@Param("partNumber") String partNumber);
 
 	@Query("SELECT i FROM InspectionReport i WHERE i.userAction = '1' AND makerUserName <> :makerUserName")
@@ -32,9 +35,9 @@ public interface InspectionReportRepository extends JpaRepository<InspectionRepo
 	int updateEditReportTemp(@Param("userAction")String userAction, @Param("checkerUserName")
 			String checkerUserName, @Param("inspectionReportId")Long inspectionReportId);
 
-	@Query("SELECT i FROM InspectionReport i WHERE i.userAction = '4'")
+	@Query("SELECT i FROM InspectionReport i")
 	List<InspectionReport> getAllEditReportList();
-
+	
 	/*
 	 * @Query(value = "SELECT * FROM inspection_report_history", nativeQuery = true)
 	 * List<InspectionReportDto> getAllViewReportList();
@@ -46,6 +49,9 @@ public interface InspectionReportRepository extends JpaRepository<InspectionRepo
     " FROM inspection_report_history", nativeQuery = true)
 	List<Object[]> getRawReportList();
 
+	@Modifying
+	@Query("UPDATE MaterialReceiptNote i SET i.status = 'Close' WHERE i.mrnNo = :mrnNo")
+	int updateMrnNoStatus(@Param("mrnNo")String mrnNo);
 	
 	/*
 	 * @Query(value =

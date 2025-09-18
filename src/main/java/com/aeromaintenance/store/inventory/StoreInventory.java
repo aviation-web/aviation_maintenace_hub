@@ -21,13 +21,7 @@ public class StoreInventory {
 
     private String description;
 
-    private Date dom;
-
-    private Date doe;
-
     private int quantity;
-
-    private Date dateOfRecipet;
 
     private String location;
 

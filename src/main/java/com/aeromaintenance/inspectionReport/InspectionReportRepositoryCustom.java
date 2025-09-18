@@ -5,5 +5,9 @@ public interface InspectionReportRepositoryCustom {
 	public boolean existsByReportId(Long reportId);
 	public int updateReportTemp(String userAction, Long inspectionReportId);
 	public int updateEditReportTemp(String userAction, Long inspectionReportId);
+	public boolean checkPartNoIsPresentInStore(String partNumber);
+	public int getCurrentStokeFromInventory(String partNumber);
+	public int UpdateCurrentQuantity(String partNumber, int currentStoke);
+	public int insertInStoreInventory(InspectionReport reports);
 
 }

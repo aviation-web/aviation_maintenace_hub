@@ -127,4 +127,20 @@ public class PurchaseOrderController {
         List<PurchaseOrder> purchaseOrders = purchaseOrderService.viewAllPurchaseOrders();
         return new ResponseEntity<>(purchaseOrders, HttpStatus.OK);
     }
+    
+    @GetMapping("/getAllPurchaseOrder")
+    public ResponseEntity<List<PurchaseOrderDTO>> getAllPurchaseOrderNo(){
+    	return ResponseEntity.ok(purchaseOrderService.getAllPurchaseOrderNo());
+    }
+    
+    @GetMapping("/getAllPartNoByPurchaseOrder/{poNumber}")
+    public ResponseEntity<List<PurchaseOrderDTO>> getAllPartNoByPurchaseOrder(@PathVariable String poNumber){
+    	return ResponseEntity.ok(purchaseOrderService.getAllPartNoByPurchaseOrders(poNumber));
+    }
+    
+    @GetMapping("/getDetailByPartNo/{partNumber}")
+    public ResponseEntity<PurchaseOrderDTO> getDetailsByPartNo(@PathVariable String partNumber){
+    	return ResponseEntity.ok(purchaseOrderService.getDetailsByPartNo(partNumber.trim()));
+    }
+    
 }

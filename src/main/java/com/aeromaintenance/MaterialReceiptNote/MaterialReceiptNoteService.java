@@ -3,6 +3,11 @@ package com.aeromaintenance.MaterialReceiptNote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aeromaintenance.PurchaseOrder.PurchaseOrder;
+import com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO;
+import com.aeromaintenance.exception.DuplicateRecordException;
+
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +18,13 @@ public class MaterialReceiptNoteService {
     private MaterialReceiptNoteRepository mrnRepository;
     
     public MaterialReceiptNote createMRN(MaterialReceiptNote mrn) {
-        if (mrnRepository.existsByMrnNo(mrn.getMrnNo())) {
-            throw new RuntimeException("MRN number already exists");
+    	SecureRandom secureRandom = new SecureRandom();
+	    long randomLong = Math.abs(secureRandom.nextLong());
+        String uniquePart = String.valueOf(randomLong).substring(0, 8);
+        String mrnNumber = "MRN_NO_" + uniquePart;
+        mrn.setMrnNo(mrnNumber);
+        if (mrnRepository.existsByOrderNumberAndPartNumber(mrn.getOrderNumber(), mrn.getPartNumber())) {
+        	throw new DuplicateRecordException("PO number and PartNumber combination already exists");
         }
         return mrnRepository.save(mrn);
     }
@@ -41,4 +51,6 @@ public class MaterialReceiptNoteService {
         }
         mrnRepository.deleteById(id);
     }
+
+	
 }

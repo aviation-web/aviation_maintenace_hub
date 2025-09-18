@@ -60,5 +60,8 @@ public class MaterialReceiptNote {
     
     @Column(name = "quality_acceptance")
     private String qualityAcceptance;
+    
+    @Column(name = "status", nullable = false)
+    private String status = "Open";
 
 }

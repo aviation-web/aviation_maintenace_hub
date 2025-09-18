@@ -165,6 +165,20 @@ public class PurchaseOrderService {
         }
     }
 
+    
+public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
+		
+		return purchaseOrderRepository.getAllPurchaseOrderNo();
+	}
+
+	public List<PurchaseOrderDTO> getAllPartNoByPurchaseOrders(String PONumber) {
+		return purchaseOrderRepository.getAllPartNoByPurchaseOrders(PONumber);
+	}
+
+	public PurchaseOrderDTO getDetailsByPartNo(String partNumber) {
+		return purchaseOrderRepository.getDetailsByPartNo(partNumber);
+
+	}
  
     
 }

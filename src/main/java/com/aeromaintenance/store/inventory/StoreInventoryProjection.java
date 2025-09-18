@@ -6,27 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 
 public interface StoreInventoryProjection {
 	
-	@Value("#{target.id}")
+	@Value("#{target.inventory_id}")
     Long getId();
 
-    @Value("#{target.part_num}")
+    @Value("#{target.part_number}")
     String getPartNum();
 
-    @Value("#{target.description}")
+    @Value("#{target.part_description}")
     String getDescription();
-
-    @Value("#{target.dom}")
-    Date getDom();
-
-    @Value("#{target.doe}")
-    Date getDoe();
-
-    @Value("#{target.date_of_receipt}")
-    Date getDateOfRecipet();
 
     @Value("#{target.quantity}")
     int getQuantity();
-
     
     @Value("#{target.location}")
     String getLocation();

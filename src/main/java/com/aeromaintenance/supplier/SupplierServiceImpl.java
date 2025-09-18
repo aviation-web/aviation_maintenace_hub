@@ -272,5 +272,9 @@ public class SupplierServiceImpl implements SupplierService {
 	public List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms() {
 		return supplierRepository.findSupplierNamesAndPaymentTerms();
 	}
+	
+	public List<String> getAllSupplierNames() {
+		return supplierRepository.findAllSupplierNames();
+	}
 }
 

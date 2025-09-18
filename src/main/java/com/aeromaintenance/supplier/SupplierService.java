@@ -17,5 +17,6 @@ public interface SupplierService {
     public List<SupplierModel> getAllEditingSupplierList(String userRole,String userAction);
     public List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms();
 	//public SupplierModel get
+    public List<String> getAllSupplierNames();
 
 }
