@@ -178,8 +178,8 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 		return purchaseOrderRepository.getAllPartNoByPurchaseOrders(PONumber);
 	}
 
-	public PurchaseOrderDTO getDetailsByPartNo(String partNumber) {
-		return purchaseOrderRepository.getDetailsByPartNo(partNumber);
+	public PurchaseOrderDTO getDetailsByPartNo(String partNumber, String poNumber) {
+		return purchaseOrderRepository.getDetailsByPartNo(partNumber, poNumber);
 
 	}
  

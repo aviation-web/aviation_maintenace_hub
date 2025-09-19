@@ -77,8 +77,8 @@ public class InspectionReportController {
     }
 	
 	@GetMapping("/getDetilsByPartNo/{partNo}")
-	public ResponseEntity<PartDetailsDTO> getDetailsByPart(@PathVariable String partNo){
-		Optional<PartDetailsDTO> partDetails = inspectionReportRepository.findDetailsByPartNumber(partNo.trim());
+	public ResponseEntity<PartDetailsDTO> getDetailsByPart(@PathVariable String partNo, @RequestParam String reportNo){
+		Optional<PartDetailsDTO> partDetails = inspectionReportRepository.findDetailsByPartNumber(partNo.trim(),reportNo.trim());
 		PartDetailsDTO partDetailsDTO = partDetails.orElseThrow(() -> new RuntimeException("Details not found"));
 		return ResponseEntity.ok(partDetailsDTO);		
 	}
@@ -110,7 +110,7 @@ public class InspectionReportController {
 		        int rowsInserted = reportService.approveReport(reportDto);
 		        ResponseBean<Void> response=null;
 			     if (rowsInserted >= 1) {
-			    	 reportService.updateMrnNoStatus(reports.getReportNo());
+			    	 reportService.updateMrnNoStatus(reports.getReportNo().trim());
 			    	     reportService.saveInspectionDataInStore(reports);
 			    	     reportService.updateInventoryCurrentStoke(reports);
 			    		 response = new ResponseBean<>("200", "Report Submitted and moved to history successfully", null);	 	        
@@ -203,4 +203,8 @@ public class InspectionReportController {
 	        List<InspectionReportDto> reports = reportService.getAllViewReportList();
 	        return ResponseEntity.ok(reports);
 	    }
+	 @GetMapping("/getCurrentQuantityFromStore/{partNo}")
+		public ResponseEntity<Integer> getCurrentQuantityFromStore(@PathVariable String partNo) {
+			return ResponseEntity.ok(reportService.getCurrentQuantityFromStore(partNo.trim()));
+		}
 	}

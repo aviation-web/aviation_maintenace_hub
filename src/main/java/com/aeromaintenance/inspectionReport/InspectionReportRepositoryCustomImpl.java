@@ -117,13 +117,13 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 
 	@Override
 	public int getCurrentStokeFromInventory(String partNumber) {
-		int currentStoke = (int) entityManager.createNativeQuery(
-	            "SELECT quantity FROM store_inventory WHERE part_number = ?")
+		Number currentStoke = (Number) entityManager.createNativeQuery(
+	            "SELECT quantity FROM store_inventory WHERE trim(part_number) = ?")
 	            .setParameter(1, partNumber)
 	            .getSingleResult();
-	    System.out.println("count is :-" + currentStoke);	
+	    System.out.println("currentStoke is :-" + currentStoke);	
 	    
-			return currentStoke;
+			return currentStoke.intValue();
 	}
 
 	@Override
@@ -151,5 +151,34 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 		    query.setParameter(3, reports.getQtyReceive());
 		    int result =  query.executeUpdate();
 		     return result;
+	}
+
+	@Override
+	public int getRequiredQtyFromPurchaseOrder(String purchaseOrderNo, String partNumber) {
+		Number result = (Number) entityManager.createNativeQuery(
+	            "SELECT current_stoke FROM purchase_order WHERE part_number = ? AND po_number = ?")
+	            .setParameter(1, partNumber)
+	            .setParameter(2, purchaseOrderNo)
+	            .getSingleResult();
+		int requiredQuantity = result != null ? result.intValue() : 0;
+		System.out.println("count is :-" + requiredQuantity);
+	    
+			return requiredQuantity;
+	}
+
+
+	@Override
+	public int updatePoStatus(String status, String poNumber, String partNumber) {
+		int result=0;
+		 try {
+			  Query query = entityManager.createNativeQuery("UPDATE purchase_order SET status = ? WHERE part_number = ? AND po_number = ?");
+			  query.setParameter(1, status);
+			 query.setParameter(2, partNumber);
+			 query.setParameter(3, poNumber);
+			 result=query.executeUpdate();
+		}catch(Exception e) {
+			 e.printStackTrace();
+		 }
+		 return result;
 	}
 	 }

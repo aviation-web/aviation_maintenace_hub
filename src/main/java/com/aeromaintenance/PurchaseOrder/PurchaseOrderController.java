@@ -139,8 +139,9 @@ public class PurchaseOrderController {
     }
     
     @GetMapping("/getDetailByPartNo/{partNumber}")
-    public ResponseEntity<PurchaseOrderDTO> getDetailsByPartNo(@PathVariable String partNumber){
-    	return ResponseEntity.ok(purchaseOrderService.getDetailsByPartNo(partNumber.trim()));
+    public ResponseEntity<PurchaseOrderDTO> getDetailsByPartNo(@PathVariable String partNumber,
+            @RequestParam String poNumber){
+    	return ResponseEntity.ok(purchaseOrderService.getDetailsByPartNo(partNumber.trim(),poNumber.trim()));
     }
     
 }

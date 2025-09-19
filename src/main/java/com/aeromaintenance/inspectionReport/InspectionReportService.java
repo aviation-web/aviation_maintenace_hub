@@ -228,16 +228,27 @@ public class InspectionReportService {
 	}
 
 	public void updateInventoryCurrentStoke(InspectionReport reports) {
+		int currentStoke = 0;
 		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber())){
 			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber());
-			int currentStoke = quantity + reports.getQtyReceive();
+		    currentStoke = quantity + reports.getQtyReceive();
 			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber(),currentStoke);
 			
 		}else {
 			
-			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);
-			
+			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);	
+			currentStoke = reports.getQtyReceive();
 		}
+		
+		int quantityRequired = inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo(),reports.getPartNumber());
+		//if(currentStoke >= quantityRequired) {
+			int updatePoStatus = inspectionReportRepositoryCustom.updatePoStatus(currentStoke >= quantityRequired ? "Close" : "Partial Open",reports.getPurchaseOrderNo(),reports.getPartNumber());
+		//}
+	}
+
+	public int getCurrentQuantityFromStore(String partNo) {
+		int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(partNo.trim());
+		return quantity;
 	}
 
 }
