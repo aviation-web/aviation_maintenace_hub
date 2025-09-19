@@ -1,5 +1,6 @@
 package com.aeromaintenance.PurchaseOrder;
 
+import com.common.ResponseBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,66 +26,71 @@ public class PurchaseOrderController {
 
     @Autowired 
     private PurchaseRequisitionService purchaseRequisitionService;
-	 @PostMapping("/create")
-	    public ResponseEntity<String> createPurchaseOrder(@RequestBody PurchaseOrderDTO request) {
-	        List<PurchaseRequisition> requisitions = purchaseRequisitionService.getRequisitionsByBatchNo(request.getBatchNumber());
-            System.out.println("BatchNumber:- " + request.getBatchNumber());
-            System.out.println("Fetched Purchase Requisition Records for BatchNo: " + request.getBatchNumber());
-            for (PurchaseRequisition req : requisitions) {
-                System.out.println("SrNo: " + req.getId() +
-                                   ", CurrentStock: " + req.getCurrentStock() +
-                                   ", PartNumber: " + req.getPartNumber() +
-                                   ", Description: " + req.getDescription());
-            }
-            if (requisitions.isEmpty()) {
-	            return ResponseEntity.badRequest().body("Invalid Batch Number");
-	        }
 
-	        for (PurchaseRequisition req : requisitions) {
-	            PurchaseOrder order = new PurchaseOrder();
-	            order.setSrNo(Math.toIntExact(req.getId()));
-	            order.setCurrentStoke(req.getCurrentStock());
-	            order.setPartNumber(req.getPartNumber());
-	            order.setDescription(req.getDescription());
+    @PostMapping("/create")
+    public ResponseEntity<ResponseBean<Void>> createPurchaseOrder(@RequestBody PurchaseOrderDTO request) {
 
-//                order.setSrNo(request.getSrNo());
-//                order.setPartNumber(request.getPartNumber());
-//                order.setDescription(request.getDescription());
-//                order.setCurrentStoke(request.getCurrentStoke());
-                order.setPoNumber(request.getPoNumber());
-	            order.setPoDate(request.getPoDate());
-	            order.setOurReference(request.getOurReference());
-	            order.setYourReference(request.getYourReference());
-	            order.setDelivery(request.getDelivery());
-	            order.setDeliveryAddress(request.getDeliveryAddress());
-	            order.setPaymentTerms(request.getPaymentTerms());
+        List<PurchaseRequisition> requisitions =
+                purchaseRequisitionService.getRequisitionsByBatchNo(request.getBatchNumber());
 
-	            order.setUnit(request.getUnit());
-	            order.setRatePerUnit(request.getRatePerUnit());
-	            order.setGrossAmount(request.getGrossAmount());
+        System.out.println("BatchNumber:- " + request.getBatchNumber());
+        System.out.println("Fetched Purchase Requisition Records for BatchNo: " + request.getBatchNumber());
+        for (PurchaseRequisition req : requisitions) {
+            System.out.println("SrNo: " + req.getId() +
+                    ", CurrentStock: " + req.getCurrentStock() +
+                    ", PartNumber: " + req.getPartNumber() +
+                    ", Description: " + req.getDescription());
+        }
 
-	            order.setSgst(request.getSgst());
-	            order.setCgst(request.getCgst());
-	            order.setIgst(request.getIgst());
-	            order.setTotal(request.getTotal());
-	            order.setGrandTotal(request.getGrandTotal());
-	            order.setPF(request.getPF());
-	            order.setTransportation(request.getTransportation());
-	            order.setOther_Charges(request.getOther_Charges());
-	            order.setInsurance(request.getInsurance());
+        if (requisitions.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResponseBean<>("400", "Invalid Batch Number", null));
+        }
+//        String poNumber = purchaseOrderService.generatePoNumber();
 
-	            order.setTermsAndConditions(request.getTermsAndConditions());
-	            order.setIncoterm(request.getIncoterm());
-	            order.setCurrency(request.getCurrency());
-	            order.setForwarder(request.getForwarder());
+        for (PurchaseRequisition req : requisitions) {
+            PurchaseOrder order = new PurchaseOrder();
+            order.setSrNo(Math.toIntExact(req.getId()));
+            order.setCurrentStoke(req.getCurrentStock());
+            order.setPartNumber(req.getPartNumber());
+            order.setDescription(req.getDescription());
 
-	            purchaseOrderService.saveOrder(order);
-	        }
+            order.setPoNumber(req.getBatchNumber());
+            order.setPoDate(request.getPoDate());
+            order.setOurReference(request.getOurReference());
+            order.setYourReference(request.getYourReference());
+            order.setDelivery(request.getDelivery());
+            order.setDeliveryAddress(request.getDeliveryAddress());
+            order.setPaymentTerms(request.getPaymentTerms());
 
-	        return ResponseEntity.ok("Purchase Orders Created Successfully");
-	    }
-	 
-	 @GetMapping("/requisitions-by-batch/{batchNumber}")
+            order.setUnit(request.getUnit());
+            order.setRatePerUnit(request.getRatePerUnit());
+            order.setGrossAmount(request.getGrossAmount());
+
+            order.setSgst(request.getSgst());
+            order.setCgst(request.getCgst());
+            order.setIgst(request.getIgst());
+            order.setTotal(request.getTotal());
+            order.setGrandTotal(request.getGrandTotal());
+            order.setPF(request.getPF());
+            order.setTransportation(request.getTransportation());
+            order.setOther_Charges(request.getOther_Charges());
+            order.setInsurance(request.getInsurance());
+
+            order.setTermsAndConditions(request.getTermsAndConditions());
+            order.setIncoterm(request.getIncoterm());
+            order.setCurrency(request.getCurrency());
+            order.setForwarder(request.getForwarder());
+
+            purchaseOrderService.saveOrder(order);
+        }
+
+        return ResponseEntity
+                .ok(new ResponseBean<>("200", "Purchase Orders Created Successfully", null));
+    }
+
+    @GetMapping("/requisitions-by-batch/{batchNumber}")
 	    public ResponseEntity<List<PurchaseRequisitionDTO>> getRequisitionsByBatch(@PathVariable String batchNumber) {
 	        List<PurchaseRequisitionDTO> list = purchaseOrderService.getRequisitionsByBatchNumber(batchNumber);
 	        return ResponseEntity.ok(list);

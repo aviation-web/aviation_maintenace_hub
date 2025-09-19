@@ -1,12 +1,12 @@
 package com.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class ResponseBean<T> {
 		private String respCode;  // Response code (200 for success, 400 for validation errors)
 	    private String message; // Success/Error message

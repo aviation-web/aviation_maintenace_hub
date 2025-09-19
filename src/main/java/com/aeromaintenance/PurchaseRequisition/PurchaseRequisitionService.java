@@ -134,7 +134,7 @@ public class PurchaseRequisitionService {
             int end = Math.min(i + batchSize, requisitions.size());
             List<PurchaseRequisition> batch = requisitions.subList(i, end);
 
-            String batchNumber = "BATCH_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+            String batchNumber = "PO_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
             int batchSizeActual = batch.size(); // Store how many records are in this batch
 
             for (PurchaseRequisition req : batch) {

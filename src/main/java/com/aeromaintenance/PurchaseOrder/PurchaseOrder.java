@@ -27,7 +27,7 @@ public class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "po_number", unique = true)
+    @Column(name = "po_number")
     private String poNumber;
 
     @NotNull(message = "PO Date is required")

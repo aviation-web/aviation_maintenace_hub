@@ -65,7 +65,7 @@ public class PurchaseOrderService {
 //        return purchaseOrderRepository.save(calculatedOrder);
 //    }
 
-    private String generatePoNumber() {
+    /*public String generatePoNumber() {
         String currentYear = String.valueOf(java.time.LocalDate.now().getYear());
         List<String> poNumbers = purchaseOrderRepository.findLastPoNumberForYear(currentYear);
 
@@ -78,13 +78,9 @@ public class PurchaseOrderService {
             }
         }
         return String.format("PO-%s-%03d", currentYear, nextNumber);
-    }
+    }*/
 
     public void saveOrder(PurchaseOrder order) {
-        // Automatically generate PO number if not supplied
-        if (order.getPoNumber() == null || order.getPoNumber().isEmpty()) {
-            order.setPoNumber(generatePoNumber());
-        }
 
         // Default status if null
         if (order.getStatus() == null || order.getStatus().isEmpty()) {
