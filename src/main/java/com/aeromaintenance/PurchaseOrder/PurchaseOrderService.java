@@ -65,9 +65,30 @@ public class PurchaseOrderService {
 //        return purchaseOrderRepository.save(calculatedOrder);
 //    }
 
+    /*public String generatePoNumber() {
+        String currentYear = String.valueOf(java.time.LocalDate.now().getYear());
+        List<String> poNumbers = purchaseOrderRepository.findLastPoNumberForYear(currentYear);
+
+        int nextNumber = 1;
+        if (!poNumbers.isEmpty()) {
+            String lastPo = poNumbers.get(0); // e.g. PO-2025-007
+            String[] parts = lastPo.split("-");
+            if (parts.length == 3) {
+                nextNumber = Integer.parseInt(parts[2]) + 1;
+            }
+        }
+        return String.format("PO-%s-%03d", currentYear, nextNumber);
+    }*/
+
     public void saveOrder(PurchaseOrder order) {
+
+        // Default status if null
+        if (order.getStatus() == null || order.getStatus().isEmpty()) {
+            order.setStatus("Open");
+        }
+
         PurchaseOrder calculatedOrder = calculateTotals(order);
-        purchaseOrderRepository.save(order);
+        purchaseOrderRepository.save(calculatedOrder);
     }
     // Delete a Purchase Order by ID
     public void deletePurchaseOrder(Long id) {
