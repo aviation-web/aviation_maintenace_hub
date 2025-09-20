@@ -74,6 +74,15 @@ public class StoreAcc {
     @Column(name = "rev_no", updatable = false)
     private String revNo;
 
+    @Column(name = "rack_no")
+    private String rackNo;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_date")
+    private String updatedDate;
+
     
     @PrePersist
     protected void onCreate() {

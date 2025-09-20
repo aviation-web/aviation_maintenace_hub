@@ -41,17 +41,31 @@ public class StoreAccService {
 
     public StoreAcc updateStoreAcceptance(Long id, StoreAcc storeAcceptance) {
         logger.info("Updating store acceptance with ID: {}", id);
-        Optional<StoreAcc> existingData = repository.findById(id);
-        if (existingData.isPresent()) {
-            ///storeAcceptance.setPartNum(id);
-        	storeAcceptance.getId();
-            StoreAcc updatedStoreAcc = repository.save(storeAcceptance);
-            logger.debug("Store acceptance updated successfully with ID: {}", id);
-            return updatedStoreAcc;
-        }
-        logger.warn("Store acceptance with ID {} not found, update failed", id);
-        return null;
+        return repository.findById(id)
+                .map(existing -> {
+                    // copy fields from request body to existing entity
+                    existing.setPartNum(storeAcceptance.getPartNum());
+                    existing.setDescription(storeAcceptance.getDescription());
+                    existing.setBatch(storeAcceptance.getBatch());
+                    existing.setCondition(storeAcceptance.getCondition());
+                    existing.setSupplier(storeAcceptance.getSupplier());
+                    existing.setDom(storeAcceptance.getDom());
+                    existing.setDoe(storeAcceptance.getDoe());
+                    existing.setQuantity(storeAcceptance.getQuantity());
+                    existing.setDateOfRecipet(storeAcceptance.getDateOfRecipet());
+                    existing.setNameOfQualityInsp(storeAcceptance.getNameOfQualityInsp());
+                    existing.setSignatureOfQualityInsp(storeAcceptance.getSignatureOfQualityInsp());
+                    existing.setRackNo(storeAcceptance.getRackNo());
+                    existing.setUpdatedBy(storeAcceptance.getUpdatedBy());
+                    existing.setUpdatedDate(String.valueOf(java.time.LocalDateTime.now())); // auto update timestamp
+
+                    StoreAcc updatedStoreAcc = repository.save(existing);
+                    logger.debug("Store acceptance updated successfully with ID: {}", id);
+                    return updatedStoreAcc;
+                })
+                .orElseThrow(() -> new RuntimeException("Store acceptance with ID " + id + " not found"));
     }
+
 
     public void deleteStoreAcceptance(Long id) {
         logger.info("Deleting store acceptance with ID: {}", id);
