@@ -229,10 +229,11 @@ public class InspectionReportService {
 
 	public void updateInventoryCurrentStoke(InspectionReport reports) {
 		int currentStoke = 0;
-		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber())){
-			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber());
-		    currentStoke = quantity + reports.getQtyReceive();
-			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber(),currentStoke);
+		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber().trim())){
+			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber().trim());
+	        int receivedQty = reports.getQtyReceive() != null ? reports.getQtyReceive() : 0;
+	        currentStoke = quantity + receivedQty;
+			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber().trim(),currentStoke);
 			
 		}else {
 			
@@ -240,14 +241,19 @@ public class InspectionReportService {
 			currentStoke = reports.getQtyReceive();
 		}
 		
-		int quantityRequired = inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo(),reports.getPartNumber());
-		//if(currentStoke >= quantityRequired) {
-			int updatePoStatus = inspectionReportRepositoryCustom.updatePoStatus(currentStoke >= quantityRequired ? "Close" : "Partial Open",reports.getPurchaseOrderNo(),reports.getPartNumber());
-		//}
+		int quantityRequired = inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo().trim(),reports.getPartNumber().trim());
+		String newStatus = (currentStoke >= quantityRequired) ? "Close" : "Partial Open";
+
+	    inspectionReportRepositoryCustom.updatePoStatus(newStatus,
+	            reports.getPurchaseOrderNo().trim(),
+	            reports.getPartNumber().trim());
 	}
 
 	public int getCurrentQuantityFromStore(String partNo) {
-		int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(partNo.trim());
+		int quantity=0;
+		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(partNo.trim())){
+		quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(partNo.trim());
+		}
 		return quantity;
 	}
 

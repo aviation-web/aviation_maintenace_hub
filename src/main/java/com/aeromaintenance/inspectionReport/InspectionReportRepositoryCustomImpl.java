@@ -117,7 +117,8 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 
 	@Override
 	public int getCurrentStokeFromInventory(String partNumber) {
-		Number currentStoke = (Number) entityManager.createNativeQuery(
+		Number currentStoke=0;
+		 currentStoke = (Number) entityManager.createNativeQuery(
 	            "SELECT quantity FROM store_inventory WHERE trim(part_number) = ?")
 	            .setParameter(1, partNumber)
 	            .getSingleResult();

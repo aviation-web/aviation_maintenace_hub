@@ -52,7 +52,7 @@ public class PurchaseOrderController {
         for (PurchaseRequisition req : requisitions) {
             PurchaseOrder order = new PurchaseOrder();
             order.setSrNo(Math.toIntExact(req.getId()));
-            order.setCurrentStoke(req.getCurrentStock());
+            order.setCurrentStoke(req.getRequiredQty());
             order.setPartNumber(req.getPartNumber());
             order.setDescription(req.getDescription());
 
