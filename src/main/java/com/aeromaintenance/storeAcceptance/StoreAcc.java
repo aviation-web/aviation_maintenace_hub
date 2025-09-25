@@ -83,6 +83,8 @@ public class StoreAcc {
     @Column(name = "updated_date")
     private String updatedDate;
 
+    private String flag = "N";
+
     
     @PrePersist
     protected void onCreate() {

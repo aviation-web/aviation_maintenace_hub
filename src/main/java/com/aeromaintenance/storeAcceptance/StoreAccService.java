@@ -1,5 +1,7 @@
 package com.aeromaintenance.storeAcceptance;
 
+import com.aeromaintenance.store.inventory.StoreInventory;
+import com.aeromaintenance.store.inventory.StoreInventoryRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,12 @@ public class StoreAccService {
     @Autowired
     private StoreAccRepository repository;
 
+    @Autowired
+    public StoreInventoryRepo inventoryRepository;
+
     public List<StoreAcc> getAllStoreAcceptances() {
         logger.info("Fetching all store acceptances");
-        List<StoreAcc> storeAcceptances = repository.findAll();
+        List<StoreAcc> storeAcceptances = repository.findByFlag("N");
         logger.debug("Total store acceptances retrieved: {}", storeAcceptances.size());
         return storeAcceptances;
     }
@@ -41,9 +46,9 @@ public class StoreAccService {
 
     public StoreAcc updateStoreAcceptance(Long id, StoreAcc storeAcceptance) {
         logger.info("Updating store acceptance with ID: {}", id);
+
         return repository.findById(id)
                 .map(existing -> {
-                    // copy fields from request body to existing entity
                     existing.setPartNum(storeAcceptance.getPartNum());
                     existing.setDescription(storeAcceptance.getDescription());
                     existing.setBatch(storeAcceptance.getBatch());
@@ -55,12 +60,27 @@ public class StoreAccService {
                     existing.setDateOfRecipet(storeAcceptance.getDateOfRecipet());
                     existing.setNameOfQualityInsp(storeAcceptance.getNameOfQualityInsp());
                     existing.setSignatureOfQualityInsp(storeAcceptance.getSignatureOfQualityInsp());
-                    existing.setRackNo(storeAcceptance.getRackNo());
                     existing.setUpdatedBy(storeAcceptance.getUpdatedBy());
-                    existing.setUpdatedDate(String.valueOf(java.time.LocalDateTime.now())); // auto update timestamp
+                    existing.setUpdatedDate(String.valueOf(java.time.LocalDateTime.now()));
 
+                    // Multiple rack numbers support
+                    if (storeAcceptance.getRackNo() != null && !storeAcceptance.getRackNo().trim().isEmpty()) {
+                        existing.setRackNo(storeAcceptance.getRackNo().trim());
+                    }
+
+                    //  Set flag = Y
+                    existing.setFlag("Y");
+
+                    // Save updated store acceptance
                     StoreAcc updatedStoreAcc = repository.save(existing);
-                    logger.debug("Store acceptance updated successfully with ID: {}", id);
+
+                    //  Inventory table update/insert
+                    inventoryRepository.upsertInventory(
+                            existing.getPartNum(),
+                            existing.getDescription(),
+                            existing.getQuantity()
+                    );
+
                     return updatedStoreAcc;
                 })
                 .orElseThrow(() -> new RuntimeException("Store acceptance with ID " + id + " not found"));
