@@ -17,11 +17,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 255, unique = true)
     private String productName;
 
     @Column(nullable = false, length = 255)
-    private String alternateProduct;
+    private String alternateProduct1;
+
+    @Column(nullable = false, length = 255)
+    private String alternateProduct2;
+
+    @Column(name = "mapping_type", nullable = false, length = 10)
+    private String mappingType; // UP / DOWN / BOTH
 
     @Column(nullable = false, length = 255)
     private String productDescription;

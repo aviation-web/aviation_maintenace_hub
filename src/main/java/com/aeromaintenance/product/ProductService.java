@@ -1,11 +1,14 @@
 package com.aeromaintenance.product;
 
 import com.common.ProductDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +19,10 @@ public class ProductService {
 
     // Save Product
     public Product saveProduct(Product product) {
+        if (productRepository.existsByProductName(product.getProductName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+        }
+
         return productRepository.save(product);
     }
 
@@ -36,6 +43,10 @@ public class ProductService {
     
  // Update Product
     public Product updateProduct(Long id, Product updatedProduct) {
+        if (productRepository.existsByProductName(updatedProduct.getProductName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+        }
+
         return productRepository.findById(id)
             .map(existingProduct -> {
                 // Update all necessary fields
@@ -49,7 +60,9 @@ public class ProductService {
                 existingProduct.setRegistrationDate(updatedProduct.getRegistrationDate());
                 existingProduct.setMaterialClassification(updatedProduct.getMaterialClassification());
                 existingProduct.setRegisteredBy(updatedProduct.getRegisteredBy());
-                existingProduct.setAlternateProduct(updatedProduct.getAlternateProduct());
+                existingProduct.setAlternateProduct1(updatedProduct.getAlternateProduct1());
+                existingProduct.setAlternateProduct2(updatedProduct.getAlternateProduct2());
+                existingProduct.setMappingType(updatedProduct.getMappingType());
                 return productRepository.save(existingProduct);
             })
             .orElse(null);
@@ -57,6 +70,42 @@ public class ProductService {
 
     public List<ProductDTO> getProdNumProdDesc(){
         return productRepository.findAllProductNameAndDescriptionDTO();
+    }
+
+    public List<ProductDTO> searchProducts(String searchTerm) {
+        List<ProductDTO> allProducts = getProdNumProdDesc();
+        List<ProductDTO> results = new ArrayList<>();
+
+        for (ProductDTO p : allProducts) {
+            String mt = p.getMappingType();
+            boolean match = false;
+
+            if ("UP".equalsIgnoreCase(mt)) {
+                // Alternate → Product only
+                if (searchTerm.equalsIgnoreCase(p.getAlternateProduct1()) ||
+                        searchTerm.equalsIgnoreCase(p.getAlternateProduct2())) {
+                    match = true;
+                }
+            } else if ("DOWN".equalsIgnoreCase(mt)) {
+                // Product → Alternate only
+                if (searchTerm.equalsIgnoreCase(p.getProductName())) {
+                    match = true;
+                }
+            } else if ("BOTH".equalsIgnoreCase(mt)) {
+                // Both ways
+                if (searchTerm.equalsIgnoreCase(p.getProductName()) ||
+                        searchTerm.equalsIgnoreCase(p.getAlternateProduct1()) ||
+                        searchTerm.equalsIgnoreCase(p.getAlternateProduct2())) {
+                    match = true;
+                }
+            }
+
+            if (match) {
+                results.add(p);
+            }
+        }
+
+        return results;
     }
 
     public List<Product> getActiveProduct(){
