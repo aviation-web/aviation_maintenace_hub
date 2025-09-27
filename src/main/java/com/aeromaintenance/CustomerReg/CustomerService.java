@@ -34,6 +34,7 @@ public class CustomerService {
             customer.setCustomerName(updatedCustomer.getCustomerName());
             customer.setContactPersonName(updatedCustomer.getContactPersonName());
             customer.setPhoneNo(updatedCustomer.getPhoneNo());
+            customer.setCountryCode(updatedCustomer.getCountryCode());
             customer.setMobileNumber(updatedCustomer.getMobileNumber());
             customer.setEmailId(updatedCustomer.getEmailId());
             customer.setShipToAddress1(updatedCustomer.getShipToAddress1());

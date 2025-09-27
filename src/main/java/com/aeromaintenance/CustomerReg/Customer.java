@@ -25,12 +25,16 @@ public class Customer {
     private String contactPersonName;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number should be 10 digits")
+    @Pattern(regexp = "^[0-9]{12}$", message = "Phone number should be 12 digits")
     private String phoneNo;
 
     @NotBlank(message = "Mobile number is required")
     @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits")
     private String mobileNumber;
+
+    @NotBlank(message = "Country code is required")
+    @Pattern(regexp = "^[0-9]{2}$", message = "Country code must be exactly 2 digits")
+    private String countryCode;
 
     @NotBlank(message = "Email ID is required")
     @Email(message = "Invalid email format")
