@@ -25,4 +25,9 @@ public class StoreInventory {
 
     private String location;
 
+    private String rackNo;
+
+    private String updatedBy;
+
+    private String updatedDate;
 }

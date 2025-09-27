@@ -23,12 +23,24 @@ public interface StoreInventoryRepo extends JpaRepository <Product, Long>{
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO store_inventory (part_number, part_description, quantity) " +
-			"VALUES (:partNumber, :description, :quantity) " +
-			"ON DUPLICATE KEY UPDATE quantity = quantity + :quantity",
+	@Query(value = "INSERT INTO store_inventory (part_number, part_description, quantity, rack_no, updated_by, updated_date) " +
+			"VALUES (:partNumber, :description, :quantity, :rackNo, :updatedBy, :updatedDate) " +
+			"ON DUPLICATE KEY UPDATE " +
+			"quantity = quantity + :quantity, " +
+			"rack_no = IF(rack_no IS NULL OR rack_no = '', :rackNo, " +
+			"    IF(CONCAT(',', rack_no, ',') LIKE CONCAT('%,', :rackNo, ',%'), rack_no, CONCAT(rack_no, ',', :rackNo))" +
+			"), " +
+			"updated_by = :updatedBy, updated_date = :updatedDate",
 			nativeQuery = true)
 	int upsertInventory(@Param("partNumber") String partNumber,
 						@Param("description") String description,
-						@Param("quantity") int quantity);
+						@Param("quantity") int quantity,
+						@Param("rackNo") String rackNo,
+						@Param("updatedBy") String updatedBy,
+						@Param("updatedDate") String updatedDate);
+
+
+
+
 }
 
