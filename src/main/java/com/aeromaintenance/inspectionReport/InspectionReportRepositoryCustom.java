@@ -11,5 +11,6 @@ public interface InspectionReportRepositoryCustom {
 	public int insertInStoreInventory(InspectionReport reports);
 	public int getRequiredQtyFromPurchaseOrder(String purchaseOrderNo, String partNumber);
 	public int updatePoStatus(String status, String poNumber, String partNumber);
+	public int updateInHistoryTable(InspectionReportDto reportDto);
 
 }

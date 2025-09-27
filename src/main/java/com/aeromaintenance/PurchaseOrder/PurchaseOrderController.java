@@ -10,6 +10,8 @@ import com.aeromaintenance.PurchaseRequisition.PurchaseRequisition;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -30,33 +32,40 @@ public class PurchaseOrderController {
     @PostMapping("/create")
     public ResponseEntity<ResponseBean<Void>> createPurchaseOrder(@RequestBody PurchaseOrderDTO request) {
 
-        List<PurchaseRequisition> requisitions =
-                purchaseRequisitionService.getRequisitionsByBatchNo(request.getBatchNumber());
+//        List<PurchaseRequisition> requisitions =
+//                purchaseRequisitionService.getRequisitionsByBatchNo(request.getBatchNumber());
 
-        System.out.println("BatchNumber:- " + request.getBatchNumber());
-        System.out.println("Fetched Purchase Requisition Records for BatchNo: " + request.getBatchNumber());
-        for (PurchaseRequisition req : requisitions) {
-            System.out.println("SrNo: " + req.getId() +
-                    ", CurrentStock: " + req.getCurrentStock() +
-                    ", PartNumber: " + req.getPartNumber() +
-                    ", Description: " + req.getDescription());
-        }
-
-        if (requisitions.isEmpty()) {
+//        System.out.println("BatchNumber:- " + request.getBatchNumber());
+//        System.out.println("Fetched Purchase Requisition Records for BatchNo: " + request.getBatchNumber());
+//        for (PurchaseRequisition req : requisitions) {
+//            System.out.println("SrNo: " + req.getId() +
+//                    ", CurrentStock: " + req.getCurrentStock() +
+//                    ", PartNumber: " + req.getPartNumber() +
+//                    ", Description: " + req.getDescription());
+//        }
+//
+//        if (requisitions.isEmpty()) {
+//            return ResponseEntity
+//                    .badRequest()
+//                    .body(new ResponseBean<>("400", "Invalid Batch Number", null));
+//        }
+    	
+    	if (request.getItems() == null || request.getItems().isEmpty()) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResponseBean<>("400", "Invalid Batch Number", null));
+                    .body(new ResponseBean<>("400", "No items provided", null));
         }
-//        String poNumber = purchaseOrderService.generatePoNumber();
 
-        for (PurchaseRequisition req : requisitions) {
+       String poNumber = "PO_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+
+        for (PurchaseOrderItem req : request.getItems()) {
             PurchaseOrder order = new PurchaseOrder();
             order.setSrNo(Math.toIntExact(req.getId()));
             order.setCurrentStoke(req.getRequiredQty());
             order.setPartNumber(req.getPartNumber());
             order.setDescription(req.getDescription());
-
-            order.setPoNumber(req.getBatchNumber());
+            order.setGrossOfSingle(req.getGross());
+            order.setPoNumber(poNumber);
             order.setPoDate(request.getPoDate());
             order.setOurReference(request.getOurReference());
             order.setYourReference(request.getYourReference());
@@ -64,8 +73,8 @@ public class PurchaseOrderController {
             order.setDeliveryAddress(request.getDeliveryAddress());
             order.setPaymentTerms(request.getPaymentTerms());
 
-            order.setUnit(request.getUnit());
-            order.setRatePerUnit(request.getRatePerUnit());
+            order.setUnit(req.getUnits());
+            order.setRatePerUnit(req.getRate());
             order.setGrossAmount(request.getGrossAmount());
 
             order.setSgst(request.getSgst());
@@ -84,6 +93,7 @@ public class PurchaseOrderController {
             order.setForwarder(request.getForwarder());
 
             purchaseOrderService.saveOrder(order);
+            purchaseOrderService.updateStatusOfPurchaseRequisition(req.getBatchNumber(), req.getId());
         }
 
         return ResponseEntity

@@ -148,7 +148,7 @@ public class InspectionReportService {
 	        InspectionReport reported=inspectionReportRepository.save(updateExisting);
 	        InspectionReportDto reportDto = new InspectionReportDto();
 	        BeanUtils.copyProperties(updateExisting, reportDto);
-	        int rowsInserted = inspectionReportRepositoryCustom.insertReportForm(reportDto);
+	        int rowsInserted = inspectionReportRepositoryCustom.updateInHistoryTable(reportDto);
 	        if(rowsInserted >0) {
 	        saveInspectionDataInStore(updateExisting);
 	        }

@@ -1,6 +1,7 @@
 package com.aeromaintenance.PurchaseOrder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
@@ -43,6 +44,7 @@ public class PurchaseOrderDTO {
     private String currency;
     private String forwarder;
 
+    private List<PurchaseOrderItem> items;
     // Getters and Setter
     
     public PurchaseOrderDTO() { }

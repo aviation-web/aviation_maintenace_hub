@@ -8,9 +8,12 @@ import com.aeromaintenance.PurchaseRequisition.PurchaseRequisition;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 @Service
 public class PurchaseOrderService {
@@ -65,20 +68,21 @@ public class PurchaseOrderService {
 //        return purchaseOrderRepository.save(calculatedOrder);
 //    }
 
-    /*public String generatePoNumber() {
+    public String generatePoNumber() {
         String currentYear = String.valueOf(java.time.LocalDate.now().getYear());
-        List<String> poNumbers = purchaseOrderRepository.findLastPoNumberForYear(currentYear);
-
-        int nextNumber = 1;
-        if (!poNumbers.isEmpty()) {
-            String lastPo = poNumbers.get(0); // e.g. PO-2025-007
-            String[] parts = lastPo.split("-");
-            if (parts.length == 3) {
-                nextNumber = Integer.parseInt(parts[2]) + 1;
-            }
-        }
-        return String.format("PO-%s-%03d", currentYear, nextNumber);
-    }*/
+        //List<String> poNumbers = purchaseOrderRepository.findLastPoNumberForYear(currentYear);
+        SecureRandom secureRandom = new SecureRandom();
+	    long orderNumber = Math.abs(secureRandom.nextLong());
+        //int nextNumber = 1;
+//        if (!poNumbers.isEmpty()) {
+//            String lastPo = poNumbers.get(0); // e.g. PO-2025-007
+//            String[] parts = lastPo.split("-");
+//            if (parts.length == 3) {
+//                nextNumber = Integer.parseInt(parts[2]) + 1;
+//            }
+//        }
+        return String.format("PO-%s-%03d", currentYear, String.valueOf(orderNumber));
+    }
 
     public void saveOrder(PurchaseOrder order) {
 
@@ -202,6 +206,11 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 	public PurchaseOrderDTO getDetailsByPartNo(String partNumber, String poNumber) {
 		return purchaseOrderRepository.getDetailsByPartNo(partNumber, poNumber);
 
+	}
+
+	@Transactional
+	public void updateStatusOfPurchaseRequisition(String batchNumber, Long id) {
+		int status = purchaseOrderRepository.updateStatusOfPurchaseRequisition(batchNumber, id);
 	}
  
     

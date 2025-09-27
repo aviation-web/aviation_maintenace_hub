@@ -76,6 +76,7 @@ public class PurchaseOrder {
     private Double Transportation;
     private Double Other_Charges;
     private Double Insurance;
+    private Double grossOfSingle;
 
     // --- Footer Info ---
     private String termsAndConditions;
