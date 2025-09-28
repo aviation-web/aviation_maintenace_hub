@@ -18,7 +18,7 @@ public interface SupplierRepository  extends JpaRepository<SupplierModel, Long> 
 	// Fetch suppliers where userAction = "1" and userRole = "M"
 	List<SupplierModel> findByUserRoleAndUserAction(String userRole, String userAction);
 
-    @Query("SELECT new com.common.SupplierNamePaymentDTO(s.supplierName, s.paymentTerms) " +
+    @Query("SELECT new com.common.SupplierNamePaymentDTO(s.supplierName, s.paymentTerms, s.address) " +
             "FROM SupplierModel s")
     List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms();
     

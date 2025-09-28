@@ -70,13 +70,22 @@ public class PurchaseRequisitionService {
 
     // Get All Purchase Requisitions
     public List<PurchaseRequisitionDTO> getAllPurchaseRequisitions() {
-        return repository.findAll().stream()
-            .map(entity -> {
-                PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
-                BeanUtils.copyProperties(entity, dto);
-                return dto;
-            })
-            .collect(Collectors.toList());
+//        return repository.findAll().stream()
+//            .map(entity -> {
+//                PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
+//                BeanUtils.copyProperties(entity, dto);
+//                return dto;
+//            })
+//            .collect(Collectors.toList());
+    	
+    	
+    	return repository.findByStatus("Open").stream()
+    	        .map(entity -> {
+    	            PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
+    	            BeanUtils.copyProperties(entity, dto);
+    	            return dto;
+    	        })
+    	        .collect(Collectors.toList());
     }
 
     // Update Purchase Requisition
