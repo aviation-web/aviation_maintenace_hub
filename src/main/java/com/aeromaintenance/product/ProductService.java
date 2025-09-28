@@ -1,6 +1,7 @@
 package com.aeromaintenance.product;
 
 import com.common.ProductDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductService {
@@ -19,11 +23,50 @@ public class ProductService {
 
     // Save Product
     public Product saveProduct(Product product) {
-        if (productRepository.existsByProductName(product.getProductName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+        // Collect all product names into a stream
+        List<String> productNames = Stream.of(
+                        product.getProductName(),
+                        product.getAlternateProduct1(),
+                        product.getAlternateProduct2()
+                )
+                .filter(Objects::nonNull)                // Remove nulls
+                .map(String::trim)                       // Trim each value
+                .filter(name -> !name.isEmpty())         // Remove empty strings
+                .collect(Collectors.toList());
+
+        // Check if any of the names already exist
+        for (String name : productNames) {
+            if (productRepository.existsByProductName(name)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT,
+                        "Part number already exists: " + name);
+            }
         }
 
-        return productRepository.save(product);
+        // Save the main product first
+        product.setProductName(product.getProductName().trim());
+        String mappingType = product.getMappingType();
+        String productName = product.getProductName();
+
+        String mapping = mappingType == null ? "" : mappingType.toUpperCase();
+
+        if ("UP".equals(mapping)) {
+            product.setAlternateProduct1(null);
+            product.setAlternateProduct2(null);
+        } else {
+            product.setAlternateProduct1(product.getAlternateProduct1());
+            product.setAlternateProduct2(product.getAlternateProduct2());
+        }
+
+        productRepository.save(product);
+
+        productNames.stream()
+                .skip(1) // Skip main product name (already saved)
+                .forEach(name -> {
+                    Product alt = cloneProduct(product, name);
+                    productRepository.save(alt);
+                });
+
+        return product;
     }
 
     // Get All Products
@@ -110,5 +153,23 @@ public class ProductService {
 
     public List<Product> getActiveProduct(){
         return productRepository.findAllActiveProducts();
+    }
+
+
+    private Product cloneProduct(Product source, String newProductName) {
+        Product copy = new Product();
+        BeanUtils.copyProperties(source, copy);
+        copy.setProductId(null);
+        copy.setProductName(newProductName);
+        String mappingType = source.getMappingType();
+
+        if ("DOWN".equals(mappingType)) {
+            copy.setAlternateProduct1(null);
+            copy.setAlternateProduct2(null);
+        } else {
+            copy.setAlternateProduct1(source.getProductName());
+            copy.setAlternateProduct2(source.getProductName());
+          }
+        return copy;
     }
 }

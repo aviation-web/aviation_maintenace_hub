@@ -20,10 +20,10 @@ public class Product {
     @Column(nullable = false, length = 255, unique = true)
     private String productName;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String alternateProduct1;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String alternateProduct2;
 
     @Column(name = "mapping_type", nullable = false, length = 10)
