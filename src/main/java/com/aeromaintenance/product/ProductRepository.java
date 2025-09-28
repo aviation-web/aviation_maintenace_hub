@@ -10,11 +10,12 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT new com.common.ProductDTO(p.productName, p.productDescription, p.alternateProduct, p.unitOfMeasurement) FROM Product p")
+    @Query("SELECT new com.common.ProductDTO( p.productName, p.productDescription, p.alternateProduct1, p.alternateProduct2, p.unitOfMeasurement, p.mappingType) FROM Product p")
     List<ProductDTO> findAllProductNameAndDescriptionDTO();
 
     @Query("SELECT p FROM Product p WHERE p.flag = 1")
     List<Product> findAllActiveProducts();
 
+    boolean existsByProductName(String productName);
 }
 

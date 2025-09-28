@@ -78,7 +78,10 @@ public class StoreAccService {
                     inventoryRepository.upsertInventory(
                             existing.getPartNum(),
                             existing.getDescription(),
-                            existing.getQuantity()
+                            existing.getQuantity(),
+                            existing.getRackNo(),
+                            existing.getUpdatedBy(),
+                            existing.getUpdatedDate()
                     );
 
                     return updatedStoreAcc;

@@ -25,8 +25,13 @@ public class ProductController {
     @PostMapping("/create")
     public ResponseEntity<String> createProduct(@RequestBody Product product) {
         System.out.println("Creating product: " + product);
-        productService.saveProduct(product);
-        return ResponseEntity.ok("Product created successfully");
+        try {
+            productService.saveProduct(product);
+            return ResponseEntity.ok("Product created successfully");
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Product name already exists");
+        }
     }
 
 
@@ -35,7 +40,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
-   
+
 	// Get Product by ID
 
 	@GetMapping("/{id}")
@@ -75,6 +80,12 @@ public class ProductController {
     @GetMapping("/prodNameDesc")
     public ResponseEntity<List<ProductDTO>> getPartNumPartDesc(){
         return ResponseEntity.ok(productService.getProdNumProdDesc());
+    }
+
+    // new search endpoint
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam String term) {
+        return ResponseEntity.ok(productService.searchProducts(term));
     }
 
     @DeleteMapping("/{id}/soft-delete")
