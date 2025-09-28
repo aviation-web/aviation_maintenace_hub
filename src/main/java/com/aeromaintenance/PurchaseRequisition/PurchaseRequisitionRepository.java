@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.lowagie.text.Element;
+
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -13,6 +16,8 @@ public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseReq
     List<PurchaseRequisitionDTO> findAllPartNumbersAndDescriptions();
 
     List<PurchaseRequisition> findByBatchNumber(String batchNumber);
+
+    List<PurchaseRequisition> findByStatus(String status);
 
 //    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.srNo,p.partNumber, p.description, p.currentStock) FROM PurchaseRequisition p where p.flag = Pending ")
 //    List<PurchaseRequisitionDTO> findAllOrderByBatchNumber();
