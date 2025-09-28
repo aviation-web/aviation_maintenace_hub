@@ -18,11 +18,11 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 	@Query("Select DISTINCT new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.poNumber) from PurchaseOrder p Where p.status <> 'Close'")
 	List<PurchaseOrderDTO> getAllPurchaseOrderNo();
 
-    @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.partNumber, p.description) from PurchaseOrder p where p.poNumber = :poNumber")
+    @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.partNumber, p.id) from PurchaseOrder p where p.poNumber = :poNumber AND p.orderPlacedFlag = 0 ")
 	List<PurchaseOrderDTO> getAllPartNoByPurchaseOrders(@Param("poNumber")String poNumber);
 
-    @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.description, p.currentStoke, p.unit) from PurchaseOrder p where trim(p.partNumber) = :partNumber AND trim(p.poNumber) = :poNumber")
-	PurchaseOrderDTO getDetailsByPartNo(@Param("partNumber")String partNumber, @Param("poNumber")String poNumber);
+    @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.description, p.currentStoke, p.unit, p.poDate) from PurchaseOrder p where trim(p.partNumber) = :partNumber AND trim(p.poNumber) = :poNumber AND p.id = :id")
+	PurchaseOrderDTO getDetailsByPartNo(@Param("partNumber")String partNumber, @Param("poNumber")String poNumber, @Param("id")Long id);
 
     @Modifying
 	@Query("UPDATE PurchaseRequisition i SET i.status = 'Close' WHERE i.batchNumber = :batchNumber AND i.id = :id")

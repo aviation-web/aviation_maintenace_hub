@@ -23,10 +23,16 @@ public class MaterialReceiptNoteService {
         String uniquePart = String.valueOf(randomLong).substring(0, 8);
         String mrnNumber = "MRN_NO_" + uniquePart;
         mrn.setMrnNo(mrnNumber);
-        if (mrnRepository.existsByOrderNumberAndPartNumber(mrn.getOrderNumber(), mrn.getPartNumber())) {
-        	throw new DuplicateRecordException("PO number and PartNumber combination already exists");
-        }
-        return mrnRepository.save(mrn);
+        String data[] = mrn.getPartNumber().split("\\|");
+		String partNo = data[0].trim();
+		Long id = Long.valueOf(data[1].trim());
+        mrn.setPartNumber(partNo);
+        MaterialReceiptNote  mrnObj = mrnRepository.save(mrn);
+        int updateFlag = mrnRepository.updatePoPlaceFlag(partNo, id);
+//        if (mrnRepository.existsByOrderNumberAndPartNumber(mrn.getOrderNumber(), mrn.getPartNumber())) {
+//        	throw new DuplicateRecordException("PO number and PartNumber combination already exists");
+//        }
+        return mrnObj;
     }
     
     public List<MaterialReceiptNote> getAllMRNs() {

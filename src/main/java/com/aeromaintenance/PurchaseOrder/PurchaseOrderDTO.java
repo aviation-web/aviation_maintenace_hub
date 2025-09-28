@@ -7,7 +7,8 @@ import lombok.Data;
 
 @Data
 public class PurchaseOrderDTO {
-
+	
+	private Long id;
     private String poNumber;
     private LocalDate poDate;
     private String ourReference;
@@ -49,10 +50,11 @@ public class PurchaseOrderDTO {
     
     public PurchaseOrderDTO() { }
     
-    public PurchaseOrderDTO(String description, Integer currentStoke, String unit) {
+    public PurchaseOrderDTO(String description, Integer currentStoke, String unit, LocalDate poDate) {
         this.description = description;
         this.currentStoke = currentStoke;
         this.unit = unit;
+        this.poDate = poDate;
     }
     
     public PurchaseOrderDTO(String poNumber) {
@@ -60,9 +62,9 @@ public class PurchaseOrderDTO {
         
     }
     
-    public PurchaseOrderDTO(String partNumber,String description) {
+    public PurchaseOrderDTO(String partNumber,Long id) {
         this.partNumber = partNumber;
-        this.description = description;
+        this.id = id;
         
     }
 }

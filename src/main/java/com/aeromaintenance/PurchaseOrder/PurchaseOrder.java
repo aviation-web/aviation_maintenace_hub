@@ -35,6 +35,9 @@ public class PurchaseOrder {
 
     @Column(name = "status", nullable = false)
     private String status = "Open";
+    
+    @Column(name = "orderPlacedFlag", nullable = false)
+    private int orderPlacedFlag = 0;
 
     private String ourReference;
     private String yourReference;

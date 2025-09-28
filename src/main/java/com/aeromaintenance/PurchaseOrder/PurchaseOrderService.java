@@ -204,7 +204,10 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 	}
 
 	public PurchaseOrderDTO getDetailsByPartNo(String partNumber, String poNumber) {
-		return purchaseOrderRepository.getDetailsByPartNo(partNumber, poNumber);
+		String data[] = partNumber.split("\\|");
+		String partNo = data[0].trim();
+		Long id = Long.valueOf(data[1].trim());
+		return purchaseOrderRepository.getDetailsByPartNo(partNo, poNumber, id);
 
 	}
 
