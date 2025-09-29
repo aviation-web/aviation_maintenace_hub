@@ -30,7 +30,7 @@ public class ProductController {
             return ResponseEntity.ok("Product created successfully");
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Product name already exists");
+                    .body("Failed to create Product!!");
         }
     }
 

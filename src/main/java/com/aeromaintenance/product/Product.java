@@ -35,14 +35,14 @@ public class Product {
     @Column(nullable = false, length = 6)
     private String unitOfMeasurement;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String oem;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String nha;
 
-    @Column(nullable = false)
-    private int cmmReferenceNumber;
+    @Column(nullable = true, length = 12)
+    private String cmmReferenceNumber;
 
     @Column(nullable = false, length = 30)
     private String materialClassification;
