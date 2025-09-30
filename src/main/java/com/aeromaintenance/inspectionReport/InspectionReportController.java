@@ -48,17 +48,17 @@ public class InspectionReportController {
 	
 	@GetMapping("/mrnNo")
     public ResponseEntity<List<PartDetailsDTO>> getAllMrnNo() {
-        List<String> mrnNos = inspectionReportRepository.findAllMrnNo();
+        List<PartDetailsDTO> mrnNos = inspectionReportRepository.findAllMrnNo();
 
         if (mrnNos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        List<PartDetailsDTO> partDetailsDTO = mrnNos.stream()
-                .map(mrnNo -> new PartDetailsDTO(mrnNo))
-                .collect(Collectors.toList());
+//        List<PartDetailsDTO> partDetailsDTO = mrnNos.stream()
+//                .map(mrnNo -> new PartDetailsDTO(mrnNo))
+//                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(partDetailsDTO);
+        return ResponseEntity.ok(mrnNos);
     }
 	
 	@GetMapping("/partNo/{mrnNo}")
@@ -76,9 +76,9 @@ public class InspectionReportController {
         return ResponseEntity.ok(partDetailsDTO);
     }
 	
-	@GetMapping("/getDetilsByPartNo/{partNo}")
-	public ResponseEntity<PartDetailsDTO> getDetailsByPart(@PathVariable String partNo, @RequestParam String reportNo){
-		Optional<PartDetailsDTO> partDetails = inspectionReportRepository.findDetailsByPartNumber(partNo.trim(),reportNo.trim());
+	@GetMapping("/getDetilsByPartNo/{reportNo}")
+	public ResponseEntity<PartDetailsDTO> getDetailsByPart(@PathVariable String reportNo){
+		Optional<PartDetailsDTO> partDetails = inspectionReportRepository.findDetailsByPartNumber(reportNo.trim());
 		PartDetailsDTO partDetailsDTO = partDetails.orElseThrow(() -> new RuntimeException("Details not found"));
 		return ResponseEntity.ok(partDetailsDTO);		
 	}

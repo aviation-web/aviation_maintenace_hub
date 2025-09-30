@@ -29,6 +29,18 @@ public class PartDetailsDTO {
 	private Integer qty;
 	private Integer qtyReceive;
 	
+	public PartDetailsDTO(String mrnNo, String partNumber, String supplierName, String orderNumber,
+            LocalDate receiptDate, String partDescription, Integer quantity, String qualityAcceptance) {
+			this.reportNo = mrnNo;
+			this.partNumber = partNumber;
+			this.supplierName = supplierName;
+			this.purchaseOrderNo = orderNumber;
+			this.date = receiptDate;
+			this.partDesc = partDescription;
+			this.qty = quantity;
+			this.qtyReceive = Integer.valueOf(qualityAcceptance);
+}
+	
 	public PartDetailsDTO(String mrnNo, String supplierName, String orderNumber,
             LocalDate receiptDate, String partDescription, Integer quantity, String qualityAcceptance) {
 			this.reportNo = mrnNo;

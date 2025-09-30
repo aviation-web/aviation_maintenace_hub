@@ -12,15 +12,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InspectionReportRepository extends JpaRepository<InspectionReport, Long> {
 
-	@Query("Select m.mrnNo from MaterialReceiptNote m WHERE m.status = 'Open'")
-	List<String> findAllMrnNo();
+	@Query("Select new com.aeromaintenance.inspectionReport.PartDetailsDTO(m.mrnNo, m.partNumber, m.supplierName, m.orderNumber, m.receiptDate, m.partDescription, m.quantity, m.qualityAcceptance) from MaterialReceiptNote m WHERE m.status = 'Open'")
+	List<PartDetailsDTO> findAllMrnNo();
 	
 	@Query("Select m.partNumber from MaterialReceiptNote m WHERE m.mrnNo = :mrnNo")
 	List<String> findAllPartNumber(@Param("mrnNo") String mrnNo);
 	
-	@Query("SELECT new com.aeromaintenance.inspectionReport.PartDetailsDTO(m.mrnNo, m.supplierName, m.orderNumber, m.receiptDate, m.partDescription, m.quantity, m.qualityAcceptance) " +
-		       "FROM MaterialReceiptNote m WHERE trim(m.partNumber) = :partNumber AND trim(mrnNo) = :mrnNo")
-	Optional<PartDetailsDTO>findDetailsByPartNumber(@Param("partNumber") String partNumber, @Param("mrnNo") String mrnNo);
+	@Query("SELECT new com.aeromaintenance.inspectionReport.PartDetailsDTO(m.mrnNo, m.partNumber, m.supplierName, m.orderNumber, m.receiptDate, m.partDescription, m.quantity, m.qualityAcceptance) " +
+		       "FROM MaterialReceiptNote m WHERE trim(mrnNo) = :mrnNo")
+	Optional<PartDetailsDTO>findDetailsByPartNumber(@Param("mrnNo") String mrnNo);
 
 	@Query("SELECT i FROM InspectionReport i WHERE i.userAction = '1' AND makerUserName <> :makerUserName")
 	List<InspectionReport> getAllPendingList(@Param("makerUserName")String makerUserName);
