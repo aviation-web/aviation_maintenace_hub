@@ -1,6 +1,7 @@
 package com.aeromaintenance.inspectionReport;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,36 +181,39 @@ public class InspectionReportService {
             String partDesc = (String) row[2];
             String purchaseOrderNo = (String) row[3];
             String supplierName = (String) row[4];
-        	String reportNo = (String) row[5];
-        	LocalDate date = ((java.sql.Date) row[6]).toLocalDate();
+            String reportNo = (String) row[5];
+
+            // ✅ Convert safely to LocalDate
+            LocalDate date = toLocalDate(row[6]);
             Integer qty = (Integer) row[7];
             Integer qtyReceive = (Integer) row[8];
-        	String invoiceObservation = (String) row[9];
-        	String manufacturerCertObservation = (String) row[10];
-        	String supplierCertObservation = (String) row[11];	
-        	String fullTraceabilityObservation = (String) row[12];
+            String invoiceObservation = (String) row[9];
+            String manufacturerCertObservation = (String) row[10];
+            String supplierCertObservation = (String) row[11];
+            String fullTraceabilityObservation = (String) row[12];
             String batchNumberObservation = (String) row[13];
-            LocalDate dateOfManufacturingObservation = ((java.sql.Date) row[14]).toLocalDate();
+            LocalDate dateOfManufacturingObservation = toLocalDate(row[14]);
             String selfLifeObservation = (String) row[15];
             String tdsObservation = (String) row[16];
             String materialConditionObservation = (String) row[17];
-        	String specificationObservation = (String) row[18];
+            String specificationObservation = (String) row[18];
             String documentObservation = (String) row[19];
-        	String lotAccepted = (String) row[20];
-        	String remark = (String) row[21];
-        	String makerUserName = (String) row[22];
-        	//String makerUserId = (String) row[22];
-        	LocalDate makerDate = row[23] != null ? ((java.sql.Date) row[23]).toLocalDate() : null;
-        	String checkerUserName = (String) row[24];
-        	//String checkerUserId = (String) row[25];
-        	LocalDate checkerDate = row[25] != null ? ((java.sql.Date) row[25]).toLocalDate() : null;
-        	LocalDate dateOfExpiryObservation = ((java.sql.Date) row[26]).toLocalDate();
-        	//String userRole = (String) row[28];
-            result.add(new InspectionReportDto(id, partNumber, partDesc, purchaseOrderNo, supplierName, reportNo,
-            		date, qty, qtyReceive,invoiceObservation, manufacturerCertObservation, supplierCertObservation, fullTraceabilityObservation,
-            		batchNumberObservation, dateOfManufacturingObservation, dateOfExpiryObservation,selfLifeObservation, tdsObservation, materialConditionObservation,
-            		specificationObservation, documentObservation, lotAccepted, remark, makerUserName, "",
-            		makerDate, checkerUserName, "", checkerDate, "", "" ,""));
+            String lotAccepted = (String) row[20];
+            String remark = (String) row[21];
+            String makerUserName = (String) row[22];
+            LocalDate makerDate = toLocalDate(row[23]);
+            String checkerUserName = (String) row[24];
+            LocalDate checkerDate = toLocalDate(row[25]);
+            LocalDate dateOfExpiryObservation = toLocalDate(row[26]);
+
+            result.add(new InspectionReportDto(
+                id, partNumber, partDesc, purchaseOrderNo, supplierName, reportNo,
+                date, qty, qtyReceive, invoiceObservation, manufacturerCertObservation,
+                supplierCertObservation, fullTraceabilityObservation, batchNumberObservation,
+                dateOfManufacturingObservation, dateOfExpiryObservation, selfLifeObservation,
+                tdsObservation, materialConditionObservation, specificationObservation,
+                documentObservation, lotAccepted, remark, makerUserName, "",
+                makerDate, checkerUserName, "", checkerDate, "", "", ""));
         }
 
         return result;
@@ -258,6 +262,19 @@ public class InspectionReportService {
 		quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(partNo.trim());
 		}
 		return quantity;
+	}
+	
+	private LocalDate toLocalDate(Object obj) {
+	    if (obj == null) return null;
+
+	    if (obj instanceof java.sql.Date) {
+	        return ((java.sql.Date) obj).toLocalDate();
+	    } else if (obj instanceof java.sql.Timestamp) {
+	        return ((java.sql.Timestamp) obj).toLocalDateTime().toLocalDate();
+	    } else if (obj instanceof java.util.Date) {
+	        return ((java.util.Date) obj).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    }
+	    throw new IllegalArgumentException("Unsupported date type: " + obj.getClass());
 	}
 
 }
