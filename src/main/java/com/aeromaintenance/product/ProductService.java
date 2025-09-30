@@ -22,7 +22,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     // Save Product
-    /*public Product saveProduct(Product product) {
+    public Product saveProduct(Product product) {
         // Collect all product names into a stream
         List<String> productNames = Stream.of(
                         product.getProductName(),
@@ -67,25 +67,25 @@ public class ProductService {
                 });
 
         return product;
-    }*/
-
-    public Product saveProduct(Product product) {
-        // If product has an ID, it’s an update
-        if (product.getProductId() == null) {
-            // Create case → check duplicate
-            if (productRepository.existsByProductName(product.getProductName())) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
-            }
-        } else {
-            // Update case → check only if name belongs to another product
-            boolean existing = productRepository.existsByProductName(product.getProductName());
-            if (!existing) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
-            }
-        }
-
-        return productRepository.save(product);
     }
+
+//    public Product saveProduct(Product product) {
+//        // If product has an ID, it’s an update
+//        if (product.getProductId() == null) {
+//            // Create case → check duplicate
+//            if (productRepository.existsByProductName(product.getProductName())) {
+//                throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+//            }
+//        } else {
+//            // Update case → check only if name belongs to another product
+//            boolean existing = productRepository.existsByProductName(product.getProductName());
+//            if (!existing) {
+//                throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+//            }
+//        }
+//
+//        return productRepository.save(product);
+//    }
 
 
     // Get All Products
@@ -191,4 +191,9 @@ public class ProductService {
           }
         return copy;
     }
+
+	public void updateFlag(Product product) {
+		productRepository.save(product);
+		
+	}
 }

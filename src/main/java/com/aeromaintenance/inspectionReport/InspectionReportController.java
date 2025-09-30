@@ -112,7 +112,7 @@ public class InspectionReportController {
 			     if (rowsInserted >= 1) {
 			    	 reportService.updateMrnNoStatus(reports.getReportNo().trim());
 			    	     reportService.saveInspectionDataInStore(reports);
-			    	     //reportService.updateInventoryCurrentStoke(reports);
+			    	     reportService.updateInventoryCurrentStoke(reports);
 			    		 response = new ResponseBean<>("200", "Report Submitted and moved to history successfully", null);	 	        
 			         return ResponseEntity.status(HttpStatus.OK).body(response);
 			     }else if(rowsInserted == -1) {

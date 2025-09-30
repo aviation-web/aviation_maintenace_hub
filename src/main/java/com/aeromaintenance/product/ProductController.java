@@ -94,7 +94,7 @@ public class ProductController {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             product.setFlag(0);  // soft delete
-            productService.saveProduct(product);
+            productService.updateFlag(product);
             return ResponseEntity.ok("Product soft deleted successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");

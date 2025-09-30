@@ -1,15 +1,18 @@
 package com.aeromaintenance.MaterialReceiptNote;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aeromaintenance.PurchaseOrder.PurchaseOrder;
 import com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO;
+import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.exception.DuplicateRecordException;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MaterialReceiptNoteService {
@@ -36,7 +39,7 @@ public class MaterialReceiptNoteService {
     }
     
     public List<MaterialReceiptNote> getAllMRNs() {
-        return mrnRepository.findAll();
+        return mrnRepository.findByStatus("Open");
     }
     
     public Optional<MaterialReceiptNote> getMRNById(Long id) {

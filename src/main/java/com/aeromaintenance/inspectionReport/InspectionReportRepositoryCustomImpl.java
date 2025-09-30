@@ -169,13 +169,14 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 
 
 	@Override
-	public int updatePoStatus(String status, String poNumber, String partNumber) {
+	public int updatePoStatus(String status, String poNumber, String partNumber, int requireQty) {
 		int result=0;
 		 try {
-			  Query query = entityManager.createNativeQuery("UPDATE purchase_order SET status = ? WHERE part_number = ? AND po_number = ?");
+			  Query query = entityManager.createNativeQuery("UPDATE purchase_order SET status = ? WHERE part_number = ? AND po_number = ? AND current_stoke = ?");
 			  query.setParameter(1, status);
 			 query.setParameter(2, partNumber);
 			 query.setParameter(3, poNumber);
+			 query.setParameter(4, requireQty);
 			 result=query.executeUpdate();
 		}catch(Exception e) {
 			 e.printStackTrace();

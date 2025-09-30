@@ -151,6 +151,7 @@ public class InspectionReportService {
 	        int rowsInserted = inspectionReportRepositoryCustom.updateInHistoryTable(reportDto);
 	        if(rowsInserted >0) {
 	        saveInspectionDataInStore(updateExisting);
+	        updateInventoryCurrentStoke(updateExisting);
 	        }
 //	        ResponseBean<Void> response=null;
 //		     if (rowsInserted >= 1) {
@@ -228,25 +229,27 @@ public class InspectionReportService {
 	}
 
 	public void updateInventoryCurrentStoke(InspectionReport reports) {
-		int currentStoke = 0;
-		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber().trim())){
-			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber().trim());
-	        int receivedQty = reports.getQtyReceive() != null ? reports.getQtyReceive() : 0;
-	        currentStoke = quantity + receivedQty;
-			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber().trim(),currentStoke);
-			
-		}else {
-			
-			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);	
-			currentStoke = reports.getQtyReceive();
-		}
-		
-		int quantityRequired = inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo().trim(),reports.getPartNumber().trim());
-		String newStatus = (currentStoke >= quantityRequired) ? "Close" : "Partial Open";
+		int receiveQty = 0;
+//		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber().trim())){
+//			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber().trim());
+//	        int receivedQty = reports.getQtyReceive() != null ? reports.getQtyReceive() : 0;
+//	        currentStoke = quantity + receivedQty;
+//			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber().trim(),currentStoke);
+//			
+//		}else {
+//			
+//			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);	
+//			currentStoke = reports.getQtyReceive();
+//		}
+		receiveQty = reports.getQtyReceive();
+		int quantityRequired = reports.getQty();
+		//inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo().trim(),reports.getPartNumber().trim());
+		String newStatus = (receiveQty >= quantityRequired) ? "Close" : "Partial Open";
 
 	    inspectionReportRepositoryCustom.updatePoStatus(newStatus,
 	            reports.getPurchaseOrderNo().trim(),
-	            reports.getPartNumber().trim());
+	            reports.getPartNumber().trim(),
+	            reports.getQty());
 	}
 
 	public int getCurrentQuantityFromStore(String partNo) {
