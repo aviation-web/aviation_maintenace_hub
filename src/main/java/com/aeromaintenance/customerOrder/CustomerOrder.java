@@ -12,9 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-	
+import org.hibernate.annotations.GenericGenerator;
 
-	@Getter
+
+@Getter
 	@Setter
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -22,8 +23,13 @@ import lombok.Setter;
 	@Table(name = "Customer_Order")
 	public class CustomerOrder {
 		@Id
-		@Column
-		private Long srNo;
+		@GeneratedValue(generator = "cust-id-generator")
+		@GenericGenerator(
+				name = "cust-id-generator",
+				strategy = "com.aeromaintenance.customerOrder.CustomerOrderIdGenerator"
+		)
+		@Column(name = "sr_no", length = 20)
+		private String srNo;
 
 		@Column
 	    private Long orderNo;
