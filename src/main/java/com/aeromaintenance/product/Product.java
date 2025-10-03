@@ -26,7 +26,7 @@ public class Product {
     @Column(nullable = true, length = 255)
     private String alternateProduct2;
 
-    @Column(name = "mapping_type", nullable = false, length = 10)
+    @Column(name = "mapping_type",nullable = true, length = 10)
     private String mappingType; // UP / DOWN / BOTH
 
     @Column(nullable = false, length = 255)

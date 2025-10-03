@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/api/purchase-requisitions")
 public class PurchaseRequisitionController {
@@ -111,16 +113,16 @@ public class PurchaseRequisitionController {
 
     // Export CSV file to disk
     @GetMapping("/csv")
-    public ResponseEntity<String> exportToCSV() {
-        String result = service.exportToCSV();
-        return ResponseEntity.ok(result);
+    public void exportToCSV(HttpServletResponse response) {
+       service.exportToCSV(response);
+        
     }
     
  // Export CSV file to disk
     @GetMapping("/pdf")
-    public ResponseEntity<String> exportToPDF() {
-        String result = service.exportRequisitionsToPDFFile();
-        return ResponseEntity.ok(result);
+    public void exportToPDF(HttpServletResponse response) {
+        service.exportRequisitionsToPDFFile(response);
+        
     }
 
     @PostMapping("/csv")
