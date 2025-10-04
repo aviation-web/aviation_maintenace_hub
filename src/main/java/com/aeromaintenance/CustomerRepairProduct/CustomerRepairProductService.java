@@ -51,14 +51,23 @@ public class CustomerRepairProductService {
         repository.deleteById(id);
     }
 
-    public List<CustomerRepairDTO> getProdNumProdDesc() {
-        return repository.findAll().stream()
-                .map(cp -> new CustomerRepairDTO(
-                        cp.getProductName(),
-                        cp.getProductDescription(),
-                        cp.getUnitOfMeasurement(),
-                        cp.getProductSerialNumbers() // include serial numbers
+    public List<CustomerRepairDTO> getProdNumProdDescByName(String productName) {
+        List<CustomerRepairProduct> products = repository.findByProductName(productName);
+        return products.stream()
+                .map(p -> new CustomerRepairDTO(
+                        p.getProductName(),
+                        p.getProductDescription(),
+                        p.getUnitOfMeasurement(),
+                        p.getProductSerialNumbers() // now in memory, fine
                 ))
+                .collect(Collectors.toList());
+    }
+
+    public List<CustomerRepairDTO> getAllProdNames() {
+        return repository.findAll().stream()
+                .map(p -> new CustomerRepairDTO(p.getProductName(),  null,                 // baki fields null
+                        null,
+                        null))
                 .collect(Collectors.toList());
     }
 

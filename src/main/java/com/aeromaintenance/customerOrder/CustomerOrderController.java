@@ -66,64 +66,82 @@ public class CustomerOrderController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-
-	@GetMapping("/getpendingCustomerOrderList")
-	public ResponseEntity<List<CustomerOrder>>getPendingOrderList(){
-		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		 String userName = authentication.getName();
-		List<CustomerOrder> orders = customerOrderRepository.getAllPendingList(userName);
+	// GET: All Customer Orders
+	@GetMapping("/all")
+	public ResponseEntity<List<CustomerOrder>> getAllOrders() {
+		List<CustomerOrder> orders = customerOrderRepository.findAll();
 		return ResponseEntity.ok(orders);
+	}
+
+	@GetMapping("/bySrNo/{srNo}")
+	public ResponseEntity<CustomerOrder> getOrderBySrNo(@PathVariable String srNo) {
+		Optional<CustomerOrder> optionalOrder = customerOrderRepository.findById(srNo);
+		return optionalOrder
+				.map(ResponseEntity::ok)
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+	}
+
+
+
+
+//	@GetMapping("/getpendingCustomerOrderList")
+//	public ResponseEntity<List<CustomerOrder>>getPendingOrderList(){
+//		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		 String userName = authentication.getName();
+//		List<CustomerOrder> orders = customerOrderRepository.getAllPendingList(userName);
+//		return ResponseEntity.ok(orders);
+//		}
+//
+//	@PostMapping("/approveCustomerOrder")
+//	 public ResponseEntity<ResponseBean<Void>> approveReport(@RequestBody CustomerOrderDto order) {
+//
+//		 ResponseBean<Void> response=null;
+//	     if (order == null) {
+//	         response = new ResponseBean<>("404", "report not found", null);
+//	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//	     }
+//
+//	     int rowsInserted = orderService.approveReport(order);
+//
+//	     if (rowsInserted >= 1) {
+//	    	 if(order.getUserAction().equals("2")){
+//	    		 response = new ResponseBean<>("200", "customer order approved and moved to history successfully", null);
+//	    	 }if(order.getUserAction().equals("3")){
+//	    		response = new ResponseBean<>("200", "Customer Order Edited  successfully", null);
+//	    	 }
+//	         return ResponseEntity.ok(response);
+//	     }else if(rowsInserted == -1) {
+//	    	response = new ResponseBean<>("409", "Customer Order already exists in the database", null);
+//	         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+//	     } else {
+//	    	 response= new ResponseBean<>("500", "Failed ", null);
+//	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//	     }
+//	 }
+	
+//	@GetMapping("/getCustomerOrderById/{reportId}")
+//	public ResponseEntity<CustomerOrder> getReportDetailById(@PathVariable  Long reportId){
+//		Optional<CustomerOrder> optionalReport = customerOrderRepository.findById(reportId);
+//		CustomerOrder report = optionalReport.orElseThrow(()  -> new RuntimeException("Details not found"));
+//		return ResponseEntity.ok(report);
+//
+//	}
+
+	@DeleteMapping("/deleteCustomerOrder/{srNo}")
+	public ResponseEntity<String> deleteReportById(@PathVariable String srNo) {
+		CustomerOrder report = customerOrderRepository.findById(srNo).orElse(null);
+		if (report != null) {
+			customerOrderRepository.deleteById(srNo);
+			return ResponseEntity.ok("Customer Order deleted successfully");
+		} else {
+			return ResponseEntity.notFound().build();
 		}
-	
-	@PostMapping("/approveCustomerOrder")
-	 public ResponseEntity<ResponseBean<Void>> approveReport(@RequestBody CustomerOrderDto order) {
-	     
-		 ResponseBean<Void> response=null;
-	     if (order == null) {
-	         response = new ResponseBean<>("404", "report not found", null);
-	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	     }
+	}
 
-	     int rowsInserted = orderService.approveReport(order);
 
-	     if (rowsInserted >= 1) {
-	    	 if(order.getUserAction().equals("2")){
-	    		 response = new ResponseBean<>("200", "customer order approved and moved to history successfully", null);
-	    	 }if(order.getUserAction().equals("3")){
-	    		response = new ResponseBean<>("200", "Customer Order Edited  successfully", null);
-	    	 }	 	        
-	         return ResponseEntity.ok(response);
-	     }else if(rowsInserted == -1) {
-	    	response = new ResponseBean<>("409", "Customer Order already exists in the database", null);
-	         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-	     } else {
-	    	 response= new ResponseBean<>("500", "Failed ", null);
-	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-	     }
-	 }
-	
-	@GetMapping("/getCustomerOrderById/{reportId}")
-	public ResponseEntity<CustomerOrder> getReportDetailById(@PathVariable  Long reportId){
-		Optional<CustomerOrder> optionalReport = customerOrderRepository.findById(reportId);
-		CustomerOrder report = optionalReport.orElseThrow(()  -> new RuntimeException("Details not found"));
-		return ResponseEntity.ok(report);
-		
-	} 
-	
-	@DeleteMapping("/deleteCustomerOrder/{id}")
-    public ResponseEntity<String> deleteReportById(@PathVariable Long id) {
-    	CustomerOrder report = customerOrderRepository.findById(id).orElse(null);
-        if (report != null) {
-        	customerOrderRepository.deleteById(id);
-            return ResponseEntity.ok("Customer Order deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-	
-	
-	
-	
+
+
+
 	@PostMapping("/uploadWithOrders")
 	public ResponseEntity<?> uploadOrdersWithDocument(
 	    @RequestParam("document") MultipartFile file,
@@ -185,15 +203,17 @@ public class CustomerOrderController {
         List<CustomerOrder> orders = customerOrderRepository.getAllEditReportList();
         return ResponseEntity.ok(orders);
     }
-	
-	 @PutMapping("/updateOrder/{id}")
-	    public ResponseEntity<CustomerOrder> updateReportrById(@PathVariable Long id, @RequestBody  CustomerOrder updateOrder) {
-	    	CustomerOrder order = orderService.updateOrder(id, updateOrder);
-	        if (order != null) {
-	            return ResponseEntity.ok(order);
-	        } else {
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
-	
+
+	@PutMapping("/updateOrder/{srNo}")
+	public ResponseEntity<CustomerOrder> updateReportrById(@PathVariable String srNo,
+														   @RequestBody CustomerOrder updateOrder) {
+		CustomerOrder order = orderService.updateOrder(srNo, updateOrder);
+		if (order != null) {
+			return ResponseEntity.ok(order);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+
 }

@@ -51,10 +51,13 @@ public class CustomerRepairProductController {
         return ResponseEntity.noContent().build();
     }
 
-    // Fetch Product Name and Product Desc
     @GetMapping("/prodName/{name}")
-    public ResponseEntity<List<CustomerRepairDTO>> getPartNumPartDesc(){
-        return ResponseEntity.ok(service.getProdNumProdDesc());
+    public ResponseEntity<List<CustomerRepairDTO>> getPartNumPartDesc(@PathVariable("name") String name){
+        return ResponseEntity.ok(service.getProdNumProdDescByName(name));
     }
 
+    @GetMapping("/allProducts")
+    public ResponseEntity<List<CustomerRepairDTO>> getAllProductNames() {
+        return ResponseEntity.ok(service.getAllProdNames());
+    }
 }

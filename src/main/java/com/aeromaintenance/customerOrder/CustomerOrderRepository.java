@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.aeromaintenance.inspectionReport.InspectionReport;
 
 @Repository
-public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
+public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, String> {
 
 	@Query("SELECT i FROM CustomerOrder i WHERE i.userAction = '1' AND makerUserName <> :makerUserName")
 	List<CustomerOrder> getAllPendingList(@Param("makerUserName")String makerUserName);

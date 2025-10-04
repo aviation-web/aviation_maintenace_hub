@@ -18,6 +18,7 @@ public class CustomerOrderDto {
 	  private Long batchNo;
 	  private Long roNo;
 	  private String roReceiveDate;
+	  private String roDate;
 	  private String customerName;
 	  private String partNo;
 	  private String partDescription;

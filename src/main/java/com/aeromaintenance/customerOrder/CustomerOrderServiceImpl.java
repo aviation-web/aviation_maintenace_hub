@@ -95,22 +95,23 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
             Long order_no = Long.valueOf((String) row[1]);
             Long ro_no = ((Number) row[2]).longValue();
             String ro_receive_date = (String) row[3];
-            String customer_name = (String) row[4];
-        	String part_desc = (String) row[5];
-        	String part_no = (String) row[6];
-        	Long batch_no = ((Number) row[7]).longValue();
-        	Integer qty = ((Number) row[8]).intValue();
-            String status = (String) row[9];
-            String document_path = (String) row[10];
-            String maker_user_name = (String) row[11];
-            LocalDate maker_date = row[12] != null ? ((Timestamp) row[12]).toLocalDateTime().toLocalDate() : null;
-            String checker_user_name = (String) row[13];
-            LocalDate checker_date = row[14] != null ? ((Timestamp) row[14]).toLocalDateTime().toLocalDate() : null;
-            String user_role = (String) row[15];
-        	String user_action = (String) row[16];
-        	String remark = (String) row[17];
+			String ro_date = (String) row[4];
+            String customer_name = (String) row[5];
+        	String part_desc = (String) row[6];
+        	String part_no = (String) row[7];
+        	Long batch_no = ((Number) row[8]).longValue();
+        	Integer qty = ((Number) row[9]).intValue();
+            String status = (String) row[10];
+            String document_path = (String) row[11];
+            String maker_user_name = (String) row[12];
+            LocalDate maker_date = row[13] != null ? ((Timestamp) row[12]).toLocalDateTime().toLocalDate() : null;
+            String checker_user_name = (String) row[14];
+            LocalDate checker_date = row[15] != null ? ((Timestamp) row[14]).toLocalDateTime().toLocalDate() : null;
+            String user_role = (String) row[16];
+        	String user_action = (String) row[17];
+        	String remark = (String) row[18];
      
-            result.add(new CustomerOrderDto(sr_no, order_no, batch_no, ro_no, ro_receive_date, customer_name,
+            result.add(new CustomerOrderDto(sr_no, order_no, batch_no, ro_no, ro_receive_date, ro_date, customer_name,
             		part_no, part_desc, qty, status, document_path, maker_user_name,
             		maker_date, user_action, user_role, checker_user_name, checker_date, remark));
         }
@@ -122,7 +123,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 	}
 
 	@Override
-	public CustomerOrder updateOrder(Long id, CustomerOrder updateOrder) {
+	public CustomerOrder updateOrder(String id, CustomerOrder updateOrder) {
 
 		return customerOrderRepository.findById(id).map(updateExisting -> {
 	    	  // Only update the fields that should be updated
@@ -147,7 +148,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 	        if (updateOrder.getRoReceiveDate()!= null) {
 	            updateExisting.setRoReceiveDate(updateOrder.getRoReceiveDate());
 	        }
-	        
+			if (updateOrder.getRoDate()!= null) {
+				updateExisting.setRoDate(updateOrder.getRoDate());
+			}
 	        if (updateOrder.getCustomerName()!= null) {
 	            updateExisting.setCustomerName(updateOrder.getCustomerName());
 	        }

@@ -35,6 +35,9 @@ import org.hibernate.annotations.GenericGenerator;
 		
 		@Column
 		private String roReceiveDate;
+
+		@Column
+		private String roDate;
 		
 		@Column
 		private String customerName;
