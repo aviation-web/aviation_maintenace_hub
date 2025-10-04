@@ -2,19 +2,16 @@ package com.aeromaintenance.customerOrder;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-	
+import org.hibernate.annotations.GenericGenerator;
 
-	@Getter
+
+@Getter
 	@Setter
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -22,8 +19,13 @@ import lombok.Setter;
 	@Table(name = "Customer_Order")
 	public class CustomerOrder {
 		@Id
-		@Column
-		private Long srNo;
+		@GeneratedValue(generator = "customer-order-generator")
+		@GenericGenerator(
+				name = "customer-order-generator",
+				strategy = "com.aeromaintenance.customerOrder.CustomerOrderIdGenerator"
+		)
+		@Column(name = "sr_no")
+		private String srNo;
 
 		@Column
 	    private Long orderNo;
@@ -48,9 +50,9 @@ import lombok.Setter;
 		
 		@Column
 		private Long batchNo;
-		
+
 		@Column
-		private String status;	
+		private String status;
 		
 		@Column
 		private String remark;
@@ -82,5 +84,10 @@ import lombok.Setter;
 		@Column
 		private String documentPath;
 
-
+	@PrePersist
+	public void prePersist() {
+		if (this.status == null) {
+			this.status = "OPEN";
+		}
+	}
 }

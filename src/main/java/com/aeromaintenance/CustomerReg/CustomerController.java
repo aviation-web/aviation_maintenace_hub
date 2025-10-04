@@ -52,5 +52,11 @@ public class CustomerController {
     public void deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
     }
+
+    @GetMapping("/customernames")
+    public ResponseEntity<List<String>> getAllCustomerNames() {
+        List<String> names = customerService.getAllCustomerNames();
+        return ResponseEntity.ok(names);
+    }
 }
 

@@ -56,4 +56,5 @@ public class CustomerRepairProductController {
     public ResponseEntity<List<CustomerRepairDTO>> getPartNumPartDesc(){
         return ResponseEntity.ok(service.getProdNumProdDesc());
     }
+
 }

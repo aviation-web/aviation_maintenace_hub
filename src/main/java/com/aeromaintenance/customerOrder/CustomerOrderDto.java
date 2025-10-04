@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CustomerOrderDto {
-	  private Long  srNo;
+	  private String  srNo;
 	  private Long orderNo;
 	  private Long batchNo;
 	  private Long roNo;

@@ -58,7 +58,7 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 	}
 
 	@Override
-	public boolean existsBySrNo(Long srNo) {
+	public boolean existsBySrNo(String srNo) {
 		Number count = (Number) entityManager.createNativeQuery(
 	            "SELECT COUNT(*) FROM customer_order_history WHERE sr_no = ?")
 	            .setParameter(1, srNo)
@@ -68,7 +68,7 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 	}
 
 	@Override
-	public int updateCustomerOrderTemp(String userAction, Long srNo) {
+	public int updateCustomerOrderTemp(String userAction, String srNo) {
 		int result=0;
 		 try {
 			  Query query = entityManager.createNativeQuery("UPDATE customer_order SET user_action = ? WHERE sr_no =?");
@@ -82,7 +82,7 @@ public class CustomerOrderRepositoryCustomImpl implements CustomerOrderRepositor
 	}
 
 	@Override
-	public int updateEditCustomerOrderTemp(String actionCode, Long srNo) {
+	public int updateEditCustomerOrderTemp(String actionCode, String srNo) {
 		
 			 int result =0;
 			 try {
