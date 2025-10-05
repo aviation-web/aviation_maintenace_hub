@@ -15,7 +15,7 @@ import lombok.Setter;
 public class CustomerOrderDto {
 	  private String  srNo;
 	  private Long orderNo;
-	  private Long batchNo;
+	  private String batchNo;
 	  private Long roNo;
 	  private String roReceiveDate;
 	  private String roDate;

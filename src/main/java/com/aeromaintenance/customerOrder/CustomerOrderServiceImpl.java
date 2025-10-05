@@ -99,7 +99,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
             String customer_name = (String) row[5];
         	String part_desc = (String) row[6];
         	String part_no = (String) row[7];
-        	Long batch_no = ((Number) row[8]).longValue();
+        	String batch_no = (String) row[8];
         	Integer qty = ((Number) row[9]).intValue();
             String status = (String) row[10];
             String document_path = (String) row[11];

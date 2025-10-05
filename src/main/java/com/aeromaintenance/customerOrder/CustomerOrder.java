@@ -52,7 +52,7 @@ import org.hibernate.annotations.GenericGenerator;
 		private Integer quantity;
 		
 		@Column
-		private Long batchNo;
+		private String batchNo;
 
 		@Column
 		private String status;
