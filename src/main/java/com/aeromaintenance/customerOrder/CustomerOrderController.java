@@ -172,6 +172,7 @@ public class CustomerOrderController {
 	        entity.setOrderNo(orderNumber);
 	        entity.setRoNo(dto.getRoNo());
 	        entity.setRoReceiveDate(dto.getRoReceiveDate());
+			entity.setRoDate(dto.getRoDate());
 	        entity.setPartNo(dto.getPartNo());
 	        entity.setPartDescription(dto.getPartDescription());
 	        entity.setQuantity(dto.getQuantity());
