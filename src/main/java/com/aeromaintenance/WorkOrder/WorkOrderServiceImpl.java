@@ -2,9 +2,7 @@ package com.aeromaintenance.WorkOrder;
 
 import com.aeromaintenance.MaterialRequisition.MaterialRequisition;
 import com.aeromaintenance.WorkOrder.WorkOrderDTO.WorkOrderStepDTO;
-import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
-import com.aeromaintenance.customerOrder.CustomerOrderRepositoryCustom;
-import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
+import com.aeromaintenance.customerOrder.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,28 +31,37 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private WorkOrderMapper workOrderMapper;
 
     @Autowired
+    private CustomerOrderRepository customerOrderRepository;
+
+
+    @Autowired
     private CustomerOrderRepositoryCustom customerOrderRepositoryCustom;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Transactional
     @Override
-    public String createWorkOrder(WorkOrderDTO dto) {
+    public WorkOrder createWorkOrder(WorkOrderDTO dto) {
         WorkOrder entity = mapToEntity(dto);
 
-        //  Custom formatted work order number like "AMC0001"
+        // Generate custom work order number like "AMC0001"
         entity.setWorkOrderNo(generateNextWorkOrderNo());
+
+        // Set default status as "OPEN"
+        entity.setStatus("OPEN");
+
         WorkOrder savedOrder = repository.save(entity);
 
-        // Update workorder flag = 1 in customer_order_history
+        // Update customer order status to IN-PROGRESS
         if (savedOrder.getRepairOrderNo() != null) {
             entityManager.createNativeQuery(
-                            "UPDATE customer_order_history SET workorder = 1 WHERE order_no = :orderNo")
-                    .setParameter("orderNo", savedOrder.getRepairOrderNo())
+                            "UPDATE customer_order SET status = 'IN-PROGRESS' WHERE sr_no = :srNo")
+                    .setParameter("srNo", savedOrder.getRepairOrderNo())
                     .executeUpdate();
         }
 
-        return "WorkOrder Saved Successfully";
+        return savedOrder;
+
     }
 
     @Override
@@ -251,5 +258,12 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return workOrders; // Fully initialized entities
     }
 
-    
+    public List<CustomerOrder> getAllCustomerOrders() {
+        return customerOrderRepository.findAll();
+    }
+
+    @Override
+    public CustomerOrder getCustomerOrderBySrNo(String srNo) {
+        return customerOrderRepository.findById(srNo).orElse(null);
+    }
 }

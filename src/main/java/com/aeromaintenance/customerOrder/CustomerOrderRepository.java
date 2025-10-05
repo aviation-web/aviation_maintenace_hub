@@ -3,11 +3,14 @@ package com.aeromaintenance.customerOrder;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.aeromaintenance.inspectionReport.InspectionReport;
+
+import javax.transaction.Transactional;
 
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, String> {
@@ -24,4 +27,9 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 	@Query("SELECT i FROM CustomerOrder i WHERE i.userAction = '4'")
 	List<CustomerOrder> getAllEditReportList();
 
+
+	@Transactional
+	@Modifying
+	@Query("UPDATE CustomerOrder c SET c.status = :status WHERE c.srNo = :srNo")
+	void updateStatusBySrNo(String srNo, String status);
 }

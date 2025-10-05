@@ -1,5 +1,6 @@
 package com.aeromaintenance.WorkOrder;
 
+import com.aeromaintenance.customerOrder.CustomerOrder;
 import com.aeromaintenance.customerOrder.CustomerOrderHistoryDTO;
 import com.aeromaintenance.customerOrder.CustomerOrderShortDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ public class WorkOrderController {
     private WorkOrderService workOrderService;
 
     @PostMapping
-    public ResponseEntity<String> createWorkOrder(@RequestBody WorkOrderDTO dto) {
-        return ResponseEntity.ok(workOrderService.createWorkOrder(dto));
+    public ResponseEntity<WorkOrder> createWorkOrder(@RequestBody WorkOrderDTO dto) {
+        WorkOrder savedOrder = workOrderService.createWorkOrder(dto);
+        return ResponseEntity.ok(savedOrder);
     }
 
     @GetMapping
@@ -43,12 +45,12 @@ public class WorkOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    // from the customer_order_histry_table
-    @GetMapping("/workordersFromChecker")
-    public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
-        List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
-        return ResponseEntity.ok(pendingOrders);
-    }
+//    // from the customer_order_histry_table
+//    @GetMapping("/workordersFromChecker")
+//    public ResponseEntity<List<CustomerOrderHistoryDTO>> getPendingWorkOrders() {
+//        List<CustomerOrderHistoryDTO> pendingOrders = workOrderService.getPendingWorkOrderHistory();
+//        return ResponseEntity.ok(pendingOrders);
+//    }
 
     @GetMapping("/workorders-short/{srNo}")
     public ResponseEntity<?> getShortWorkOrderBySrNo(@PathVariable String srNo) {
@@ -63,4 +65,22 @@ public class WorkOrderController {
     }
 
 
+    @GetMapping("/workordersFromChecker")
+    public ResponseEntity<List<CustomerOrder>> getAllCustomerOrders() {
+        List<CustomerOrder> orders = workOrderService.getAllCustomerOrders();
+        return ResponseEntity.ok(orders);
+    }
+
+    //  New - fetch one record by srNo
+    @GetMapping("/workordersFromChecker/{srNo}")
+    public ResponseEntity<?> getCustomerOrderBySrNo(@PathVariable String srNo) {
+        CustomerOrder order = workOrderService.getCustomerOrderBySrNo(srNo);
+
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No Customer Order found with srNo = " + srNo);
+        }
+
+        return ResponseEntity.ok(order);
+    }
 }
