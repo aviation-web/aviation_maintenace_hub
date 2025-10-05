@@ -47,22 +47,23 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         // Generate custom work order number like "AMC0001"
         entity.setWorkOrderNo(generateNextWorkOrderNo());
 
-        // Set default status as "OPEN"
+        // Set default status as "OPEN" in WorkOrder
         entity.setStatus("OPEN");
 
         WorkOrder savedOrder = repository.save(entity);
 
-        // Update customer order status to IN-PROGRESS
-        if (savedOrder.getRepairOrderNo() != null) {
-            entityManager.createNativeQuery(
+        // Update customer_order status to IN-PROGRESS using srNo from DTO
+        if (dto.getSrNo() != null && !dto.getSrNo().isEmpty()) {
+            int updated = entityManager.createNativeQuery(
                             "UPDATE customer_order SET status = 'IN-PROGRESS' WHERE sr_no = :srNo")
-                    .setParameter("srNo", savedOrder.getRepairOrderNo())
+                    .setParameter("srNo", dto.getSrNo())
                     .executeUpdate();
+            System.out.println("Rows updated in customer_order: " + updated);
         }
 
         return savedOrder;
-
     }
+
 
     @Override
     public List<WorkOrder> getAllWorkOrders() {
