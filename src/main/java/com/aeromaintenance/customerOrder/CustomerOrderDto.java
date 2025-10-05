@@ -41,6 +41,7 @@ public class CustomerOrderDto {
 	        entity.setPartDescription(this.partDescription);
 	        entity.setRoNo(this.roNo);
 	        entity.setRoReceiveDate(this.roReceiveDate);
+			entity.setRoDate(this.roDate);
 	        entity.setCustomerName(this.customerName);
 	        entity.setBatchNo(this.batchNo);
 	        entity.setQuantity(this.quantity);
@@ -56,6 +57,7 @@ public class CustomerOrderDto {
 	                .partDescription(entity.getPartDescription())
 	                .roNo(entity.getRoNo())
 	                .roReceiveDate(entity.getRoReceiveDate())
+					.roDate(entity.getRoDate())
 	                .customerName(entity.getCustomerName())
 	                .batchNo(entity.getBatchNo())
 	                .quantity(entity.getQuantity())
