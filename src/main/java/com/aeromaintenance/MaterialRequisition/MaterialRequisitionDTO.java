@@ -12,15 +12,18 @@ import java.util.Date;
 public class MaterialRequisitionDTO {
     
     private Long id;
-    private Long materialRequisitionNo;
-    private Long workOrderNo;
+    private String materialRequisitionNo;
+    private String workOrderNo;
     private Date date;
     private Long partNumber;
     private String description;
     private Integer requestedQty;
-    private Integer issueQty;
+//    private Integer issueQty;
     private Integer issuedQty;
-    private String batchLotNo;
+//    private String batchLotNo;
     private String unitOfMeasurement;
+    private String supplierName;
+    private Date curDate;
+    private String status;
 }
 
