@@ -11,7 +11,7 @@ public class CAFormServiceImpl implements CAFormService {
 	
 
 	@Override
-	public CAForm updateReport(Long id, CAForm updateReport) {
+	public CAForm updateReport(String id, CAForm updateReport) {
 		return repository.findById(id)
 	            .map(existingReport -> {
 	                // Update all necessary fields

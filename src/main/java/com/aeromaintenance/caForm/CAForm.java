@@ -20,9 +20,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "ca_form")
 public class CAForm {
+	
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    //private Long id;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 	private String formTrackingNumber;
 	private String workOrderNo;
 	private String item;

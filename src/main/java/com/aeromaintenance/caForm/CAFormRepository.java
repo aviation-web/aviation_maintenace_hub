@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CAFormRepository extends JpaRepository<CAForm, Long>{
+public interface CAFormRepository extends JpaRepository<CAForm, String>{
 
-	@Query("Select m.workOrderNo from WorkOrder m")
+	@Query("Select m.workOrderNo from WorkOrder m where m.status = 'IN-PROGRESS' ")
 	List<String> findAllWorkOrder();
 
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(m.description, m.partNumber, m.qty, m.snBn) " +

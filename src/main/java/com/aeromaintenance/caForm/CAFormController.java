@@ -1,5 +1,7 @@
 package com.aeromaintenance.caForm;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,7 +54,8 @@ public class CAFormController {
 	
 	@PostMapping("/saveCAForm")
 	public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
-		
+	    String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+	    caForm.setFormTrackingNumber(caNumber);
 		repository.save(caForm);
 		
 		return ResponseEntity.ok("Submitted");
@@ -65,14 +68,14 @@ public class CAFormController {
 	}
 	
 	@GetMapping("/getCAFormByID/{id}")
-	public ResponseEntity<CAForm> getCAFormByID(@PathVariable Long id ){
+	public ResponseEntity<CAForm> getCAFormByID(@PathVariable String id ){
 		Optional<CAForm> data= repository.findById(id);
 		CAForm caForm = data.orElseThrow(() -> new RuntimeException("Data not Found"));
 		return ResponseEntity.ok(caForm);
 	}
 	
 	@DeleteMapping("/deleteCAFormByID/{id}")
-	public ResponseEntity<?> deleteCAForm(@PathVariable Long id){
+	public ResponseEntity<?> deleteCAForm(@PathVariable String id){
 		CAForm caForm = repository.findById(id).orElse(null);
 		if(caForm != null) {
 			repository.deleteById(id);
@@ -83,7 +86,7 @@ public class CAFormController {
 	}
 	
 	 @PutMapping("/updateCAForm/{id}")
-	 public ResponseEntity<CAForm> updateCAFormById(@PathVariable Long id, @RequestBody CAForm updateReport) {
+	 public ResponseEntity<CAForm> updateCAFormById(@PathVariable String id, @RequestBody CAForm updateReport) {
 	    	CAForm report = service.updateReport(id, updateReport);
 	        if (report != null) {
 	            return ResponseEntity.ok(report);
