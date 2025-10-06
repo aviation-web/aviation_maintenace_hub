@@ -350,7 +350,7 @@ public class PurchaseRequisitionService {
             // CSV header
             writer.println("PR_Number, P_REQ_NO, Part Number,Description,Current Stock,Required Qty,Required Date,Remark,Created Date");
 
-            List<PurchaseRequisition> requisitions = repository.findByStatus("Opens");
+            List<PurchaseRequisition> requisitions = repository.findByStatus("Open");
 
             for (PurchaseRequisition pr : requisitions) {
                 writer.println(
