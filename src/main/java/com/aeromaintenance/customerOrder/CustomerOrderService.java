@@ -13,7 +13,7 @@ public interface CustomerOrderService {
 	
 	public List<CustomerOrderDto> getAllViewOrderList();
 
-	CustomerOrder updateOrder(Long id, CustomerOrder updateOrder);
+	CustomerOrder updateOrder(String id, CustomerOrder updateOrder);
 
 
 }

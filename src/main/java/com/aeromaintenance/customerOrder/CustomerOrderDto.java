@@ -13,11 +13,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CustomerOrderDto {
-	  private Long  srNo;
+	  private String  srNo;
 	  private Long orderNo;
-	  private Long batchNo;
+	  private String batchNo;
 	  private Long roNo;
 	  private String roReceiveDate;
+	  private String roDate;
 	  private String customerName;
 	  private String partNo;
 	  private String partDescription;
@@ -40,6 +41,7 @@ public class CustomerOrderDto {
 	        entity.setPartDescription(this.partDescription);
 	        entity.setRoNo(this.roNo);
 	        entity.setRoReceiveDate(this.roReceiveDate);
+			entity.setRoDate(this.roDate);
 	        entity.setCustomerName(this.customerName);
 	        entity.setBatchNo(this.batchNo);
 	        entity.setQuantity(this.quantity);
@@ -55,6 +57,7 @@ public class CustomerOrderDto {
 	                .partDescription(entity.getPartDescription())
 	                .roNo(entity.getRoNo())
 	                .roReceiveDate(entity.getRoReceiveDate())
+					.roDate(entity.getRoDate())
 	                .customerName(entity.getCustomerName())
 	                .batchNo(entity.getBatchNo())
 	                .quantity(entity.getQuantity())

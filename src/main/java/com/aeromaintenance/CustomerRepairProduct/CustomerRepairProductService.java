@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerRepairProductService {
@@ -50,8 +51,24 @@ public class CustomerRepairProductService {
         repository.deleteById(id);
     }
 
-    public List<CustomerRepairDTO> getProdNumProdDesc(){
-        return repository .findAllProductNameAndDescriptionDTO();
+    public List<CustomerRepairDTO> getProdNumProdDescByName(String productName) {
+        List<CustomerRepairProduct> products = repository.findByProductName(productName);
+        return products.stream()
+                .map(p -> new CustomerRepairDTO(
+                        p.getProductName(),
+                        p.getProductDescription(),
+                        p.getUnitOfMeasurement(),
+                        p.getProductSerialNumbers() // now in memory, fine
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<CustomerRepairDTO> getAllProdNames() {
+        return repository.findAll().stream()
+                .map(p -> new CustomerRepairDTO(p.getProductName(),  null,                 // baki fields null
+                        null,
+                        null))
+                .collect(Collectors.toList());
     }
 
 }
