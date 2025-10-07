@@ -26,11 +26,11 @@ public class MaterialRequisition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "material_requisition_no", nullable = false)
-    private Long materialRequisitionNo;
+    @Column(name = "material_requisition_no", unique = true, nullable = false)
+    private String materialRequisitionNo;
 
     @Column(name = "workorder_no", nullable = false)
-    private Long workOrderNo;
+    private String workOrderNo;
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -45,16 +45,26 @@ public class MaterialRequisition {
     @Column(name = "requested_qty", nullable = false)
     private Integer requestedQty;
 
-    @Column(name= "issue_qty", nullable = false)
-    private Integer issueQty;
+//    @Column(name= "issue_qty", nullable = false)
+//    private Integer issueQty;
 
     @Column(name = "issued_qty", nullable = false)
     private Integer issuedQty;
 
-    @Column(name = "batch_lot_no", nullable = false)
-    private String batchLotNo;
+//    @Column(name = "batch_lot_no")
+//    private String batchLotNo;
 
     @Column(name = "unit_of_measurement", nullable = false)
     private String unitOfMeasurement;
+
+    @Column(name = "supplier_name", nullable = false)
+    private String supplierName;
+
+    @Column(name = "cur_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date curDate;
+
+    @Column(name = "status", nullable = false)
+    private String status = "Open"; // 1 = active, 0 = submitted/hidden
 }
 
