@@ -34,4 +34,11 @@ public class CAFormServiceImpl implements CAFormService {
 	            .orElse(null);
 	}
 
+
+	@Override
+	public void updateWorkOrderStatus(CAForm caForm, String status) {
+		repository.updateWorkOrderStatus(caForm.getWorkOrderNo(),status);
+		//repository.updateCustomerOrderStatus(caForm.get);
+	}
+
 }

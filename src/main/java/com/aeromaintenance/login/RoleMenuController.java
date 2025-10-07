@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.aeromaintenance.product.Product;
+import com.common.ResponseBean;
+
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,10 +74,10 @@ public class RoleMenuController {
 	
 	  //Register user 
 	 @PostMapping("/addUser") 
-	 public ResponseEntity<String>   addUser(@RequestBody Login user) { 
+	 public ResponseEntity<ResponseBean<String>>   addUser(@RequestBody Login user) { 
 		 System.out.println("Creating user: " + user);
-		 loginService.addUser(user); 
-	      return ResponseEntity.ok("User Registered Successfully!"); 
+		 //ResponseEntity<ResponseBean<String>> responseBean = loginService.addUser(user); 
+	      return ResponseEntity.ok(loginService.addUser(user)); 
 	  }
     
     @PostMapping("/addRole")

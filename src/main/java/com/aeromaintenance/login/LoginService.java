@@ -9,11 +9,14 @@ import java.util.UUID;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.aeromaintenance.Utils.EmailService;
 import com.aeromaintenance.storeAcceptance.StoreAcc;
+import com.aeromaintenance.supplier.SupplierModel;
+import com.common.ResponseBean;
 
 
 @Service
@@ -63,23 +66,37 @@ public class LoginService {
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-	public String addUser(Login user) {
+    
+    
+	public ResponseBean<String> addUser(Login user) {
+		ResponseBean<String> responseBean = null;
 		String randomPassword = generateRandomPassword(8);
 	    String encodedPassword = passwordEncoder.encode(randomPassword);
 	    
 	    user.setPassword(encodedPassword);
 	    user.setPasswordExpired(true);  // Flag to indicate password needs to be changed
-	    loginRepository.save(user);
+	    Long usr = loginRepository.exists(user.getUsername());
+	    if(usr != null) {
+	    	 responseBean = new ResponseBean<>(
+	    	        "004",
+	    	        "UserName Already Exist.", 
+	    	        "" 
+	    	    );
+	    }else {
+	    	loginRepository.save(user);
 		try {
 			emailService.sendEmail(user.getEmail(), user.getUsername(), randomPassword);
-			return "Email sent successfully";
+			//return "User created successfully";
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "Failed to send email: " + e.getMessage();
+			 responseBean = new ResponseBean<>(
+	    	        "500",
+	    	        "Internal Error.", 
+	    	        "" 
+	    	    );
 		}
-		
-		
+	    
+	}
+		return responseBean;
 	}
 
 	public Login UpdateUser(Long id, Login updateLogin){

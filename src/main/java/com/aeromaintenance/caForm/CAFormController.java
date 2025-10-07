@@ -57,13 +57,14 @@ public class CAFormController {
 	    String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
 	    caForm.setFormTrackingNumber(caNumber);
 		repository.save(caForm);
+		service.updateWorkOrderStatus(caForm,"Closed");
 		
-		return ResponseEntity.ok("Submitted");
+		return ResponseEntity.ok(caForm);
 	}
 	
 	@GetMapping("/viewCAForm")
-	public ResponseEntity<List<CAForm>> viewCAFormList(){
-		List<CAForm> list = repository.findAll();
+	public ResponseEntity<List<workOrderDetailDto>> viewCAFormList(){
+		List<workOrderDetailDto> list = repository.getCAAndWorkOrderDetails();
 		return ResponseEntity.ok(list);
 	}
 	
@@ -88,6 +89,8 @@ public class CAFormController {
 	 @PutMapping("/updateCAForm/{id}")
 	 public ResponseEntity<CAForm> updateCAFormById(@PathVariable String id, @RequestBody CAForm updateReport) {
 	    	CAForm report = service.updateReport(id, updateReport);
+			service.updateWorkOrderStatus(updateReport,"ReOpen");
+
 	        if (report != null) {
 	            return ResponseEntity.ok(report);
 	        } else {
