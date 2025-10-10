@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,12 +19,11 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional
     @Override
     public MaterialRequisitionDTO addMaterialRequisition(MaterialRequisitionDTO dto) {
-        // Fetch the last MR number
+        // Fetch last MR number
         String lastNo = repository.findLastMaterialRequisitionNo();
-
-        // Generate next number
         String nextNo = generateNextMaterialRequisitionNo(lastNo);
 
         // Convert DTO to Entity
@@ -31,15 +31,16 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
         entity.setMaterialRequisitionNo(nextNo);
         entity.setStatus("Open");
 
-        // Save
+        // Save material requisition
         entity = repository.save(entity);
 
-        if (dto.getId() != null) {
+        // Update WorkOrder status
+        if (dto.getWorkOrderNo() != null && !dto.getWorkOrderNo().isEmpty()) {
             int updated = entityManager.createNativeQuery(
-                            "UPDATE material_requisition SET status = 'IN-PROGRESS' WHERE id = :id")
-                    .setParameter("id", dto.getId())
+                            "UPDATE work_order SET status = 'IN-PROGRESS' WHERE work_order_no = :work_order_no")
+                    .setParameter("work_order_no", dto.getWorkOrderNo())
                     .executeUpdate();
-            System.out.println("Rows updated in customer_order: " + updated);
+            System.out.println("Rows updated in work_order: " + updated);
         }
 
         return convertToDTO(entity);
