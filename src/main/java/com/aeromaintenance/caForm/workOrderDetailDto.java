@@ -38,6 +38,11 @@ public class workOrderDetailDto {
 		this.repairOrderNo = repairOrderNo;
 	}
 	
+public workOrderDetailDto(String customerName,String repairOrderNo) {
+		this.customerName = customerName;
+		this.repairOrderNo = repairOrderNo;
+	}
+	
 public workOrderDetailDto(String workOrderNo, String customerName, String repairOrderNo, String CAFormNo, String description, 
 		String partNo, String item, Integer quantity, String serialNo, String status, String remark) {
 		this.workOrderNumber = workOrderNo;

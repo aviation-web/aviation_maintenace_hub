@@ -58,7 +58,7 @@ public class CAFormController {
 	    caForm.setFormTrackingNumber(caNumber);
 		repository.save(caForm);
 		service.updateWorkOrderStatus(caForm,"Closed");
-		
+		service.updateCustomerOrderStatus(caForm);
 		return ResponseEntity.ok(caForm);
 	}
 	

@@ -6,4 +6,6 @@ public interface CAFormService {
 
 	void updateWorkOrderStatus(CAForm caForm, String status);
 
+	void updateCustomerOrderStatus(CAForm caForm);
+
 }

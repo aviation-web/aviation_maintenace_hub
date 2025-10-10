@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aeromaintenance.WorkOrder.WorkOrder;
+
 @Repository
 public interface CAFormRepository extends JpaRepository<CAForm, String>{
 
@@ -21,6 +23,7 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 	Optional<workOrderDetailDto> findDetailsByWorkOrder(@Param("workOrderNo") String workOrderNo);
 
 	@Modifying
+	
     @Transactional
     @Query("UPDATE WorkOrder i SET i.status = :status WHERE i.workOrderNo = :workOrderNo")
     void updateWorkOrderStatus(@Param("workOrderNo") String workOrderNo, 
@@ -29,4 +32,13 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.workOrderNo, w.customerName, w.repairOrderNo, c.formTrackingNumber, c.description, c.partNo, c.item, c.quantity, c.serialNo, c.status, c.remarks)" +
 		       "FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
 	List<workOrderDetailDto> getCAAndWorkOrderDetails();
+
+	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.customerName, w.repairOrderNo)" +
+		       "FROM WorkOrder w WHERE w.workOrderNo = :workOrderNo")
+	workOrderDetailDto getCustomerOrderDetail(@Param("workOrderNo")String workOrderNo);
+
+	@Modifying
+    @Transactional
+    @Query("UPDATE CustomerOrder i SET i.status = 'Closed' WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
+	void updateCustomerOrderStatus(@Param("customerName")String customerName, @Param("roNo")Long long1, @Param("partNo")String partNo);
 }
