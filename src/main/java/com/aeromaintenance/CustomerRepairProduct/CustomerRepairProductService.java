@@ -8,7 +8,9 @@ import com.common.ProductDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,14 +56,22 @@ public class CustomerRepairProductService {
     public List<CustomerRepairDTO> getProdNumProdDescByName(String productName) {
         List<CustomerRepairProduct> products = repository.findByProductName(productName);
         return products.stream()
-                .map(p -> new CustomerRepairDTO(
-                        p.getProductName(),
-                        p.getProductDescription(),
-                        p.getUnitOfMeasurement(),
-                        p.getProductSerialNumbers() // now in memory, fine
-                ))
+                .map(p -> {
+                    Map<String, String> serialMap = new HashMap<>();
+                    List<String> serials = p.getProductSerialNumbers();
+                    for (int i = 0; i < serials.size(); i++) {
+                        serialMap.put("serial" + (i + 1), serials.get(i)); // serial1, serial2...
+                    }
+                    return new CustomerRepairDTO(
+                            p.getProductName(),
+                            p.getProductDescription(),
+                            p.getUnitOfMeasurement(),
+                            serialMap
+                    );
+                })
                 .collect(Collectors.toList());
     }
+
 
     public List<CustomerRepairDTO> getAllProdNames() {
         return repository.findAll().stream()
