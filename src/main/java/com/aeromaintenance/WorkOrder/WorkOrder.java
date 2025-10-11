@@ -37,7 +37,7 @@ public class WorkOrder {
     private LocalDate qualityManagerSignDate;
     private LocalDate workshopManagerSignDate;
     private String snBn;
-    private String srNo; // customer_order sr_no
+    private String srNumber; // customer_order sr_no
 
     //  NEW FIELD
     private String status; // e.g. "OPEN", "IN-PROGRESS", "COMPLETED"
