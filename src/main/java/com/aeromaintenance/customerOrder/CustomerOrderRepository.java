@@ -32,4 +32,7 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 	@Modifying
 	@Query("UPDATE CustomerOrder c SET c.status = :status WHERE c.srNo = :srNo")
 	void updateStatusBySrNo(String srNo, String status);
+
+	List<CustomerOrder> findByStatus(String status);
+
 }

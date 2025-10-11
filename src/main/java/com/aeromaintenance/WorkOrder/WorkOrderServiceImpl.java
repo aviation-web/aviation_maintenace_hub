@@ -267,4 +267,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public CustomerOrder getCustomerOrderBySrNo(String srNo) {
         return customerOrderRepository.findById(srNo).orElse(null);
     }
+
+    @Override
+    public List<CustomerOrder> getCustomerOrdersByStatus(String status) {
+        return customerOrderRepository.findByStatus(status);
+    }
+
 }
