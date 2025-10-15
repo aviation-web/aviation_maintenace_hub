@@ -83,4 +83,18 @@ public class WorkOrderController {
 
         return ResponseEntity.ok(order);
     }
+
+    // Get only OPEN status Customer Orders
+    @GetMapping("/open")
+    public ResponseEntity<List<CustomerOrder>> getOpenCustomerOrders() {
+        List<CustomerOrder> openOrders = workOrderService.getCustomerOrdersByStatus("OPEN");
+
+        if (openOrders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+
+        return ResponseEntity.ok(openOrders);
+    }
+
 }

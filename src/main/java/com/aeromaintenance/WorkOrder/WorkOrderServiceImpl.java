@@ -53,10 +53,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         WorkOrder savedOrder = repository.save(entity);
 
         // Update customer_order status to IN-PROGRESS using srNo from DTO
-        if (dto.getSrNo() != null && !dto.getSrNo().isEmpty()) {
+        if (dto.getSrNumber() != null && !dto.getSrNumber().isEmpty()) {
             int updated = entityManager.createNativeQuery(
                             "UPDATE customer_order SET status = 'IN-PROGRESS' WHERE sr_no = :srNo")
-                    .setParameter("srNo", dto.getSrNo())
+                    .setParameter("srNo", dto.getSrNumber())
                     .executeUpdate();
             System.out.println("Rows updated in customer_order: " + updated);
         }
@@ -267,4 +267,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public CustomerOrder getCustomerOrderBySrNo(String srNo) {
         return customerOrderRepository.findById(srNo).orElse(null);
     }
+
+    @Override
+    public List<CustomerOrder> getCustomerOrdersByStatus(String status) {
+        return customerOrderRepository.findByStatus(status);
+    }
+
 }
