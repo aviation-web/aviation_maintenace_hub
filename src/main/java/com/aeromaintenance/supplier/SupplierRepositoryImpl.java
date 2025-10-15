@@ -35,12 +35,10 @@ public class SupplierRepositoryImpl {
 						"housekeeping_procedure, user_Name, user_Role, user_Id, user_Action, checker_by, " +
 						"supplier_id, country_code, iso_certificate" +
 						") VALUES (" +
-						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
-						")"
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		);
 
+		// Set all parameters as strings
 		query.setParameter(1, form.getRev());
 		query.setParameter(2, form.getSysdate());
 		query.setParameter(3, form.getSupplierName());
@@ -66,11 +64,11 @@ public class SupplierRepositoryImpl {
 
 		query.setParameter(20, form.getCarDgcaApproval());
 		query.setParameter(21, form.getIsoRegistrationPlans());
-		query.setParameter(22, form.getNumEmp());
-		query.setParameter(23, form.getNumOpeShift());
+		query.setParameter(22, form.getNumEmp() != null ? form.getNumEmp().toString() : null);
+		query.setParameter(23, form.getNumOpeShift() != null ? form.getNumOpeShift().toString() : null);
 		query.setParameter(24, form.getQuaManual());
 
-		query.setParameter(25, form.getTurnOver());
+		query.setParameter(25, form.getTurnOver() != null ? form.getTurnOver().toString() : null);
 		query.setParameter(26, form.getIndependenceManuf());
 		query.setParameter(27, form.getDocumentedOperative());
 		query.setParameter(28, form.getDocumentedProcedure());
@@ -107,12 +105,13 @@ public class SupplierRepositoryImpl {
 		query.setParameter(54, form.getUserId());
 		query.setParameter(55, form.getUserAction());
 		query.setParameter(56, form.getCheckerBy());
-		query.setParameter(57, "" + form.getSupplierId());
+		query.setParameter(57, form.getSupplierId() != null ? form.getSupplierId().toString() : null);
 		query.setParameter(58, form.getCountryCode());
 		query.setParameter(59, form.getIsoCertificate());
 
 		return query.executeUpdate();
 	}
+
 
 
 
