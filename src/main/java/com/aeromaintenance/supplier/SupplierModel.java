@@ -43,6 +43,9 @@ public class SupplierModel {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "county_code")
+    private String countryCode;
+
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -54,7 +57,10 @@ public class SupplierModel {
 
     @Column(name = "qm_name")
     private String qualityManagerName;
-    
+
+    @Column(name = "qm_country_code")
+    private String qualityManagerCountryCode;
+
     @Column(name = "qm_phone_number")
     private String qualityManagerPhoneNumber;
 
@@ -63,7 +69,10 @@ public class SupplierModel {
 
     @Column(name = "sales_representative_name")
     private String saleRepresentativeName;
-    
+
+    @Column(name = "sale_country_code")
+    private String saleRepresentativeCountryCode;
+
     @Column(name = "sale_phone_number")
     private String saleRepresentativePhoneNumber;
 

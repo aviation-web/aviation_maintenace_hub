@@ -7,11 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import lombok.Data;
 
@@ -242,4 +238,18 @@ public class SupplierDto {
     private String userId;
     private String userAction;
     private String checkerBy;
+
+
+
+ @NotBlank(message = "Sale Representative Country Code is required")
+ @Pattern(regexp = "^[0-9]{1,4}$", message = "Sale Representative Country Code must be numeric (1 to 4 digits)")
+ private String saleRepresentativeCountryCode;
+
+ @NotBlank(message = "Quality Manager Country Code is required")
+ @Pattern(regexp = "^[0-9]{1,4}$", message = "Quality Manager Country Code must be numeric (1 to 4 digits)")
+ private String qualityManagerCountryCode;
+
+ @NotBlank(message = "Country Code is required")
+ @Pattern(regexp = "^[0-9]{1,4}$", message = "Country Code must be numeric (1 to 4 digits)")
+ private String countryCode;
 }
