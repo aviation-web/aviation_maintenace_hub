@@ -21,7 +21,7 @@ public class SupplierRepositoryImpl {
 				"rev, sysdate, supplier_name, address, phone_number, fax, email_id, " +
 				"qm_name, qm_phone_number, qm_email_id, quality_manager_country_code, " +  // ✅ added
 				"sales_representative_name, sale_phone_number, sale_email_id, sale_representative_country_code, " + // ✅ added
-				"core_products, years_in_business, alredy_iso_standard, iso_registered, iso_standard, " +
+				"core_products, years_in_business, iso_registered, iso_standard, " +
 				"car_dgca_approval, iso_registration_plans, total_employees, operating_shifts, quality_manual, " +
 				"annual_turnover, quality_assurance_independence, documented_corrective_preventive_actions, " +
 				"quality_record_management, product_meets_specifications, incoming_process_documented, sampling_plan, " +
@@ -56,55 +56,55 @@ public class SupplierRepositoryImpl {
 
 		query.setParameter(16, form.getCoreProcess());
 		query.setParameter(17, form.getWorkYear());
-		query.setParameter(18, form.getAreYouIsoRegistered());
-		query.setParameter(19, form.getIsoRegistered());
-		query.setParameter(20, form.getIsoStandard());
+//		query.setParameter(18, form.getAreYouIsoRegistered());
+		query.setParameter(18, form.getIsoRegistered());
+		query.setParameter(19, form.getIsoStandard());
 
-		query.setParameter(21, form.getCarDgcaApproval());
-		query.setParameter(22, form.getIsoRegistrationPlans());
-		query.setParameter(23, form.getNumEmp());
-		query.setParameter(24, form.getNumOpeShift());
-		query.setParameter(25, form.getQuaManual());
+		query.setParameter(20, form.getCarDgcaApproval());
+		query.setParameter(21, form.getIsoRegistrationPlans());
+		query.setParameter(22, form.getNumEmp());
+		query.setParameter(23, form.getNumOpeShift());
+		query.setParameter(24, form.getQuaManual());
 
-		query.setParameter(26, form.getTurnOver());
-		query.setParameter(27, form.getIndependenceManuf());
-		query.setParameter(28, form.getDocumentedOperative());
-		query.setParameter(29, form.getDocumentedProcedure());
-		query.setParameter(30, form.getProductShipment());
+		query.setParameter(25, form.getTurnOver());
+		query.setParameter(26, form.getIndependenceManuf());
+		query.setParameter(27, form.getDocumentedOperative());
+		query.setParameter(28, form.getDocumentedProcedure());
+		query.setParameter(29, form.getProductShipment());
 
-		query.setParameter(31, form.getProcessDocumented());
-		query.setParameter(32, form.getSamplingIncomingInsp());
-		query.setParameter(33, form.getReceivingInspectionResultsOnFile());
-		query.setParameter(34, form.getIdentificationMaintained());
-		query.setParameter(35, form.getSepInsMaterial());
-		query.setParameter(36, form.getNonConMaterial());
-		query.setParameter(37, form.getAffectCusReq());
+		query.setParameter(30, form.getProcessDocumented());
+		query.setParameter(31, form.getSamplingIncomingInsp());
+		query.setParameter(32, form.getReceivingInspectionResultsOnFile());
+		query.setParameter(33, form.getIdentificationMaintained());
+		query.setParameter(34, form.getSepInsMaterial());
+		query.setParameter(35, form.getNonConMaterial());
+		query.setParameter(36, form.getAffectCusReq());
 
-		query.setParameter(38, form.getWrittenWorkInstructionsAvaibleInStation());
-		query.setParameter(39, form.getFinalInspectionEvidence());
-		query.setParameter(40, form.getStatisMethod());
+		query.setParameter(37, form.getWrittenWorkInstructionsAvaibleInStation());
+		query.setParameter(38, form.getFinalInspectionEvidence());
+		query.setParameter(39, form.getStatisMethod());
 
-		query.setParameter(41, form.getSuppliedDocument());
-		query.setParameter(42, form.getIncludeMethod());
-		query.setParameter(43, form.getQualityCapabilities());
-		query.setParameter(44, form.getApprovedSupplierList());
-		query.setParameter(45, form.getMarketPrice());
+		query.setParameter(40, form.getSuppliedDocument());
+		query.setParameter(41, form.getIncludeMethod());
+		query.setParameter(42, form.getQualityCapabilities());
+		query.setParameter(43, form.getApprovedSupplierList());
+		query.setParameter(44, form.getMarketPrice());
 
-		query.setParameter(46, form.getCertifiedTestReports());
-		query.setParameter(47, form.getSupplierOnTimeDelivery());
-		query.setParameter(48, form.getEquipCalibrated());
-		query.setParameter(49, form.getRecalibration());
-		query.setParameter(50, form.getScopeOfWork());
+		query.setParameter(45, form.getCertifiedTestReports());
+		query.setParameter(46, form.getSupplierOnTimeDelivery());
+		query.setParameter(47, form.getEquipCalibrated());
+		query.setParameter(48, form.getRecalibration());
+		query.setParameter(49, form.getScopeOfWork());
 
-		query.setParameter(51, form.getSafetyProgram());
-		query.setParameter(52, form.getHouseKeeping());
-		query.setParameter(53, form.getUserName());
-		query.setParameter(54, form.getUserRole());
-		query.setParameter(55, form.getUserId());
-		query.setParameter(56, form.getUserAction());
-		query.setParameter(57, form.getCheckerBy());
-		query.setParameter(58, "" + form.getSupplierId());
-		query.setParameter(59, form.getCountryCode()); // ✅ added at last
+		query.setParameter(50, form.getSafetyProgram());
+		query.setParameter(51, form.getHouseKeeping());
+		query.setParameter(52, form.getUserName());
+		query.setParameter(53, form.getUserRole());
+		query.setParameter(54, form.getUserId());
+		query.setParameter(55, form.getUserAction());
+		query.setParameter(56, form.getCheckerBy());
+		query.setParameter(57, "" + form.getSupplierId());
+		query.setParameter(58, form.getCountryCode()); // ✅ added at last
 
 		int result = query.executeUpdate();
 		return result;

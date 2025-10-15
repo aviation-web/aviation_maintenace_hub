@@ -85,8 +85,8 @@ public class SupplierModel {
     @Column(name = "years_in_business")
     private String workYear;
 
-    @Column(name = "alredy_iso_standard")
-    private String areYouIsoRegistered;
+//    @Column(name = "alredy_iso_standard")
+//    private String areYouIsoRegistered;
     
     @Column(name = "iso_registered") 
     private String isoRegistered;

@@ -85,9 +85,9 @@ public class SupplierDto {
     //@Column(name = "years_in_business")
     private String workYear;
 
-    @Size(max = 255, message = "ISO iso_registered cannot exceed 255 characters")
-   // @Column(name = "alredy_iso_standard")
-    private String areYouIsoRegistered;
+//    @Size(max = 255, message = "ISO iso_registered cannot exceed 255 characters")
+//   // @Column(name = "alredy_iso_standard")
+//    private String areYouIsoRegistered;
     
     //@Column(name = "iso_registered") 
     private String isoRegistered;
