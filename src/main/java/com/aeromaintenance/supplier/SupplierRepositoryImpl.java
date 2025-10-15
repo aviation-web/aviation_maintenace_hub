@@ -35,10 +35,12 @@ public class SupplierRepositoryImpl {
 						"housekeeping_procedure, user_Name, user_Role, user_Id, user_Action, checker_by, " +
 						"supplier_id, country_code, iso_certificate" +
 						") VALUES (" +
-						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
+						")"
 		);
 
-		// Existing parameters
 		query.setParameter(1, form.getRev());
 		query.setParameter(2, form.getSysdate());
 		query.setParameter(3, form.getSupplierName());
@@ -50,16 +52,15 @@ public class SupplierRepositoryImpl {
 		query.setParameter(8, form.getQualityManagerName());
 		query.setParameter(9, form.getQualityManagerPhoneNumber());
 		query.setParameter(10, form.getQualityManagerEmailId());
-		query.setParameter(11, form.getQualityManagerCountryCode()); // ✅ added
+		query.setParameter(11, form.getQualityManagerCountryCode());
 
 		query.setParameter(12, form.getSaleRepresentativeName());
 		query.setParameter(13, form.getSaleRepresentativePhoneNumber());
 		query.setParameter(14, form.getSaleRepresentativeEmailId());
-		query.setParameter(15, form.getSaleRepresentativeCountryCode()); // ✅ added
+		query.setParameter(15, form.getSaleRepresentativeCountryCode());
 
 		query.setParameter(16, form.getCoreProcess());
 		query.setParameter(17, form.getWorkYear());
-//		query.setParameter(18, form.getAreYouIsoRegistered());
 		query.setParameter(18, form.getIsoRegistered());
 		query.setParameter(19, form.getIsoStandard());
 
@@ -107,12 +108,12 @@ public class SupplierRepositoryImpl {
 		query.setParameter(55, form.getUserAction());
 		query.setParameter(56, form.getCheckerBy());
 		query.setParameter(57, "" + form.getSupplierId());
-		query.setParameter(58, form.getCountryCode()); // ✅ added at last
-		query.setParameter(59,form.getIsoCertificate());
+		query.setParameter(58, form.getCountryCode());
+		query.setParameter(59, form.getIsoCertificate());
 
-		int result = query.executeUpdate();
-		return result;
+		return query.executeUpdate();
 	}
+
 
 
 
