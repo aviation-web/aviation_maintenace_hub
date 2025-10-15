@@ -92,7 +92,11 @@ public class SupplierDto {
     //@Column(name = "iso_registered") 
     private String isoRegistered;
 
-    @Size(max = 255, message = "ISO standard cannot exceed 255 characters")
+   @Size(max = 255, message = "ISO Certificate cannot exceed 255 characters")
+   private String isoCertificate;
+
+
+ @Size(max = 255, message = "ISO standard cannot exceed 255 characters")
    // @Column(name = "iso_standard")
     private String isoStandard;
 

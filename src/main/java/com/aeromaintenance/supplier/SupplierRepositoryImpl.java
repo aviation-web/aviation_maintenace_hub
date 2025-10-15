@@ -17,23 +17,26 @@ public class SupplierRepositoryImpl {
 	    private EntityManager entityManager;
 
 	public int insertSupplierForm(SupplierDto form) {
-		Query query = entityManager.createNativeQuery("INSERT INTO supplier_history1 (" +
-				"rev, sysdate, supplier_name, address, phone_number, fax, email_id, " +
-				"qm_name, qm_phone_number, qm_email_id, quality_manager_country_code, " +  // ✅ added
-				"sales_representative_name, sale_phone_number, sale_email_id, sale_representative_country_code, " + // ✅ added
-				"core_products, years_in_business, iso_registered, iso_standard, " +
-				"car_dgca_approval, iso_registration_plans, total_employees, operating_shifts, quality_manual, " +
-				"annual_turnover, quality_assurance_independence, documented_corrective_preventive_actions, " +
-				"quality_record_management, product_meets_specifications, incoming_process_documented, sampling_plan, " +
-				"rece_inspe_results_on_file, trace_Identi_maintenance, material_isolation_procedure, " +
-				"isolating_nonconforming_material, customer_deviation_referred, written_work_instructions, " +
-				"final_inspection_evidence, statistical_methods_used, customer_documents_control, " +
-				"rev_change_hand_include_method, supplier_quality_evaluations, approved_supplier_list, " +
-				"supplier_market_price_competence, certified_test_reports, supplier_on_time_delivery, " +
-				"equipment_calibrated, gauges_certified, gauges_sufficient, adequate_area_safety, " +
-				"housekeeping_procedure, user_Name, user_Role, user_Id, user_Action, checker_by, supplier_id, country_code) " + // ✅ added country_code at the end
-				"VALUES (" +
-				"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		Query query = entityManager.createNativeQuery(
+				"INSERT INTO supplier_history1 (" +
+						"rev, sysdate, supplier_name, address, phone_number, fax, email_id, " +
+						"qm_name, qm_phone_number, qm_email_id, quality_manager_country_code, " +
+						"sales_representative_name, sale_phone_number, sale_email_id, sale_representative_country_code, " +
+						"core_products, years_in_business, iso_registered, iso_standard, " +
+						"car_dgca_approval, iso_registration_plans, total_employees, operating_shifts, quality_manual, " +
+						"annual_turnover, quality_assurance_independence, documented_corrective_preventive_actions, " +
+						"quality_record_management, product_meets_specifications, incoming_process_documented, sampling_plan, " +
+						"rece_inspe_results_on_file, trace_Identi_maintenance, material_isolation_procedure, " +
+						"isolating_nonconforming_material, customer_deviation_referred, written_work_instructions, " +
+						"final_inspection_evidence, statistical_methods_used, customer_documents_control, " +
+						"rev_change_hand_include_method, supplier_quality_evaluations, approved_supplier_list, " +
+						"supplier_market_price_competence, certified_test_reports, supplier_on_time_delivery, " +
+						"equipment_calibrated, gauges_certified, gauges_sufficient, adequate_area_safety, " +
+						"housekeeping_procedure, user_Name, user_Role, user_Id, user_Action, checker_by, " +
+						"supplier_id, country_code, iso_certificate" +
+						") VALUES (" +
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		);
 
 		// Existing parameters
 		query.setParameter(1, form.getRev());
@@ -105,6 +108,7 @@ public class SupplierRepositoryImpl {
 		query.setParameter(56, form.getCheckerBy());
 		query.setParameter(57, "" + form.getSupplierId());
 		query.setParameter(58, form.getCountryCode()); // ✅ added at last
+		query.setParameter(59,form.getIsoCertificate());
 
 		int result = query.executeUpdate();
 		return result;

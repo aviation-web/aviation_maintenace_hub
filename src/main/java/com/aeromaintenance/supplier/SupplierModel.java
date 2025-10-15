@@ -91,6 +91,9 @@ public class SupplierModel {
     @Column(name = "iso_registered") 
     private String isoRegistered;
 
+    @Column(name = "iso_certificate")
+    private String isoCertificate;
+
     @Column(name = "iso_standard")
     private String isoStandard;
 

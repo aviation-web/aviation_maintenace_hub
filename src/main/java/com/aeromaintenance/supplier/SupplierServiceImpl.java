@@ -204,6 +204,9 @@ public class SupplierServiceImpl implements SupplierService {
 			if (supplierModel.getSaleRepresentativeCountryCode() != null) {
 				updateExisting.setSaleRepresentativeCountryCode(supplierModel.getSaleRepresentativeCountryCode());
 			}
+			if (supplierModel.getIsoCertificate() != null) {
+				updateExisting.setIsoCertificate(supplierModel.getIsoCertificate());
+			}
 
 	        return supplierRepository.save(updateExisting);
 	    }).orElse(null); 
