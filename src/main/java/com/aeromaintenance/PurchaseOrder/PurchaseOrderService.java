@@ -200,8 +200,7 @@ public class PurchaseOrderService {
             if (updatedPurchaseOrderDTO.getIgst() != null) {
                 purchaseOrder.setIgst(updatedPurchaseOrderDTO.getIgst());
             }
-            if (updatedPurchaseOrderDTO.getTotal() != nu
-            ll) {
+            if (updatedPurchaseOrderDTO.getTotal() != null) {
                 purchaseOrder.setTotal(updatedPurchaseOrderDTO.getTotal());
             }
             if (updatedPurchaseOrderDTO.getGrandTotal() != null) {
