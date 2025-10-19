@@ -249,8 +249,7 @@ public class SupplierDto {
  @Pattern(regexp = "^\\+?[0-9]{1,4}$", message = "Country Code must be numeric (1 to 4 digits, optional + sign)")
  private String countryCode;
 
- @NotBlank(message = "Quality Manager Country Code is required")
- @Pattern(regexp = "^\\+?[0-9]{1,4}$", message = "Quality Manager Country Code must be numeric (1 to 4 digits, optional + sign)")
+ @Pattern(regexp = "^(\\+?[0-9]{1,4})?$", message = "Quality Manager Country Code must be numeric (1 to 4 digits, optional + sign)")
  private String qualityManagerCountryCode;
 
  @NotBlank(message = "Sale Representative Country Code is required")
