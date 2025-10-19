@@ -75,6 +75,7 @@ public class PurchaseOrderController {
             order.setDelivery(request.getDelivery());
             order.setDeliveryAddress(request.getDeliveryAddress());
             order.setPaymentTerms(request.getPaymentTerms());
+            order.setAddress(request.getAddress());
 
             order.setUnit(req.getUnits());
             order.setRatePerUnit(req.getRate());

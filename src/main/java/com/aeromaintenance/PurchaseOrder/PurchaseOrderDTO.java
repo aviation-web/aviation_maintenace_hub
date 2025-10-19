@@ -17,6 +17,7 @@ public class PurchaseOrderDTO {
     private String deliveryAddress;
     private String paymentTerms;
     private String status;
+    private String Address;
 
     // Line Item Fields
     private String partNumber;

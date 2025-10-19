@@ -42,6 +42,7 @@ public class PurchaseOrder {
     private String ourReference;
     private String yourReference;
     private String delivery;
+    private String Address;
     
     @Column(name = "sr_no", unique = true)
     private Integer srNo;

@@ -148,6 +148,9 @@ public class PurchaseOrderService {
             if (updatedPurchaseOrderDTO.getDeliveryAddress() != null) {
                 purchaseOrder.setDeliveryAddress(updatedPurchaseOrderDTO.getDeliveryAddress());
             }
+            if (updatedPurchaseOrderDTO.getAddress() != null) {
+                purchaseOrder.setAddress(updatedPurchaseOrderDTO.getAddress());
+            }
             if (updatedPurchaseOrderDTO.getPaymentTerms() != null) {
                 purchaseOrder.setPaymentTerms(updatedPurchaseOrderDTO.getPaymentTerms());
             }
