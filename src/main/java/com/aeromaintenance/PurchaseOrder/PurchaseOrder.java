@@ -81,6 +81,9 @@ public class PurchaseOrder {
     private Double Other_Charges;
     private Double Insurance;
     private Double grossOfSingle;
+    private Double cgstPercentage;
+    private Double igstPercentage;
+    private Double sgstPercentage;
 
     // --- Footer Info ---
     private String termsAndConditions;

@@ -81,6 +81,9 @@ public class PurchaseOrderController {
             order.setRatePerUnit(req.getRate());
             order.setGrossAmount(request.getGrossAmount());
 
+            order.setIgstPercentage(request.getIgstPercentage());
+            order.setCgstPercentage(request.getCgstPercentage());
+            order.setSgstPercentage(request.getSgstPercentage());
             order.setSgst(request.getSgst());
             order.setCgst(request.getCgst());
             order.setIgst(request.getIgst());

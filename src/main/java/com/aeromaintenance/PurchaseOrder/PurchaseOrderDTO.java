@@ -39,6 +39,9 @@ public class PurchaseOrderDTO {
     private Double Transportation;
     private Double Other_Charges;
     private Double Insurance;
+    private Double cgstPercentage;
+    private Double igstPercentage;
+    private Double sgstPercentage;
 
     // Other Info
     private String termsAndConditions;

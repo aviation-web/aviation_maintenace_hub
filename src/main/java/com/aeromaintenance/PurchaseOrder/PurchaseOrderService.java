@@ -188,6 +188,49 @@ public class PurchaseOrderService {
             if (updatedPurchaseOrderDTO.getOther_Charges() != null) {
                 purchaseOrder.setOther_Charges(updatedPurchaseOrderDTO.getOther_Charges());
             }
+            if (updatedPurchaseOrderDTO.getGrossAmount() != null) {
+                purchaseOrder.setGrossAmount(updatedPurchaseOrderDTO.getGrossAmount());
+            }
+            if (updatedPurchaseOrderDTO.getSgst() != null) {
+                purchaseOrder.setSgst(updatedPurchaseOrderDTO.getSgst());
+            }
+            if (updatedPurchaseOrderDTO.getCgst() != null) {
+                purchaseOrder.setCgst(updatedPurchaseOrderDTO.getCgst());
+            }
+            if (updatedPurchaseOrderDTO.getIgst() != null) {
+                purchaseOrder.setIgst(updatedPurchaseOrderDTO.getIgst());
+            }
+            if (updatedPurchaseOrderDTO.getTotal() != nu
+            ll) {
+                purchaseOrder.setTotal(updatedPurchaseOrderDTO.getTotal());
+            }
+            if (updatedPurchaseOrderDTO.getGrandTotal() != null) {
+                purchaseOrder.setGrandTotal(updatedPurchaseOrderDTO.getGrandTotal());
+            }
+            if (updatedPurchaseOrderDTO.getCgstPercentage() != null) {
+                purchaseOrder.setCgstPercentage(updatedPurchaseOrderDTO.getCgstPercentage());
+            }
+            if (updatedPurchaseOrderDTO.getSgstPercentage() != null) {
+                purchaseOrder.setSgstPercentage(updatedPurchaseOrderDTO.getSgstPercentage());
+            }
+            if (updatedPurchaseOrderDTO.getIgstPercentage() != null) {
+                purchaseOrder.setIgstPercentage(updatedPurchaseOrderDTO.getIgstPercentage());
+            }
+            if (updatedPurchaseOrderDTO.getTermsAndConditions() != null) {
+                purchaseOrder.setTermsAndConditions(updatedPurchaseOrderDTO.getTermsAndConditions());
+            }
+            if (updatedPurchaseOrderDTO.getIncoterm() != null) {
+                purchaseOrder.setIncoterm(updatedPurchaseOrderDTO.getIncoterm());
+            }
+            if (updatedPurchaseOrderDTO.getCurrency() != null) {
+                purchaseOrder.setCurrency(updatedPurchaseOrderDTO.getCurrency());
+            }
+            if (updatedPurchaseOrderDTO.getForwarder() != null) {
+                purchaseOrder.setForwarder(updatedPurchaseOrderDTO.getForwarder());
+            }
+            if (updatedPurchaseOrderDTO.getSrNo() != null) {
+                purchaseOrder.setSrNo(updatedPurchaseOrderDTO.getSrNo());
+            }
 
             // Recalculate totals and taxes after updates
             PurchaseOrder calculatedOrder = calculateTotals(purchaseOrder);
