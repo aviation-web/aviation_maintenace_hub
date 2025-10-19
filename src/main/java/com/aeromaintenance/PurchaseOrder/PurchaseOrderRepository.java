@@ -27,5 +27,8 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     @Modifying
 	@Query("UPDATE PurchaseRequisition i SET i.status = 'Close' WHERE i.batchNumber = :batchNumber AND i.id = :id")
     int updateStatusOfPurchaseRequisition(@Param("batchNumber")String batchNumber, @Param("id")Long id);
-    
+
+	@Query("SELECT po.poNumber FROM PurchaseOrder po WHERE po.poNumber LIKE CONCAT('AMC-PO-%-', :year) ORDER BY po.id DESC")
+	String findLastPoNumberForYear(@Param("year") int year);
+
 }

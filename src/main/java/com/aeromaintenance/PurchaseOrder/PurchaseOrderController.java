@@ -56,7 +56,10 @@ public class PurchaseOrderController {
                     .body(new ResponseBean<>("400", "No items provided", null));
         }
 
-       String poNumber = "PO_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+//       String poNumber = "PO_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+
+        // Generate PO number
+        String poNumber = purchaseOrderService.getNextPONumber();
 
         for (PurchaseOrderItem req : request.getItems()) {
             PurchaseOrder order = new PurchaseOrder();

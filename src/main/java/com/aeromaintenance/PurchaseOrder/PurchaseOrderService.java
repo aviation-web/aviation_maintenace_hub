@@ -9,6 +9,7 @@ import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -215,6 +216,22 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 	public void updateStatusOfPurchaseRequisition(String batchNumber, Long id) {
 		int status = purchaseOrderRepository.updateStatusOfPurchaseRequisition(batchNumber, id);
 	}
- 
-    
+
+    public String getNextPONumber() {
+        int year = LocalDate.now().getYear();
+
+        // Fetch last PO number for the year
+        String lastPoNumber = purchaseOrderRepository.findLastPoNumberForYear(year);
+
+        int nextNumber = 1; // default if no previous PO exists
+        if (lastPoNumber != null && !lastPoNumber.isEmpty()) {
+            // lastPoNumber format: AMC-PO-5-2025
+            String[] parts = lastPoNumber.split("-");
+            nextNumber = Integer.parseInt(parts[2]) + 1; // increment the number part
+        }
+
+        return "AMC-PO-" + nextNumber + "-" + year;
+    }
+
+
 }
