@@ -222,19 +222,21 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 
     public String getNextPONumber() {
         int year = LocalDate.now().getYear();
+        String shortYear = String.valueOf(year).substring(2); // last 2 digits of year
 
-        // Fetch last PO number for the year
-        String lastPoNumber = purchaseOrderRepository.findLastPoNumberForYear(year);
+        // Fetch last PO number for this year
+        String lastPoNumber = purchaseOrderRepository.findLastPoNumberForYear(shortYear);
 
         int nextNumber = 1; // default if no previous PO exists
         if (lastPoNumber != null && !lastPoNumber.isEmpty()) {
-            // lastPoNumber format: AMC-PO-5-2025
+            // Format: AMC-PO-<number>-<yy>
             String[] parts = lastPoNumber.split("-");
-            nextNumber = Integer.parseInt(parts[2]) + 1; // increment the number part
+            nextNumber = Integer.parseInt(parts[2]) + 1;
         }
 
-        return "AMC-PO-" + nextNumber + "-" + year;
+        return "AMC-PO-" + nextNumber + "-" + shortYear;
     }
+
 
 
 }
