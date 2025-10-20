@@ -31,8 +31,8 @@ import org.hibernate.annotations.GenericGenerator;
 	    private Long orderNo;
 		
 		@Column
-		private Long roNo;
-		
+		private String roNo;
+
 		@Column
 		private String roReceiveDate;
 

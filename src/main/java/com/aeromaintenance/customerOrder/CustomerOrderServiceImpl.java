@@ -93,7 +93,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
         	System.out.println("row[0] type: " + row[0].getClass().getName());
             String sr_no = ((String) row[0]);
             Long order_no = Long.valueOf((String) row[1]);
-            Long ro_no = ((Number) row[2]).longValue();
+            String ro_no = (String) row[2];
             String ro_receive_date = (String) row[3];
 			String ro_date = (String) row[4];
             String customer_name = (String) row[5];
