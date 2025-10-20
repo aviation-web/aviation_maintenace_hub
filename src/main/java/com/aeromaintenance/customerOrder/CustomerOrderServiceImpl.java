@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,31 +26,84 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 	@Autowired
 	private CustomerOrderRepositoryCustom customerOrderRepositoryCustom;
 	
+//	@Override
+//	public List<String> saveInBatches(List<CustomerOrder> orders, int batchSize) {
+//		List<String> batchInfoList = new ArrayList<>();
+//
+//        for (int i = 0; i < orders.size(); i += batchSize) {
+//            int end = Math.min(i + batchSize, orders.size());
+//            List<CustomerOrder> batch = orders.subList(i, end);
+//
+//            SecureRandom secureRandom = new SecureRandom();
+//            long batchNumber = secureRandom.nextLong();
+//
+//            int batchSizeActual = batch.size(); // Store how many records are in this batch
+//
+//            for (CustomerOrder req : batch) {
+//                req.setOrderNo(batchNumber);
+//            }
+//
+//            customerOrderRepository.saveAll(batch);
+//
+//            // Store info: batch number + size
+//            batchInfoList.add(batchNumber + " : " + batchSizeActual);
+//        }
+//
+//        return batchInfoList;
+//
+//	}
+
 	@Override
 	public List<String> saveInBatches(List<CustomerOrder> orders, int batchSize) {
 		List<String> batchInfoList = new ArrayList<>();
 
-        for (int i = 0; i < orders.size(); i += batchSize) {
-            int end = Math.min(i + batchSize, orders.size());
-            List<CustomerOrder> batch = orders.subList(i, end);
-            
-            SecureRandom secureRandom = new SecureRandom();
-            long batchNumber = secureRandom.nextLong();
-            
-            int batchSizeActual = batch.size(); // Store how many records are in this batch
+		for (int i = 0; i < orders.size(); i += batchSize) {
+			int end = Math.min(i + batchSize, orders.size());
+			List<CustomerOrder> batch = orders.subList(i, end);
 
-            for (CustomerOrder req : batch) {
-                req.setOrderNo(batchNumber);
-            }
+			// Generate unique batch number
+			SecureRandom secureRandom = new SecureRandom();
+			long batchNumber = Math.abs(secureRandom.nextLong());
 
-            customerOrderRepository.saveAll(batch);
+			// Collect all roNos from this batch
+			List<String> roNos = batch.stream()
+					.map(CustomerOrder::getRoNo)
+					.filter(Objects::nonNull)
+					.collect(Collectors.toList());
 
-            // Store info: batch number + size
-            batchInfoList.add(batchNumber + " : " + batchSizeActual);
-        }
+			// Fetch existing roNos from DB
+			List<String> existingRoNos = customerOrderRepository.findExistingRoNos(roNos);
 
-        return batchInfoList;
-		
+			// Filter unique records only (exclude duplicates)
+			List<CustomerOrder> uniqueOrders = batch.stream()
+					.filter(order -> !existingRoNos.contains(order.getRoNo()))
+					.collect(Collectors.toList());
+
+			// Assign batch number to each valid record
+			for (CustomerOrder order : uniqueOrders) {
+				order.setOrderNo(batchNumber);
+				if (order.getStatus() == null) {
+					order.setStatus("OPEN");
+				}
+			}
+
+			// Save only non-duplicate orders
+			if (!uniqueOrders.isEmpty()) {
+				customerOrderRepository.saveAll(uniqueOrders);
+			}
+
+			// Prepare batch info summary
+			String info = "Batch " + batchNumber + " : Saved " + uniqueOrders.size() +
+					" of " + batch.size() + " (Skipped " + (batch.size() - uniqueOrders.size()) + " duplicates)";
+			batchInfoList.add(info);
+
+			// Log duplicate roNos
+			if (!existingRoNos.isEmpty()) {
+				System.out.println("⚠️ Duplicate roNos skipped in batch " + batchNumber + ": " + existingRoNos);
+			}
+		}
+
+		return batchInfoList;
 	}
 
 	@Override

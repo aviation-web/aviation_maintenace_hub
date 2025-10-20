@@ -35,4 +35,8 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 
 	List<CustomerOrder> findByStatus(String status);
 
+	@Query("SELECT c.roNo FROM CustomerOrder c WHERE c.roNo IN :roNos")
+	List<String> findExistingRoNos(@Param("roNos") List<String> roNos);
+
+
 }
