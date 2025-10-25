@@ -55,6 +55,7 @@ public class CustomerRepairProductService {
 
     public List<CustomerRepairDTO> getProdNumProdDescByName(String productName) {
         List<CustomerRepairProduct> products = repository.findByProductName(productName);
+
         return products.stream()
                 .map(p -> {
                     Map<String, String> serialMap = new HashMap<>();
@@ -62,23 +63,31 @@ public class CustomerRepairProductService {
                     for (int i = 0; i < serials.size(); i++) {
                         serialMap.put("serial" + (i + 1), serials.get(i)); // serial1, serial2...
                     }
+
                     return new CustomerRepairDTO(
                             p.getProductName(),
                             p.getProductDescription(),
                             p.getUnitOfMeasurement(),
-                            serialMap
+                            serialMap,
+                            p.getCmmRefNo() // ✅ added this argument
                     );
                 })
                 .collect(Collectors.toList());
     }
 
 
+
     public List<CustomerRepairDTO> getAllProdNames() {
         return repository.findAll().stream()
-                .map(p -> new CustomerRepairDTO(p.getProductName(),  null,                 // baki fields null
-                        null,
-                        null))
+                .map(p -> new CustomerRepairDTO(
+                        p.getProductName(),
+                        null, // productDescription
+                        null, // unitOfMeasurement
+                        null, // serial map
+                        null  // ✅ cmmRefNo
+                ))
                 .collect(Collectors.toList());
     }
+
 
 }
