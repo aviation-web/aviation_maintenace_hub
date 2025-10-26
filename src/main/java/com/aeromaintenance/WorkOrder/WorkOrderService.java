@@ -20,6 +20,7 @@ public interface WorkOrderService {
     List<CustomerOrder> getAllCustomerOrders();
     CustomerOrder getCustomerOrderBySrNo(String srNo);
     List<CustomerOrder> getCustomerOrdersByStatus(String status);
+    List<WorkOrder> getClosedWorkOrders();
     // Fetch Pending Customer Orders (workorder = 0)
 //    public List<CustomerOrderHistoryDTO> getPendingWorkOrderHistory() {
 //        return customerOrderRepositoryCustom.findAllHistoryWithWorkOrderZero();

@@ -97,4 +97,14 @@ public class WorkOrderController {
         return ResponseEntity.ok(openOrders);
     }
 
+    @GetMapping("/closed")
+    public ResponseEntity<List<WorkOrder>> getClosedWorkOrders() {
+        List<WorkOrder> closedOrders = workOrderService.getClosedWorkOrders();
+
+        if (closedOrders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(closedOrders);
+    }
 }
