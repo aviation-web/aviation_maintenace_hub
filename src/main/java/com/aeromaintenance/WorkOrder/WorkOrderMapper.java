@@ -23,6 +23,7 @@ public class WorkOrderMapper {
         dto.setDescription(entity1.getDescription());
         dto.setCmmRefNo(entity1.getCmmRefNo());
         dto.setRevNo(entity1.getRevNo());
+        dto.setCmmRevDate(entity1.getCmmRevDate());
         dto.setWorkshopManagerRemarks(entity1.getWorkshopManagerRemarks());
         dto.setIssuedBy(entity1.getIssuedBy());
         dto.setCertifyingStaffhours(entity1.getCertifyingStaffhours());

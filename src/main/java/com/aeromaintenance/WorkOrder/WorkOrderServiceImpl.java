@@ -101,6 +101,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         existing.setDescription(dto.getDescription());
         existing.setCmmRefNo(dto.getCmmRefNo());
         existing.setRevNo(dto.getRevNo());
+        existing.setCmmRevDate(dto.getCmmRevDate());
         existing.setWorkshopManagerRemarks(dto.getWorkshopManagerRemarks());
         existing.setIssuedBy(dto.getIssuedBy());
         existing.setCertifyingStaffhours(dto.getCertifyingStaffhours());

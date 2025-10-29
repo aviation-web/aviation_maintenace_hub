@@ -17,6 +17,7 @@ public class WorkOrderDTO {
     private String description;
     private String cmmRefNo;
     private String revNo;
+    private LocalDate cmmRevDate;
     private String workshopManagerRemarks;
     private String issuedBy;
     private Integer certifyingStaffhours;
