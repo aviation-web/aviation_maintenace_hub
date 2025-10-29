@@ -221,23 +221,31 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 	objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
 	List<CustomerOrderDto> orders = objectMapper.readValue(
-			orderList, new TypeReference<List<CustomerOrderDto>>() {});
+			orderList, new TypeReference<List<CustomerOrderDto>>() {}
+	);
 
-	// ✅ Only Serial Number Duplicate Check
-	Set<String> serialCheck = new HashSet<>();
+	// ✅ Duplicate Check: Same RO No cannot have Same Serial No
+	Set<String> uniqueCheck = new HashSet<>();
 
 	for (CustomerOrderDto dto : orders) {
 
+		String ro = dto.getRoNo() == null ? "" : dto.getRoNo().trim().toUpperCase();
 		String sr = dto.getSrNo() == null ? "" : dto.getSrNo().trim().toUpperCase();
 
-		if (!serialCheck.add(sr)) {
+		// Key = RO No + Serial No
+		String key = ro + "-" + sr;
+
+		if (!uniqueCheck.add(key)) {
+			// Duplicate found
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("❌ Duplicate Serial Number Found: '" + dto.getSrNo() + "'");
+					.body("❌ Duplicate Found: RO No '" + dto.getRoNo()
+							+ "' already contains Serial No '" + dto.getSrNo() + "'");
 		}
 	}
 
-	// ✅ Save Records After Validation Passes
+	// ✅ Save Records After Validation
 	for (CustomerOrderDto dto : orders) {
+
 		CustomerOrder entity = new CustomerOrder();
 		entity.setOrderNo(orderNumber);
 		entity.setRoNo(dto.getRoNo());
