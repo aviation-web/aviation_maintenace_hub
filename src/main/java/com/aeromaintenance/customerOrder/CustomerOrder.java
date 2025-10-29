@@ -87,6 +87,9 @@ import org.hibernate.annotations.GenericGenerator;
 		@Column
 		private String documentPath;
 
+		@Column
+		private String cmmRefNo;
+
 	@PrePersist
 	public void prePersist() {
 		if (this.status == null) {

@@ -214,10 +214,12 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
             String user_role = (String) row[16];
         	String user_action = (String) row[17];
         	String remark = (String) row[18];
-     
-            result.add(new CustomerOrderDto(sr_no, order_no, batch_no, ro_no, ro_receive_date, ro_date, customer_name,
+			String cmmRefNo = "";
+
+
+			result.add(new CustomerOrderDto(sr_no, order_no, batch_no, ro_no, ro_receive_date, ro_date, customer_name,
             		part_no, part_desc, qty, status, document_path, maker_user_name,
-            		maker_date, user_action, user_role, checker_user_name, checker_date, remark));
+            		maker_date, user_action, user_role, checker_user_name, checker_date, remark,cmmRefNo));
         }
 		}catch(Exception e) {
 			System.out.print(e);

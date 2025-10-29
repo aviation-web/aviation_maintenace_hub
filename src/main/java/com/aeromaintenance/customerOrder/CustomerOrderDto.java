@@ -32,6 +32,7 @@ public class CustomerOrderDto {
 	  private String checkerUserName;
 	  private LocalDate checkerDate;
 	  private String remark;
+	  private String cmmRefNo;
 	  
 	// Convert DTO to Entity
 	    public CustomerOrder toEntity() {
@@ -46,6 +47,7 @@ public class CustomerOrderDto {
 	        entity.setBatchNo(this.batchNo);
 	        entity.setQuantity(this.quantity);
 	        entity.setStatus(this.status);
+			entity.setCmmRefNo(this.cmmRefNo);
 	        return entity;
 	    }
 
@@ -62,7 +64,8 @@ public class CustomerOrderDto {
 	                .batchNo(entity.getBatchNo())
 	                .quantity(entity.getQuantity())
 	                .status(entity.getStatus())
-	                .build();
+					.cmmRefNo(entity.getCmmRefNo())
+					.build();
 	    }
 	    
 

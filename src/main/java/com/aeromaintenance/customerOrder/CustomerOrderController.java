@@ -185,6 +185,7 @@ public class CustomerOrderController {
 	        entity.setMakerDate(dto.getMakerDate());
 	        entity.setUserRole(dto.getUserRole());
 	        entity.setUserAction(dto.getUserAction());
+			entity.setCmmRefNo(dto.getCmmRefNo());
 	        customerOrderRepository.save(entity);
 	    }
 
