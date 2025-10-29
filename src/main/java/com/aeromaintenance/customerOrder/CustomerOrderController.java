@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,56 +144,125 @@ public class CustomerOrderController {
 
 
 
-	@PostMapping("/uploadWithOrders")
-	public ResponseEntity<?> uploadOrdersWithDocument(
-	    @RequestParam("document") MultipartFile file,
-	    @RequestParam("orders") String orderList
-	) throws IOException {
+//	@PostMapping("/uploadWithOrders")
+//	public ResponseEntity<?> uploadOrdersWithDocument(
+//	    @RequestParam("document") MultipartFile file,
+//	    @RequestParam("orders") String orderList
+//	) throws IOException {
+//
+//	    // Save the file
+//		SecureRandom secureRandom = new SecureRandom();
+//	    long orderNumber = Math.abs(secureRandom.nextLong());
+//       // String uploadDir = "D:/CustomerOrders/uploads/" + orderNumber + "/";
+//	    Path basePath = Paths.get(System.getProperty("user.home")).resolve(uploadDir);
+//	    Path uploadPath = basePath.resolve(String.valueOf(orderNumber));
+//	    Files.createDirectories(uploadPath);
+//	    String fileName = file.getOriginalFilename();
+//	    Path filePath = uploadPath.resolve(fileName);
+//        try (InputStream is = file.getInputStream()) {
+//            Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
+//        }
+//	    ObjectMapper objectMapper = new ObjectMapper();
+//	    objectMapper.registerModule(new JavaTimeModule());
+//	    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//	    List<CustomerOrderDto> orders = objectMapper.readValue(orderList,
+//	        new TypeReference<List<CustomerOrderDto>>() {});
+//
+//	    // Save each with file reference
+//	    for (CustomerOrderDto dto : orders) {
+//	        CustomerOrder entity = new CustomerOrder();
+//	        entity.setOrderNo(orderNumber);
+//	        entity.setRoNo(dto.getRoNo());
+//	        entity.setRoReceiveDate(dto.getRoReceiveDate());
+//			entity.setRoDate(dto.getRoDate());
+//	        entity.setPartNo(dto.getPartNo());
+//	        entity.setPartDescription(dto.getPartDescription());
+//	        entity.setQuantity(dto.getQuantity());
+//	        entity.setSrNo(dto.getSrNo());
+//	        entity.setBatchNo(dto.getBatchNo());
+//	        entity.setStatus(dto.getStatus());
+//	        entity.setCustomerName(dto.getCustomerName());
+//	        entity.setDocumentPath("uploads/" + filePath); // or absolute path
+//	        entity.setMakerUserName(dto.getMakerUserName());
+//	        entity.setMakerDate(dto.getMakerDate());
+//	        entity.setUserRole(dto.getUserRole());
+//	        entity.setUserAction(dto.getUserAction());
+//			entity.setCmmRefNo(dto.getCmmRefNo());
+//	        customerOrderRepository.save(entity);
+//	    }
+//
+//	    return ResponseEntity.ok("All data saved successfully.");
+//	}
+@PostMapping("/uploadWithOrders")
+public ResponseEntity<?> uploadOrdersWithDocument(
+		@RequestParam("document") MultipartFile file,
+		@RequestParam("orders") String orderList
+) throws IOException {
 
-	    // Save the file
-		SecureRandom secureRandom = new SecureRandom();
-	    long orderNumber = Math.abs(secureRandom.nextLong());
-       // String uploadDir = "D:/CustomerOrders/uploads/" + orderNumber + "/";
-	    Path basePath = Paths.get(System.getProperty("user.home")).resolve(uploadDir);
-	    Path uploadPath = basePath.resolve(String.valueOf(orderNumber));
-	    Files.createDirectories(uploadPath);
-	    String fileName = file.getOriginalFilename();
-	    Path filePath = uploadPath.resolve(fileName);
-        try (InputStream is = file.getInputStream()) {
-            Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
-        }
-	    ObjectMapper objectMapper = new ObjectMapper();
-	    objectMapper.registerModule(new JavaTimeModule());
-	    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-	    List<CustomerOrderDto> orders = objectMapper.readValue(orderList,
-	        new TypeReference<List<CustomerOrderDto>>() {});
+	// Generate Unique Order Number
+	SecureRandom secureRandom = new SecureRandom();
+	long orderNumber = Math.abs(secureRandom.nextLong());
 
-	    // Save each with file reference
-	    for (CustomerOrderDto dto : orders) {
-	        CustomerOrder entity = new CustomerOrder();
-	        entity.setOrderNo(orderNumber);
-	        entity.setRoNo(dto.getRoNo());
-	        entity.setRoReceiveDate(dto.getRoReceiveDate());
-			entity.setRoDate(dto.getRoDate());
-	        entity.setPartNo(dto.getPartNo());
-	        entity.setPartDescription(dto.getPartDescription());
-	        entity.setQuantity(dto.getQuantity());
-	        entity.setSrNo(dto.getSrNo());
-	        entity.setBatchNo(dto.getBatchNo());
-	        entity.setStatus(dto.getStatus());
-	        entity.setCustomerName(dto.getCustomerName());
-	        entity.setDocumentPath("uploads/" + filePath); // or absolute path
-	        entity.setMakerUserName(dto.getMakerUserName());
-	        entity.setMakerDate(dto.getMakerDate());
-	        entity.setUserRole(dto.getUserRole());
-	        entity.setUserAction(dto.getUserAction());
-			entity.setCmmRefNo(dto.getCmmRefNo());
-	        customerOrderRepository.save(entity);
-	    }
+	// Create Upload Folder
+	Path basePath = Paths.get(System.getProperty("user.home")).resolve(uploadDir);
+	Path uploadPath = basePath.resolve(String.valueOf(orderNumber));
+	Files.createDirectories(uploadPath);
 
-	    return ResponseEntity.ok("All data saved successfully.");
+	// Save File
+	String fileName = file.getOriginalFilename();
+	Path filePath = uploadPath.resolve(fileName);
+	try (InputStream is = file.getInputStream()) {
+		Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
 	}
-	
+
+	// Convert JSON List to DTO List
+	ObjectMapper objectMapper = new ObjectMapper();
+	objectMapper.registerModule(new JavaTimeModule());
+	objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+	List<CustomerOrderDto> orders = objectMapper.readValue(
+			orderList, new TypeReference<List<CustomerOrderDto>>() {});
+
+	// ✅ Duplicate Check Inside Incoming List (NOT DB Check)
+	Set<String> uniqueCheck = new HashSet<>();
+	for (CustomerOrderDto dto : orders) {
+		String key = dto.getRoNo() + "-" + dto.getSrNo(); // Combination key
+
+		if (uniqueCheck.contains(key)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Duplicate Found in Request Data: RO No: "
+							+ dto.getRoNo() + " and Serial No: " + dto.getSrNo());
+		}
+		uniqueCheck.add(key);
+	}
+
+	// ✅ Save Records After Validation Passes
+	for (CustomerOrderDto dto : orders) {
+		CustomerOrder entity = new CustomerOrder();
+		entity.setOrderNo(orderNumber);
+		entity.setRoNo(dto.getRoNo());
+		entity.setRoReceiveDate(dto.getRoReceiveDate());
+		entity.setRoDate(dto.getRoDate());
+		entity.setPartNo(dto.getPartNo());
+		entity.setPartDescription(dto.getPartDescription());
+		entity.setQuantity(dto.getQuantity());
+		entity.setSrNo(dto.getSrNo());
+		entity.setBatchNo(dto.getBatchNo());
+		entity.setStatus(dto.getStatus());
+		entity.setCustomerName(dto.getCustomerName());
+		entity.setDocumentPath("uploads/" + orderNumber + "/" + fileName); // relative path
+		entity.setMakerUserName(dto.getMakerUserName());
+		entity.setMakerDate(dto.getMakerDate());
+		entity.setUserRole(dto.getUserRole());
+		entity.setUserAction(dto.getUserAction());
+		entity.setCmmRefNo(dto.getCmmRefNo());
+
+		customerOrderRepository.save(entity);
+	}
+
+	return ResponseEntity.ok("All Data Saved Successfully ✅ Order No: " + orderNumber);
+}
+
 	@GetMapping("/viewCustomerOrder")
     public ResponseEntity<List<CustomerOrderDto>> getViewOrderList() {
         List<CustomerOrderDto> reports = orderService.getAllViewOrderList();
