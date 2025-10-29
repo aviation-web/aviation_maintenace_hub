@@ -30,7 +30,7 @@ public class WorkOrder {
     private LocalDate cmmRevDate;
     private String workshopManagerRemarks;
     private String issuedBy;
-    private Integer certifyingStaffhours;
+    private String certifyingStaffhours;
     private String technician;
     private String totalManHour;
     private String actionTaken;
