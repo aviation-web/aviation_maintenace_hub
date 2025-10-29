@@ -223,17 +223,24 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 	List<CustomerOrderDto> orders = objectMapper.readValue(
 			orderList, new TypeReference<List<CustomerOrderDto>>() {});
 
-	// ✅ Duplicate Check Inside Incoming List (NOT DB Check)
+	// ✅ Duplicate Check (Same RO No + Same Serial No Not Allowed)
 	Set<String> uniqueCheck = new HashSet<>();
-	for (CustomerOrderDto dto : orders) {
-		String key = dto.getRoNo() + "-" + dto.getSrNo(); // Combination key
 
-		if (uniqueCheck.contains(key)) {
+	for (CustomerOrderDto dto : orders) {
+
+		// Normalize inputs
+		String ro = dto.getRoNo() == null ? "" : dto.getRoNo().trim().toUpperCase();
+		String sr = dto.getSrNo() == null ? "" : dto.getSrNo().trim().toUpperCase();
+
+		// Combination key
+		String key = ro + "-" + sr;
+
+		// Duplicate found
+		if (!uniqueCheck.add(key)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Duplicate Found in Request Data: RO No: "
-							+ dto.getRoNo() + " and Serial No: " + dto.getSrNo());
+					.body("❌ Duplicate Found: RO No '" + dto.getRoNo()
+							+ "' already contains Serial No '" + dto.getSrNo() + "'");
 		}
-		uniqueCheck.add(key);
 	}
 
 	// ✅ Save Records After Validation Passes
@@ -250,7 +257,7 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 		entity.setBatchNo(dto.getBatchNo());
 		entity.setStatus(dto.getStatus());
 		entity.setCustomerName(dto.getCustomerName());
-		entity.setDocumentPath("uploads/" + orderNumber + "/" + fileName); // relative path
+		entity.setDocumentPath("uploads/" + orderNumber + "/" + fileName);
 		entity.setMakerUserName(dto.getMakerUserName());
 		entity.setMakerDate(dto.getMakerDate());
 		entity.setUserRole(dto.getUserRole());
@@ -260,7 +267,7 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 		customerOrderRepository.save(entity);
 	}
 
-	return ResponseEntity.ok("All Data Saved Successfully ✅ Order No: " + orderNumber);
+	return ResponseEntity.ok("✅ All Data Saved Successfully. Order No: " + orderNumber);
 }
 
 	@GetMapping("/viewCustomerOrder")
