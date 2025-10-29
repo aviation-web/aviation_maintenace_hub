@@ -230,16 +230,16 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 	for (CustomerOrderDto dto : orders) {
 
 		String ro = dto.getRoNo() == null ? "" : dto.getRoNo().trim().toUpperCase();
-		String sr = dto.getSrNo() == null ? "" : dto.getSrNo().trim().toUpperCase();
+		String BatchNo = dto.getBatchNo() == null ? "" : dto.getBatchNo().trim().toUpperCase();
 
 		// Key = RO No + Serial No
-		String key = ro + "-" + sr;
+		String key = ro + "-" + BatchNo;
 
 		if (!uniqueCheck.add(key)) {
 			// Duplicate found
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body("❌ Duplicate Found: RO No '" + dto.getRoNo()
-							+ "' already contains Serial No '" + dto.getSrNo() + "'");
+							+ "' already contains Serial No '" + dto.getBatchNo() + "'");
 		}
 	}
 
