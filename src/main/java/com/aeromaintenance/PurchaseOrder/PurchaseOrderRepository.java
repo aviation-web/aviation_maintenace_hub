@@ -1,6 +1,7 @@
 package com.aeromaintenance.PurchaseOrder;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,7 +29,15 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 	@Query("UPDATE PurchaseRequisition i SET i.status = 'Close' WHERE i.batchNumber = :batchNumber AND i.id = :id")
     int updateStatusOfPurchaseRequisition(@Param("batchNumber")String batchNumber, @Param("id")Long id);
 
-	@Query("SELECT po.poNumber FROM PurchaseOrder po WHERE po.poNumber LIKE CONCAT('AMC-PO-%-', :year) ORDER BY po.id DESC")
-	String findLastPoNumberForYear(@Param("year") String year);
+//	@Query("SELECT po.poNumber FROM PurchaseOrder po WHERE po.poNumber LIKE CONCAT('AMC-PO-%-', :year) ORDER BY po.id DESC")
+//	String findLastPoNumberForYear(@Param("year") String year);
 
+	// PurchaseOrderRepository.java
+
+	@Query(value = "SELECT p.po_number FROM purchase_order p " +
+			"WHERE p.po_number LIKE CONCAT('AMC-PO-%-', :yearSuffix) " +
+			"ORDER BY p.po_number DESC " +
+			"LIMIT 1",
+			nativeQuery = true)
+	Optional<String> findLastPoNumberForYear(@Param("yearSuffix") String yearSuffix);
 }

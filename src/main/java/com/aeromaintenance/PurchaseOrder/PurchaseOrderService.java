@@ -262,23 +262,42 @@ public List<PurchaseOrderDTO> getAllPurchaseOrderNo() {
 		int status = purchaseOrderRepository.updateStatusOfPurchaseRequisition(batchNumber, id);
 	}
 
+//    public String getNextPONumber() {
+//        int year = LocalDate.now().getYear();
+//        String shortYear = String.valueOf(year).substring(2); // last 2 digits of year
+//
+//        // Fetch last PO number for this year
+//        String lastPoNumber = purchaseOrderRepository.findLastPoNumberForYear(shortYear);
+//
+//        int nextNumber = 1; // default if no previous PO exists
+//        if (lastPoNumber != null && !lastPoNumber.isEmpty()) {
+//            // Format: AMC-PO-<number>-<yy>
+//            String[] parts = lastPoNumber.split("-");
+//            nextNumber = Integer.parseInt(parts[2]) + 1;
+//        }
+//
+//        return "AMC-PO-" + nextNumber + "-" + shortYear;
+//    }
+
+// PurchaseOrderService.java
+
     public String getNextPONumber() {
-        int year = LocalDate.now().getYear();
-        String shortYear = String.valueOf(year).substring(2); // last 2 digits of year
+        int currentYear = LocalDate.now().getYear();
+        String yearSuffix = String.valueOf(currentYear % 100); // "25" for 2025
 
-        // Fetch last PO number for this year
-        String lastPoNumber = purchaseOrderRepository.findLastPoNumberForYear(shortYear);
+        Optional<String> lastPoNumber = purchaseOrderRepository
+                .findLastPoNumberForYear(yearSuffix);
 
-        int nextNumber = 1; // default if no previous PO exists
-        if (lastPoNumber != null && !lastPoNumber.isEmpty()) {
-            // Format: AMC-PO-<number>-<yy>
-            String[] parts = lastPoNumber.split("-");
-            nextNumber = Integer.parseInt(parts[2]) + 1;
+        int nextNumber = 1;
+
+        if (lastPoNumber.isPresent()) {
+            // "AMC-PO-2-25" मधून "2" काढा
+            String[] parts = lastPoNumber.get().split("-");
+            int currentNumber = Integer.parseInt(parts[2]);
+            nextNumber = currentNumber + 1;
         }
 
-        return "AMC-PO-" + nextNumber + "-" + shortYear;
+        return "AMC-PO-" + nextNumber + "-" + yearSuffix;
     }
-
-
 
 }
