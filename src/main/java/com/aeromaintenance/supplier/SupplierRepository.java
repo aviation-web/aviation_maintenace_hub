@@ -19,9 +19,14 @@ public interface SupplierRepository  extends JpaRepository<SupplierModel, Long> 
 	List<SupplierModel> findByUserRoleAndUserAction(String userRole, String userAction);
 
     @Query("SELECT new com.common.SupplierNamePaymentDTO(s.supplierName, s.paymentTerms, s.address) " +
-            "FROM SupplierModel s")
+            "FROM SupplierModel s WHERE s.userAction = '2'")
     List<SupplierNamePaymentDTO> findSupplierNamesAndPaymentTerms();
-    
+
+
     @Query("SELECT s.supplierName FROM SupplierModel s")
 	List<String> findAllSupplierNames();
+
+    @Query("SELECT s FROM SupplierModel s WHERE s.userAction = '2'")
+    List<SupplierModel> getSuppliersWithUserActionTwo();
+
 }
