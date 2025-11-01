@@ -29,4 +29,16 @@ public interface StoreInventoryProjection {
 
     @Value("#{target.location}")
     String getLocation();
+    
+    @Value("#{target.alt_prod1 + ' | ' + target.alt1_qty}")
+    String getAltProd1();
+
+    @Value("#{target.alt1_qty}")
+    int getAlt1Qty();
+
+    @Value("#{target.alt_prod2 + ' | ' + target.alt2_qty}")
+    String getAltProd2();
+
+    @Value("#{target.alt2_qty}")
+    int getAlt2Qty();
 }

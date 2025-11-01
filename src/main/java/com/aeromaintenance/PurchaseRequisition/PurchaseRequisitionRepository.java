@@ -17,6 +17,11 @@ public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseReq
 
     List<PurchaseRequisition> findByStatus(String status);
 
+    @Query("SELECT m.batchNumber FROM PurchaseRequisition m ORDER BY m.batchNumber DESC")
+	List<String> findLatestBatchNo();
+
+	boolean existsByBatchNumber(String batchNumber);
+
 //    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.srNo,p.partNumber, p.description, p.currentStock) FROM PurchaseRequisition p where p.flag = Pending ")
 //    List<PurchaseRequisitionDTO> findAllOrderByBatchNumber();
 

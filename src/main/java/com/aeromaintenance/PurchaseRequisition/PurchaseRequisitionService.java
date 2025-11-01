@@ -143,7 +143,38 @@ public class PurchaseRequisitionService {
             int end = Math.min(i + batchSize, requisitions.size());
             List<PurchaseRequisition> batch = requisitions.subList(i, end);
 
-            String batchNumber = "PR_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+         // Get the current year's last two digits
+            String yearSuffix = String.valueOf(java.time.Year.now().getValue());
+
+            // Fetch the latest MRN number from DB (descending order)
+            List<String> prs = repository.findLatestBatchNo();
+            String lastPr = prs.isEmpty() ? null : prs.get(0);
+
+
+            int nextNumber = 1; // default starting number
+
+            if (lastPr != null && lastPr.endsWith(yearSuffix)) {
+                String numericPart = lastPr.substring(12, 16);
+                try {
+                    nextNumber = Integer.parseInt(numericPart) + 1;
+                } catch (NumberFormatException e) {
+                    nextNumber = 1;
+                }
+            }
+
+            // Format the numeric portion with leading zeros
+            String formattedNumber = String.format("%04d", nextNumber);
+
+            // Create the new MRN number (e.g., MRN_00000225)
+            String batchNumber = "AMC-PR-" + yearSuffix +"-"+ formattedNumber;
+
+            // Double-check if MRN already exists (just to be safe)
+            while (repository.existsByBatchNumber(batchNumber)) {
+                nextNumber++;
+                formattedNumber = String.format("%04d", nextNumber);
+                batchNumber = "AMC-PR-" + yearSuffix +"-"+ formattedNumber;
+            }
+           // String batchNumber = "PR_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
             int batchSizeActual = batch.size(); // Store how many records are in this batch
 
             for (PurchaseRequisition req : batch) {
