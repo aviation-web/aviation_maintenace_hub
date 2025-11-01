@@ -20,6 +20,9 @@ public interface MaterialReceiptNoteRepository extends JpaRepository<MaterialRec
     int updatePoPlaceFlag(@Param("partNumber")String partNumber, @Param("id")Long id);
 
 	List<MaterialReceiptNote> findByStatus(String status);
+	
+	@Query("SELECT m.mrnNo FROM MaterialReceiptNote m ORDER BY m.mrnNo DESC")
+	List<String> findLatestMrnNo();
 
     
 }

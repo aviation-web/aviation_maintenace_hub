@@ -23,50 +23,44 @@ public class ProductService {
 
     // Save Product
     public Product saveProduct(Product product) {
-        // Collect all product names into a stream
-        List<String> productNames = Stream.of(
-                        product.getProductName(),
-                        product.getAlternateProduct1(),
-                        product.getAlternateProduct2()
-                )
-                .filter(Objects::nonNull)                // Remove nulls
-                .map(String::trim)                       // Trim each value
-                .filter(name -> !name.isEmpty())         // Remove empty strings
-                .collect(Collectors.toList());
+        // ✅ Trim and validate the main product name only
+        String mainProductName = product.getProductName() != null ? product.getProductName().trim() : null;
 
-        // Check if any of the names already exist
-        for (String name : productNames) {
-            if (productRepository.existsByProductName(name)) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT,
-                        "Part number already exists: " + name);
-            }
+        if (mainProductName == null || mainProductName.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product name cannot be empty.");
         }
 
-        // Save the main product first
-        product.setProductName(product.getProductName().trim());
-        String mappingType = product.getMappingType();
-        String productName = product.getProductName();
+        // ✅ Check if this main product name already exists
+        if (productRepository.existsByProductName(mainProductName)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Part number already exists: " + mainProductName);
+        }
 
+        // ✅ Save the main product with mapping type logic
+        product.setProductName(mainProductName);
+        String mappingType = product.getMappingType();
         String mapping = mappingType == null ? "" : mappingType.toUpperCase();
 
         if ("UP".equals(mapping)) {
+            // If UP mapping, clear alternates
             product.setAlternateProduct1(null);
             product.setAlternateProduct2(null);
         } else {
+            // Keep alternates as entered
             product.setAlternateProduct1(product.getAlternateProduct1());
             product.setAlternateProduct2(product.getAlternateProduct2());
         }
 
-        productRepository.save(product);
 
-        productNames.stream()
-                .skip(1) // Skip main product name (already saved)
-                .forEach(name -> {
-                    Product alt = cloneProduct(product, name);
-                    productRepository.save(alt);
-                });
+//        productNames.stream()
+//                .skip(1) // Skip main product name (already saved)
+//                .forEach(name -> {
+//                    Product alt = cloneProduct(product, name);
+//                    productRepository.save(alt);
+//                });
 
-        return product;
+        // ✅ Save product
+        return productRepository.save(product);
     }
 
 //    public Product saveProduct(Product product) {
