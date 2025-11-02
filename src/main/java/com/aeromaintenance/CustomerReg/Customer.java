@@ -33,7 +33,6 @@ public class Customer {
     private String mobileNumber;
 
     @NotBlank(message = "Country code is required")
-    @Pattern(regexp = "^[0-9]{5}$", message = "Country code must be exactly 2 digits")
     private String countryCode;
 
     @NotBlank(message = "Email ID is required")
