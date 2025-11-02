@@ -92,8 +92,8 @@ public class PurchaseOrderService {
             order.setStatus("Open");
         }
 
-        PurchaseOrder calculatedOrder = calculateTotals(order);
-        purchaseOrderRepository.save(calculatedOrder);
+//        PurchaseOrder calculatedOrder = calculateTotals(order);
+        purchaseOrderRepository.save(order);
     }
     // Delete a Purchase Order by ID
     public void deletePurchaseOrder(Long id) {
@@ -232,8 +232,8 @@ public class PurchaseOrderService {
             }
 
             // Recalculate totals and taxes after updates
-            PurchaseOrder calculatedOrder = calculateTotals(purchaseOrder);
-            return purchaseOrderRepository.save(calculatedOrder);
+//            PurchaseOrder calculatedOrder = calculateTotals(purchaseOrder);
+            return purchaseOrderRepository.save(purchaseOrder);
         } else {
             return null; // or handle the case when the order is not found
         }
