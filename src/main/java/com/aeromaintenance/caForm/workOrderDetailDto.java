@@ -60,4 +60,15 @@ public workOrderDetailDto(String workOrderNo, String customerName, String repair
 		this.remark = remark;
 	}
 
+public workOrderDetailDto(String workOrderNo, String description, String partNo, Integer quantity, String serialNo, String customerName,String repairOrderNo, String status) {
+	this.workOrderNumber = workOrderNo;
+	this.description = description;
+	this.partNo = partNo;
+	this.quantity = quantity;
+	this.serialNo = serialNo;
+	this.customerName = customerName;
+	this.repairOrderNo = repairOrderNo;
+	this.status = status;	
+}
+
 }

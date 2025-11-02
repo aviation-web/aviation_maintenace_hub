@@ -32,17 +32,17 @@ public class CAFormController {
 
 	@GetMapping("/workOrderList")
     public ResponseEntity<List<workOrderDetailDto>> getAllWorkOrder() {
-        List<String> workOrders = repository.findAllWorkOrder();
+        List<workOrderDetailDto> workOrders = repository.findDetailsByWorkOrderStatus();
 
-        if (workOrders.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+//        if (workOrders.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//        List<workOrderDetailDto> workOrderList = workOrders.stream()
+//                .map(workOrder -> new workOrderDetailDto(workOrder))
+//                .collect(Collectors.toList());
 
-        List<workOrderDetailDto> workOrderList = workOrders.stream()
-                .map(workOrder -> new workOrderDetailDto(workOrder))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(workOrderList);
+        return ResponseEntity.ok(workOrders);
     }
 	
 	@GetMapping("/getDetilsByWorkOrderNo/{workOrder}")
