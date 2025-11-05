@@ -28,7 +28,7 @@ public class PurchaseOrderDTO {
     private String unit;
     private Double ratePerUnit;
     private Double grossAmount;
-
+    private String SupplierName;
     // Taxes & Totals
     private Double sgst;
     private Double cgst;
