@@ -1,5 +1,7 @@
 package com.aeromaintenance.product;
 
+import com.aeromaintenance.store.inventory.StoreInventoryProjection;
+import com.aeromaintenance.store.inventory.StoreInventoryRepo;
 import com.common.ProductDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,6 +23,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    private StoreInventoryRepo inventoryRepo;
 
     // Save Product
     public Product saveProduct(Product product) {
@@ -99,9 +104,9 @@ public class ProductService {
     
  // Update Product
     public Product updateProduct(Long id, Product updatedProduct) {
-        if (productRepository.existsByProductName(updatedProduct.getProductName())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
-        }
+//        if (productRepository.existsByProductName(updatedProduct.getProductName())) {
+//            throw new ResponseStatusException(HttpStatus.CONFLICT, "Part number already exists");
+//        }
 
         return productRepository.findById(id)
             .map(existingProduct -> {
@@ -125,7 +130,36 @@ public class ProductService {
     }
 
     public List<ProductDTO> getProdNumProdDesc(){
-        return productRepository.findAllProductNameAndDescriptionDTO();
+        List<ProductDTO> products = productRepository.findAllProductNameAndDescriptionDTO();
+        List<StoreInventoryProjection> inventory = inventoryRepo.getInventoryWithLocation();
+
+        // Map productName → quantity
+        Map<String, Integer> quantityMap = inventory.stream()
+                .collect(Collectors.toMap(StoreInventoryProjection::getPartNum, StoreInventoryProjection::getQuantity));
+
+        for (ProductDTO p : products) {
+            // Quantity for main product
+            int mainQty = quantityMap.getOrDefault(p.getProductName(), 0);
+            p.setQuantity(mainQty);
+
+            // ✅ Map quantity for Alternate Product 1
+            if (p.getAlternateProduct1() != null && !p.getAlternateProduct1().isEmpty()) {
+                int alt1Qty = quantityMap.getOrDefault(p.getAlternateProduct1(), 0);
+                p.setAlternateQuantity1(alt1Qty);
+            } else {
+                p.setAlternateQuantity1(0);
+            }
+
+            // ✅ Map quantity for Alternate Product 2
+            if (p.getAlternateProduct2() != null && !p.getAlternateProduct2().isEmpty()) {
+                int alt2Qty = quantityMap.getOrDefault(p.getAlternateProduct2(), 0);
+                p.setAlternateQuantity2(alt2Qty);
+            } else {
+                p.setAlternateQuantity2(0);
+            }
+        }
+
+        return products;
     }
 
     public List<ProductDTO> searchProducts(String searchTerm) {
