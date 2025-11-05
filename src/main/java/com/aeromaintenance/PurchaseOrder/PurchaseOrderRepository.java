@@ -20,7 +20,7 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 	List<PurchaseOrderDTO> getAllPurchaseOrderNo();
 
 //    @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.partNumber, p.id) from PurchaseOrder p where p.poNumber = :poNumber AND p.orderPlacedFlag = 0 ")
-	@Query("SELECT new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.partNumber, p.id, p.supplierName) FROM PurchaseOrder p git WHERE p.poNumber = :poNumber AND p.orderPlacedFlag = 0")
+	@Query("SELECT new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.partNumber, p.id, p.SupplierName) FROM PurchaseOrder p WHERE p.poNumber = :poNumber AND p.orderPlacedFlag = 0")
 	List<PurchaseOrderDTO> getAllPartNoByPurchaseOrders(@Param("poNumber")String poNumber);
 
     @Query("Select new com.aeromaintenance.PurchaseOrder.PurchaseOrderDTO(p.description, p.currentStoke, p.unit, p.poDate) from PurchaseOrder p where trim(p.partNumber) = :partNumber AND trim(p.poNumber) = :poNumber AND p.id = :id")

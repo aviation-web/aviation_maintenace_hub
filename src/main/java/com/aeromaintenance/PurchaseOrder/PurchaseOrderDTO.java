@@ -66,9 +66,10 @@ public class PurchaseOrderDTO {
         
     }
     
-    public PurchaseOrderDTO(String partNumber,Long id) {
+    public PurchaseOrderDTO(String partNumber,Long id, String SupplierName) {
         this.partNumber = partNumber;
         this.id = id;
+        this.SupplierName= SupplierName;
         
     }
 }
