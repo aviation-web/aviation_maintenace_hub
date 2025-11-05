@@ -28,7 +28,7 @@ public class PurchaseOrderDTO {
     private String unit;
     private Double ratePerUnit;
     private Double grossAmount;
-
+    private String SupplierName;
     // Taxes & Totals
     private Double sgst;
     private Double cgst;
@@ -66,9 +66,10 @@ public class PurchaseOrderDTO {
         
     }
     
-    public PurchaseOrderDTO(String partNumber,Long id) {
+    public PurchaseOrderDTO(String partNumber,Long id, String SupplierName) {
         this.partNumber = partNumber;
         this.id = id;
+        this.SupplierName= SupplierName;
         
     }
 }

@@ -157,7 +157,9 @@ public class PurchaseOrderService {
             if (updatedPurchaseOrderDTO.getStatus() != null){
                 purchaseOrder.setStatus(updatedPurchaseOrderDTO.getStatus());
             }
-
+            if (updatedPurchaseOrderDTO.getSupplierName() != null){
+                purchaseOrder.setSupplierName(updatedPurchaseOrderDTO.getSupplierName());
+            }
             // Line item details
             if (updatedPurchaseOrderDTO.getPartNumber() != null) {
                 purchaseOrder.setPartNumber(updatedPurchaseOrderDTO.getPartNumber());
