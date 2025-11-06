@@ -151,7 +151,7 @@ public class InspectionReportService {
 	        BeanUtils.copyProperties(updateExisting, reportDto);
 	        int rowsInserted = inspectionReportRepositoryCustom.updateInHistoryTable(reportDto);
 	        if(rowsInserted >0) {
-	        saveInspectionDataInStore(updateExisting);
+	        updateInspectionDataInStore(updateExisting);
 	        updateInventoryCurrentStoke(updateExisting);
 	        }
 //	        ResponseBean<Void> response=null;
@@ -170,6 +170,33 @@ public class InspectionReportService {
 	        return reported;
 	    }).orElse(null); 
 	}
+
+	private void updateInspectionDataInStore(InspectionReport updateExisting) {
+	    StoreAcc storeAcceptance = StoreAccMapper.fromInspectionReport(updateExisting);
+
+	    storeAccRepository.findByInspectionReportId(storeAcceptance.getInspectionReportId())
+	        .ifPresentOrElse(existing -> {
+	            existing.setPartNum(storeAcceptance.getPartNum());
+	            existing.setDescription(storeAcceptance.getDescription());
+	            existing.setBatch(storeAcceptance.getBatch());
+	            existing.setCondition(storeAcceptance.getCondition());
+	            existing.setSupplier(storeAcceptance.getSupplier());
+	            existing.setDom(storeAcceptance.getDom());
+	            existing.setDoe(storeAcceptance.getDoe());
+	            existing.setQuantity(storeAcceptance.getQuantity());
+	            existing.setDateOfRecipet(storeAcceptance.getDateOfRecipet());
+	            existing.setNameOfQualityInsp(storeAcceptance.getNameOfQualityInsp());
+
+	            // Save the updated entity
+	            storeAccRepository.save(existing);
+	        }, () -> {
+	            throw new RuntimeException(
+	                "Store acceptance with InspectionReport ID " +
+	                storeAcceptance.getInspectionReportId() + " not found"
+	            );
+	        });
+	}
+
 
 	public List<InspectionReportDto> getAllViewReportList() {
 		List<Object[]> rawData = inspectionReportRepository.getRawReportList();

@@ -24,6 +24,9 @@ public class StoreAcc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name = "inspection_report_id", nullable = false)
+    private Long inspectionReportId;
+    
     @Column(name = "part_num", nullable = false)
     private String partNum;
 

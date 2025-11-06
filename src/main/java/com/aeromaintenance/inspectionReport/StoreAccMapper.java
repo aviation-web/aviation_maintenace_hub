@@ -7,11 +7,13 @@ import java.sql.Date;
 public class StoreAccMapper {
     public static StoreAcc fromInspectionReport(InspectionReport dto) {
         StoreAcc storeAcc = new StoreAcc();
+        storeAcc.setInspectionReportId(dto.getInspectionReportId());
         storeAcc.setPartNum(dto.getPartNumber());
         storeAcc.setDescription(dto.getPartDesc());
         storeAcc.setBatch(dto.getBatchNumberObservation());
-        storeAcc.setCondition(dto.getMaterialConditionObservation());
+        storeAcc.setCondition("New");
         storeAcc.setSupplier(dto.getSupplierName());
+        storeAcc.setNameOfQualityInsp(dto.getMakerUserName());
 
         if (dto.getDateOfManufacturingObservation() != null) {
             storeAcc.setDom(Date.valueOf(dto.getDateOfManufacturingObservation()));
@@ -26,9 +28,6 @@ public class StoreAccMapper {
         if (dto.getDate() != null) {
             storeAcc.setDateOfRecipet(Date.valueOf(dto.getDate()));
         }
-
-        storeAcc.setNameOfQualityInsp(dto.getCheckerUserName());
-        storeAcc.setSignatureOfQualityInsp(dto.getCheckerUserId());
 
         return storeAcc;
     }
