@@ -1,5 +1,7 @@
 package com.aeromaintenance.inspectionReport;
 
+import com.aeromaintenance.DispatchReport.DispatchReportDTO;
+
 public interface InspectionReportRepositoryCustom {
 	public int insertReportForm(InspectionReportDto form) ;
 	public boolean existsByReportId(Long reportId);
@@ -12,5 +14,6 @@ public interface InspectionReportRepositoryCustom {
 	public int getRequiredQtyFromPurchaseOrder(String purchaseOrderNo, String partNumber);
 	public int updatePoStatus(String status, String poNumber, String partNumber, int requiredQty);
 	public int updateInHistoryTable(InspectionReportDto reportDto);
+	public int insertInStoreInventoryDispatchQuantity(DispatchReportDTO reports);
 
 }

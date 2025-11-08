@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.aeromaintenance.DispatchReport.DispatchReportDTO;
 import com.aeromaintenance.supplier.SupplierDto;
 
 @Transactional
@@ -150,6 +151,19 @@ public class InspectionReportRepositoryCustomImpl implements InspectionReportRep
 		    query.setParameter(1, reports.getPartNumber());
 		    query.setParameter(2, reports.getPartDesc());
 		    query.setParameter(3, reports.getQtyReceive());
+		    int result =  query.executeUpdate();
+		     return result;
+	}
+	
+	@Override
+	public int insertInStoreInventoryDispatchQuantity(DispatchReportDTO reports) {
+		Query query = entityManager.createNativeQuery(" INSERT INTO store_inventory (part_number, part_description, quantity"+
+			    " ) VALUES (?, ?, ? )"	   
+			);
+		    
+		    query.setParameter(1, reports.getPartNo());
+		    query.setParameter(2, reports.getPartDescription());
+		    query.setParameter(3, reports.getQuantity());
 		    int result =  query.executeUpdate();
 		     return result;
 	}

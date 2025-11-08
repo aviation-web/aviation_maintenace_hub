@@ -261,17 +261,17 @@ public class InspectionReportService {
 
 	public void updateInventoryCurrentStoke(InspectionReport reports) {
 		int receiveQty = 0;
-//		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber().trim())){
-//			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber().trim());
-//	        int receivedQty = reports.getQtyReceive() != null ? reports.getQtyReceive() : 0;
-//	        currentStoke = quantity + receivedQty;
-//			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber().trim(),currentStoke);
-//			
-//		}else {
-//			
-//			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);	
-//			currentStoke = reports.getQtyReceive();
-//		}
+		if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(reports.getPartNumber().trim())){
+			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(reports.getPartNumber().trim());
+	        int receivedQty = reports.getQtyReceive() != null ? reports.getQtyReceive() : 0;
+	        int currentStoke = quantity + receivedQty;
+			int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(reports.getPartNumber().trim(),currentStoke);
+			
+		}else {
+			
+			int rowInsert = inspectionReportRepositoryCustom.insertInStoreInventory(reports);	
+			int currentStoke = reports.getQtyReceive();
+		}
 		receiveQty = reports.getQtyReceive();
 		int quantityRequired = reports.getQty();
 		//inspectionReportRepositoryCustom.getRequiredQtyFromPurchaseOrder(reports.getPurchaseOrderNo().trim(),reports.getPartNumber().trim());

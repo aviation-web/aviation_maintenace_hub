@@ -4,7 +4,10 @@ package com.aeromaintenance.DispatchReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aeromaintenance.inspectionReport.InspectionReportRepositoryCustom;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,6 +16,9 @@ public class DispatchReportService {
 
     @Autowired
     private DispatchReportRepository repository;
+    
+    @Autowired
+    private InspectionReportRepositoryCustom inspectionReportRepositoryCustom;
 
     // Convert Entity to DTO
     private DispatchReportDTO convertToDTO(DispatchReport report) {
@@ -83,6 +89,7 @@ public class DispatchReportService {
 
         // 3️⃣ Save as usual
         DispatchReport savedReport = repository.save(convertToEntity(dto));
+        updateStoreInventryQuantity(dto);
         return convertToDTO(savedReport);
     }
 
@@ -145,5 +152,15 @@ public class DispatchReportService {
 
         // Format: AMC-DRNO-<number>-<year>
         return String.format("AMC-DRNO-%d-%02d", nextNumber, currentYear);
+    }
+    
+    public void updateStoreInventryQuantity(DispatchReportDTO dto) {
+    	if(inspectionReportRepositoryCustom.checkPartNoIsPresentInStore(dto.getPartNo().trim())){
+			int quantity = inspectionReportRepositoryCustom.getCurrentStokeFromInventory(dto.getPartNo().trim());
+	        int receivedQty = Objects.requireNonNullElse(dto.getQuantity(), 0);
+	        int currentStoke =  (quantity > receivedQty) ? (quantity - receivedQty): quantity;			
+	        int updateQuantity = inspectionReportRepositoryCustom.UpdateCurrentQuantity(dto.getPartNo().trim(),currentStoke);			
+		}
+    	
     }
 }
