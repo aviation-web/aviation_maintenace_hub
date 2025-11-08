@@ -9,4 +9,8 @@ public interface MaterialRequisitionService {
     void deleteMaterialRequisition(Long id);
     MaterialRequisitionDTO getMaterialRequisitionById(Long id);
     List<MaterialRequisitionDTO> getAllMaterialRequisitions();
+    // New method to get remaining quantity
+//    Integer getRemainingQuantity(Long id);
+    Integer getRemainingQuantityByWorkOrderNo(String workOrderNo);
+
 }
