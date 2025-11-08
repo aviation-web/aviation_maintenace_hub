@@ -26,22 +26,44 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 		       "FROM WorkOrder m WHERE m.status <> 'Closed' ")
 	List<workOrderDetailDto> findDetailsByWorkOrderStatus();
 
+//	@Modifying
+//    @Transactional
+//    @Query("UPDATE WorkOrder i SET i.status = :status WHERE i.workOrderNo = :workOrderNo")
+//    void updateWorkOrderStatus(@Param("workOrderNo") String workOrderNo,
+//                               @Param("status") String status);
+//
+//	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.workOrderNo, w.customerName, w.repairOrderNo, c.formTrackingNumber, c.description, c.partNo, c.item, c.quantity, c.serialNo, c.status, c.remarks)" +
+//		       "FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
+//	List<workOrderDetailDto> getCAAndWorkOrderDetails();
+//
+//	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.customerName, w.repairOrderNo)" +
+//		       "FROM WorkOrder w WHERE w.workOrderNo = :workOrderNo")
+//	workOrderDetailDto getCustomerOrderDetail(@Param("workOrderNo")String workOrderNo);
+//
+//	@Modifying
+//    @Transactional
+//    @Query("UPDATE CustomerOrder i SET i.status = 'Closed' WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
+//	void updateCustomerOrderStatus(@Param("customerName")String customerName, @Param("roNo")String roNo, @Param("partNo")String partNo);
+
 	@Modifying
-    @Transactional
-    @Query("UPDATE WorkOrder i SET i.status = :status WHERE i.workOrderNo = :workOrderNo")
-    void updateWorkOrderStatus(@Param("workOrderNo") String workOrderNo, 
-                               @Param("status") String status);
+	@Transactional
+	@Query("UPDATE WorkOrder i SET i.status = :status WHERE i.workOrderNo = :workOrderNo")
+	void updateWorkOrderStatus(@Param("workOrderNo") String workOrderNo,
+							   @Param("status") String status);
 
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.workOrderNo, w.customerName, w.repairOrderNo, c.formTrackingNumber, c.description, c.partNo, c.item, c.quantity, c.serialNo, c.status, c.remarks)" +
-		       "FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
+			"FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
 	List<workOrderDetailDto> getCAAndWorkOrderDetails();
 
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.customerName, w.repairOrderNo)" +
-		       "FROM WorkOrder w WHERE w.workOrderNo = :workOrderNo")
+			"FROM WorkOrder w WHERE w.workOrderNo = :workOrderNo")
 	workOrderDetailDto getCustomerOrderDetail(@Param("workOrderNo")String workOrderNo);
 
 	@Modifying
-    @Transactional
-    @Query("UPDATE CustomerOrder i SET i.status = 'Closed' WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
-	void updateCustomerOrderStatus(@Param("customerName")String customerName, @Param("roNo")String roNo, @Param("partNo")String partNo);
+	@Transactional
+	@Query("UPDATE CustomerOrder i SET i.status = :status WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
+	void updateCustomerOrderStatus(@Param("customerName")String customerName,
+								   @Param("roNo")String roNo,
+								   @Param("partNo")String partNo,
+								   @Param("status")String status);
 }

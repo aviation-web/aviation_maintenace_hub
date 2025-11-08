@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.aeromaintenance.MaterialRequisition.MaterialRequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +27,10 @@ public class CAFormController {
 	
 	@Autowired
 	private CAFormRepository repository;
-	
+
+	@Autowired
+	private MaterialRequisitionService materialRequisitionService; // ADD THIS
+
 	@Autowired
 	private CAFormService service;
 
@@ -52,16 +56,36 @@ public class CAFormController {
 		return ResponseEntity.ok(workOrderDetailsDTO);		
 	}
 	
+//	@PostMapping("/saveCAForm")
+//	public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
+//	    String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+//	    caForm.setFormTrackingNumber(caNumber);
+//		repository.save(caForm);
+//		service.updateWorkOrderStatus(caForm,"Closed");
+//		service.updateCustomerOrderStatus(caForm);
+//		return ResponseEntity.ok(caForm);
+//	}
+
 	@PostMapping("/saveCAForm")
 	public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
-	    String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-	    caForm.setFormTrackingNumber(caNumber);
+		String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+		caForm.setFormTrackingNumber(caNumber);
 		repository.save(caForm);
-		service.updateWorkOrderStatus(caForm,"Closed");
-		service.updateCustomerOrderStatus(caForm);
+
+		// Get remaining quantity
+		Integer remainingQty = materialRequisitionService.getRemainingQuantityByWorkOrderNo(caForm.getWorkOrderNo());
+
+		// Determine status
+		String workOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+		String customerOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+
+		// Update statuses
+		service.updateWorkOrderStatus(caForm, workOrderStatus);
+		service.updateCustomerOrderStatus(caForm, customerOrderStatus);
+
 		return ResponseEntity.ok(caForm);
 	}
-	
+
 	@GetMapping("/viewCAForm")
 	public ResponseEntity<List<workOrderDetailDto>> viewCAFormList(){
 		List<workOrderDetailDto> list = repository.getCAAndWorkOrderDetails();

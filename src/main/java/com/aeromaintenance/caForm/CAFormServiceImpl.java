@@ -35,24 +35,38 @@ public class CAFormServiceImpl implements CAFormService {
 	}
 
 
+//	@Override
+//	public void updateWorkOrderStatus(CAForm caForm, String status) {
+//		repository.updateWorkOrderStatus(caForm.getWorkOrderNo(),status);
+//		//repository.updateCustomerOrderStatus(caForm.get);
+//	}
+//
+//
+//	@Override
+//	public void updateCustomerOrderStatus(CAForm caForm) {
+//		workOrderDetailDto orderDetail =  repository.getCustomerOrderDetail(caForm.getWorkOrderNo());
+//		repository.updateCustomerOrderStatus(orderDetail.getCustomerName().trim(), orderDetail.getRepairOrderNo().trim(), caForm.getPartNo().trim());
+
+
 	@Override
 	public void updateWorkOrderStatus(CAForm caForm, String status) {
-		repository.updateWorkOrderStatus(caForm.getWorkOrderNo(),status);
-		//repository.updateCustomerOrderStatus(caForm.get);
+		repository.updateWorkOrderStatus(caForm.getWorkOrderNo(), status);
 	}
 
-
 	@Override
-	public void updateCustomerOrderStatus(CAForm caForm) {
-		workOrderDetailDto orderDetail =  repository.getCustomerOrderDetail(caForm.getWorkOrderNo());
-		repository.updateCustomerOrderStatus(orderDetail.getCustomerName().trim(), orderDetail.getRepairOrderNo().trim(), caForm.getPartNo().trim());
-				
-				
-				
+	public void updateCustomerOrderStatus(CAForm caForm, String status) {
+		workOrderDetailDto details = repository.getCustomerOrderDetail(caForm.getWorkOrderNo());
+		repository.updateCustomerOrderStatus(
+				details.getCustomerName(),
+				details.getRepairOrderNo(),
+				caForm.getPartNo(),
+				status
+		);
+	}
 				
 				
 				
 			
 				
-	}
+
 }

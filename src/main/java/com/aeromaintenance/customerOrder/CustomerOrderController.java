@@ -255,6 +255,7 @@ public ResponseEntity<?> uploadOrdersWithDocument(
 		entity.setPartDescription(dto.getPartDescription());
 		entity.setQuantity(dto.getQuantity());
 		entity.setSrNo(dto.getSrNo());
+		entity.setBackOrder(dto.getBackOrder());
 		entity.setBatchNo(dto.getBatchNo());
 		entity.setStatus(dto.getStatus());
 		entity.setCustomerName(dto.getCustomerName());
