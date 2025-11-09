@@ -274,6 +274,32 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public List<CustomerOrder> getCustomerOrdersByStatus(String status) {
         return customerOrderRepository.findByStatus(status);
     }
+    //use for the Open work Order
+    @Override
+    public List<WorkOrder> getOpenWorkOrders() {
+        // Fetch work orders with steps
+        List<WorkOrder> workOrdersWithSteps = repository.findAllWithWorkOrderSteps();
+
+        // Fetch work orders with materials
+        List<WorkOrder> workOrdersWithMaterials = repository.findAllWithMaterialRequisitions();
+
+        // Map material requisitions by workOrderNo
+        Map<String, List<MaterialRequisitionNew>> materialMap = workOrdersWithMaterials.stream()
+                .collect(Collectors.toMap(
+                        WorkOrder::getWorkOrderNo,
+                        WorkOrder::getMaterialRequisitions
+                ));
+
+        // Attach materials to work orders with steps
+        workOrdersWithSteps.forEach(wo -> wo.setMaterialRequisitions(
+                materialMap.getOrDefault(wo.getWorkOrderNo(), List.of())
+        ));
+
+        // Filter only closed work orders
+        return workOrdersWithSteps.stream()
+                .filter(wo -> "OPEN".equalsIgnoreCase(wo.getStatus()))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<WorkOrder> getClosedWorkOrders() {
