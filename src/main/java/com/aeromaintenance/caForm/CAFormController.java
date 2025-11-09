@@ -97,4 +97,11 @@ public class CAFormController {
 	            return ResponseEntity.notFound().build();
 	        }
 	    } 
+	 
+	 @GetMapping("/getCAFormByWorkOrderNo/{workOrderNo}")
+		public ResponseEntity<CAForm> getCAFormByWorkOrderNo(@PathVariable String workOrderNo ){
+			Optional<CAForm> data= repository.findByWorkOrderNo(workOrderNo);
+			CAForm caForm = data.orElseThrow(() -> new RuntimeException("Data not Found"));
+			return ResponseEntity.ok(caForm);
+		}
 }
