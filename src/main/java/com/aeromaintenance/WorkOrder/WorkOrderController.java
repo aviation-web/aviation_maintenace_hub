@@ -91,9 +91,11 @@ public class WorkOrderController {
 
         List<CustomerOrder> openOrders = workOrderService.getCustomerOrdersByStatus("OPEN");
         List<CustomerOrder> partialOrders = workOrderService.getCustomerOrdersByStatus("PARTIAL");
+        List<CustomerOrder> reopenOrders = workOrderService.getCustomerOrdersByStatus("ReOpen");
         List<CustomerOrder> allOrders = new ArrayList<>();
         allOrders.addAll(openOrders);
         allOrders.addAll(partialOrders);
+        allOrders.addAll(reopenOrders);
 
         if (allOrders.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
