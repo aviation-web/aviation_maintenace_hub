@@ -1,5 +1,6 @@
 package com.aeromaintenance.PurchaseRequisition;
 
+import com.aeromaintenance.product.ProductService;
 import com.common.ProductDTO;
 import com.aeromaintenance.product.ProductRepository;
 import com.common.ResponseBean;
@@ -20,7 +21,7 @@ public class PurchaseRequisitionController {
     private PurchaseRequisitionService service;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
 
     public PurchaseRequisitionController(){
@@ -173,6 +174,6 @@ public class PurchaseRequisitionController {
     // Fetch Product Name and Product Desc
     @GetMapping("/prodNameDesc")
     public ResponseEntity<List<ProductDTO>> getPartNumPartDesc(){
-        return ResponseEntity.ok(productRepository.findAllProductNameAndDescriptionDTO());
+        return ResponseEntity.ok(productService.getProdNumProdDesc());
     }
 }
