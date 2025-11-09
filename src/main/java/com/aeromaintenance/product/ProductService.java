@@ -24,6 +24,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
     private StoreInventoryRepo inventoryRepo;
 
     // Save Product
@@ -129,38 +130,63 @@ public class ProductService {
             .orElse(null);
     }
 
-    public List<ProductDTO> getProdNumProdDesc(){
-        List<ProductDTO> products = productRepository.findAllProductNameAndDescriptionDTO();
-        List<StoreInventoryProjection> inventory = inventoryRepo.getInventoryWithLocation();
+    /*public List<ProductDTO> getProdNumProdDesc(){
+//        List<ProductDTO> products = productRepository.findAllProductNameAndDescriptionDTO();
+        List<ProductDTO> inventory = inventoryRepo.getInventoryWithLocation1();
+        return inventory;
 
-        // Map productName → quantity
-        Map<String, Integer> quantityMap = inventory.stream()
-                .collect(Collectors.toMap(StoreInventoryProjection::getPartNum, StoreInventoryProjection::getQuantity));
+//        // Map productName → quantity
+//        Map<String, Integer> quantityMap = inventory.stream()
+//                .collect(Collectors.toMap(StoreInventoryProjection::getPartNum, StoreInventoryProjection::getQuantity));
+//
+//        for (ProductDTO p : products) {
+//            // Quantity for main product
+//            int mainQty = quantityMap.getOrDefault(p.getProductName(), 0);
+//            p.setQuantity(mainQty);
+//
+//            // ✅ Map quantity for Alternate Product 1
+//            if (p.getAlternateProduct1() != null && !p.getAlternateProduct1().isEmpty()) {
+//                int alt1Qty = quantityMap.getOrDefault(p.getAlternateProduct1(), 0);
+//                p.setAlternateQuantity1(alt1Qty);
+//            } else {
+//                p.setAlternateQuantity1(0);
+//            }
+//
+//            // ✅ Map quantity for Alternate Product 2
+//            if (p.getAlternateProduct2() != null && !p.getAlternateProduct2().isEmpty()) {
+//                int alt2Qty = quantityMap.getOrDefault(p.getAlternateProduct2(), 0);
+//                p.setAlternateQuantity2(alt2Qty);
+//            } else {
+//                p.setAlternateQuantity2(0);
+//            }
+//        }
+//
+//        return products;
+    }*/
 
-        for (ProductDTO p : products) {
-            // Quantity for main product
-            int mainQty = quantityMap.getOrDefault(p.getProductName(), 0);
-            p.setQuantity(mainQty);
+    public List<ProductDTO> getProdNumProdDesc() {
+        List<Object[]> results = inventoryRepo.getInventoryWithLocation1();
+        List<ProductDTO> productDTOs = new ArrayList<>();
 
-            // ✅ Map quantity for Alternate Product 1
-            if (p.getAlternateProduct1() != null && !p.getAlternateProduct1().isEmpty()) {
-                int alt1Qty = quantityMap.getOrDefault(p.getAlternateProduct1(), 0);
-                p.setAlternateQuantity1(alt1Qty);
-            } else {
-                p.setAlternateQuantity1(0);
-            }
-
-            // ✅ Map quantity for Alternate Product 2
-            if (p.getAlternateProduct2() != null && !p.getAlternateProduct2().isEmpty()) {
-                int alt2Qty = quantityMap.getOrDefault(p.getAlternateProduct2(), 0);
-                p.setAlternateQuantity2(alt2Qty);
-            } else {
-                p.setAlternateQuantity2(0);
-            }
+        for (Object[] row : results) {
+            ProductDTO dto = new ProductDTO();
+            dto.setProductName((String) row[0]);
+            dto.setProductDescription((String) row[1]);
+            dto.setAlternateProduct1((String) row[2]);
+            dto.setAlternateProduct2((String) row[3]);
+            dto.setUnitOfMeasurement((String) row[4]);
+            dto.setMappingType((String) row[5]);
+            dto.setQuantity(((Number) row[6]).intValue());
+            dto.setAlternateQuantity1(((Number) row[7]).intValue());
+            dto.setAlternateQuantity2(((Number) row[8]).intValue());
+            productDTOs.add(dto);
+            System.out.println("Row Data:- "+ dto.getProductName()+ " altqty1 " + dto.getAlternateQuantity1()+" altqt2 "+  dto.getAlternateQuantity2()+ " qty " + dto.getQuantity());
         }
+        System.out.println("Product Data:- "+productDTOs);
 
-        return products;
+        return productDTOs;
     }
+
 
     public List<ProductDTO> searchProducts(String searchTerm) {
         List<ProductDTO> allProducts = getProdNumProdDesc();
