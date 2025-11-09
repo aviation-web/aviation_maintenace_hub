@@ -40,7 +40,7 @@ import org.hibernate.annotations.GenericGenerator;
 		private String roDate;
 
 		@Column
-		private String backOrder;
+		private Integer backOrder;
 		
 		@Column
 		private String customerName;

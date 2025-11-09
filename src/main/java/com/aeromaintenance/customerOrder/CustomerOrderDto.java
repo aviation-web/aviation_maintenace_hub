@@ -21,7 +21,7 @@ public class CustomerOrderDto {
 	  private String roDate;
 	  private String customerName;
 	  private String partNo;
-	  private String backOrder;
+	  private Integer backOrder;
 	  private String partDescription;
 	  private Integer quantity;
 	  private String status;

@@ -54,13 +54,14 @@ public class CAFormServiceImpl implements CAFormService {
 	}
 
 	@Override
-	public void updateCustomerOrderStatus(CAForm caForm, String status) {
+	public void updateCustomerOrderStatus(CAForm caForm, String status, Integer backorderQty) {
 		workOrderDetailDto details = repository.getCustomerOrderDetail(caForm.getWorkOrderNo());
 		repository.updateCustomerOrderStatus(
 				details.getCustomerName(),
 				details.getRepairOrderNo(),
 				caForm.getPartNo(),
-				status
+				status,
+				backorderQty
 		);
 	}
 				

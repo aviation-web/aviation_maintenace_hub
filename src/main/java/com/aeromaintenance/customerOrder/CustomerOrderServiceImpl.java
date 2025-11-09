@@ -223,7 +223,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 				String user_role = (String) row[16];
 				String user_action = (String) row[17];
 				String remark = (String) row[18];
-				String backOrder = (String) row[19];
+				Integer backOrder = (Integer) row[19];
 				String cmmRefNo = row.length > 20 ? (String) row[20] : "";
 
 				CustomerOrderDto dto = CustomerOrderDto.builder()

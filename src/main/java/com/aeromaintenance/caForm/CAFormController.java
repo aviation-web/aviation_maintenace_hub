@@ -66,25 +66,44 @@ public class CAFormController {
 //		return ResponseEntity.ok(caForm);
 //	}
 
-	@PostMapping("/saveCAForm")
-	public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
-		String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-		caForm.setFormTrackingNumber(caNumber);
-		repository.save(caForm);
+//	@PostMapping("/saveCAForm")
+//	public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
+//		String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+//		caForm.setFormTrackingNumber(caNumber);
+//		repository.save(caForm);
+//
+//		// Get remaining quantity
+//		Integer remainingQty = materialRequisitionService.getRemainingQuantityByWorkOrderNo(caForm.getWorkOrderNo());
+//
+//		// Determine status
+//		String workOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+//		String customerOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+//
+//		// Update statuses
+//		service.updateWorkOrderStatus(caForm, workOrderStatus);
+//		service.updateCustomerOrderStatus(caForm, customerOrderStatus);
+//
+//		return ResponseEntity.ok(caForm);
+//	}
+@PostMapping("/saveCAForm")
+public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
+	String caNumber = "CA-N-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+	caForm.setFormTrackingNumber(caNumber);
+	repository.save(caForm);
 
-		// Get remaining quantity
-		Integer remainingQty = materialRequisitionService.getRemainingQuantityByWorkOrderNo(caForm.getWorkOrderNo());
+	// Get remaining quantity
+	Integer remainingQty = materialRequisitionService.getRemainingQuantityByWorkOrderNo(caForm.getWorkOrderNo());
 
-		// Determine status
-		String workOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
-		String customerOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+	// Determine status
+	String workOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
+	String customerOrderStatus = (remainingQty > 0) ? "Partial" : "Closed";
 
-		// Update statuses
-		service.updateWorkOrderStatus(caForm, workOrderStatus);
-		service.updateCustomerOrderStatus(caForm, customerOrderStatus);
+	// Update statuses
+	service.updateWorkOrderStatus(caForm, workOrderStatus);
+	service.updateCustomerOrderStatus(caForm, customerOrderStatus, remainingQty);
 
-		return ResponseEntity.ok(caForm);
-	}
+	return ResponseEntity.ok(caForm);
+}
 
 	@GetMapping("/viewCAForm")
 	public ResponseEntity<List<workOrderDetailDto>> viewCAFormList(){
