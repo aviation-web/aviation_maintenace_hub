@@ -60,13 +60,6 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 	workOrderDetailDto getCustomerOrderDetail(@Param("workOrderNo")String workOrderNo);
 
 	@Modifying
-
-//    @Transactional
-//    @Query("UPDATE CustomerOrder i SET i.status = 'Closed' WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
-//	void updateCustomerOrderStatus(@Param("customerName")String customerName, @Param("roNo")String roNo, @Param("partNo")String partNo);
-
-	Optional<CAForm> findByWorkOrderNo(String workOrderNo);
-
 	@Transactional
 	@Query("UPDATE CustomerOrder i SET i.status = :status, i.backOrder = :backorderQty WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo = :partNo")
 	void updateCustomerOrderStatus(@Param("customerName") String customerName,
@@ -74,4 +67,13 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 								   @Param("partNo") String partNo,
 								   @Param("status") String status,
 								   @Param("backorderQty") Integer backorderQty);
+	
+
+//    @Transactional
+//    @Query("UPDATE CustomerOrder i SET i.status = 'Closed' WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo= :partNo")
+//	void updateCustomerOrderStatus(@Param("customerName")String customerName, @Param("roNo")String roNo, @Param("partNo")String partNo);
+
+	Optional<CAForm> findByWorkOrderNo(String workOrderNo);
+
+	
 }
