@@ -61,12 +61,13 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE CustomerOrder i SET i.status = :status, i.backOrder = :backorderQty WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo = :partNo")
+	@Query("UPDATE CustomerOrder i SET i.status = :status, i.backOrder = :backorderQty, i.quantity = :quantity WHERE i.customerName = :customerName AND i.roNo = :roNo AND i.partNo = :partNo")
 	void updateCustomerOrderStatus(@Param("customerName") String customerName,
 								   @Param("roNo") String roNo,
 								   @Param("partNo") String partNo,
 								   @Param("status") String status,
-								   @Param("backorderQty") Integer backorderQty);
+								   @Param("backorderQty") Integer backorderQty,
+								   @Param("quantity") Integer quantity);
 	
 
 //    @Transactional

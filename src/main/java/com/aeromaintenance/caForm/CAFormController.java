@@ -100,7 +100,7 @@ public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
 
 	// Update statuses
 	service.updateWorkOrderStatus(caForm, workOrderStatus);
-	service.updateCustomerOrderStatus(caForm, customerOrderStatus, remainingQty);
+	service.updateCustomerOrderStatus(caForm, customerOrderStatus, remainingQty,remainingQty);
 
 	return ResponseEntity.ok(caForm);
 }
