@@ -49,4 +49,9 @@ public class MaterialRequisitionController {
     public List<MaterialRequisitionDTO> getAllMaterialRequisitions() {
         return service.getAllMaterialRequisitions();
     }
+
+    @GetMapping("/work-order/{workOrderNo}/remaining-quantity")
+    public Integer getRemainingQuantityByWorkOrderNo(@PathVariable String workOrderNo) {
+        return service.getRemainingQuantityByWorkOrderNo(workOrderNo);
+    }
 }

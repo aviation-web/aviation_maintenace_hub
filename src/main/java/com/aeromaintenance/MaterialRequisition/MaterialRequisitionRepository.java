@@ -16,4 +16,7 @@ public interface MaterialRequisitionRepository extends JpaRepository<MaterialReq
     @Query("SELECT m FROM MaterialRequisition m WHERE m.status = 'Open'")
     List<MaterialRequisition> findAllActive();
 
+    // Find all material requisitions by work order number
+    @Query("SELECT m FROM MaterialRequisition m WHERE m.workOrderNo = :workOrderNo")
+    List<MaterialRequisition> findByWorkOrderNo(String workOrderNo);
 }

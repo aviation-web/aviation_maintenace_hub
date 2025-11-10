@@ -138,5 +138,26 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 dto.getStatus()
         );
     }
+    @Override
+    public Integer getRemainingQuantityByWorkOrderNo(String workOrderNo) {
+        List<MaterialRequisition> requisitions = repository.findByWorkOrderNo(workOrderNo);
+
+        if (requisitions.isEmpty()) {
+            throw new RuntimeException("No Material Requisitions found for Work Order: " + workOrderNo);
+        }
+
+        int totalRemaining = 0;
+
+        for (MaterialRequisition entity : requisitions) {
+            Integer requestedQty = entity.getRequestedQty();
+            Integer issuedQty = entity.getIssuedQty();
+
+            if (requestedQty > issuedQty) {
+                totalRemaining += (requestedQty - issuedQty);
+            }
+        }
+
+        return totalRemaining;
+    }
 }
 

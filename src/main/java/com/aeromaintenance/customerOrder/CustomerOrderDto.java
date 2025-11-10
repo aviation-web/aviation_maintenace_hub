@@ -21,6 +21,7 @@ public class CustomerOrderDto {
 	  private String roDate;
 	  private String customerName;
 	  private String partNo;
+	  private Integer backOrder;
 	  private String partDescription;
 	  private Integer quantity;
 	  private String status;
@@ -47,6 +48,7 @@ public class CustomerOrderDto {
 	        entity.setBatchNo(this.batchNo);
 	        entity.setQuantity(this.quantity);
 	        entity.setStatus(this.status);
+			entity.setBackOrder(this.backOrder);
 			entity.setCmmRefNo(this.cmmRefNo);
 	        return entity;
 	    }
@@ -64,6 +66,7 @@ public class CustomerOrderDto {
 	                .batchNo(entity.getBatchNo())
 	                .quantity(entity.getQuantity())
 	                .status(entity.getStatus())
+					.backOrder(entity.getBackOrder())
 					.cmmRefNo(entity.getCmmRefNo())
 					.build();
 	    }

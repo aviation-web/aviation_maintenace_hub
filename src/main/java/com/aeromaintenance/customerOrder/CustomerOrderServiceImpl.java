@@ -186,47 +186,80 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 
 	
 	}
-	
+
 	public List<CustomerOrderDto> getAllViewOrderList() {
-		
+
 		List<CustomerOrderDto> result = new ArrayList<>();
+
 		try {
-		List<Object[]> rawData = customerOrderRepository.getRawReportList();
+			List<Object[]> rawData = customerOrderRepository.getRawReportList();
 
-        for (Object[] row : rawData) {
-        	System.out.println("row[0] type: " + row[0].getClass().getName());
-            String sr_no = ((String) row[0]);
-            Long order_no = Long.valueOf((String) row[1]);
-            String ro_no = (String) row[2];
-            String ro_receive_date = (String) row[3];
-			String ro_date = (String) row[4];
-            String customer_name = (String) row[5];
-        	String part_desc = (String) row[6];
-        	String part_no = (String) row[7];
-        	String batch_no = (String) row[8];
-        	Integer qty = ((Number) row[9]).intValue();
-            String status = (String) row[10];
-            String document_path = (String) row[11];
-            String maker_user_name = (String) row[12];
-            LocalDate maker_date = row[13] != null ? ((Timestamp) row[12]).toLocalDateTime().toLocalDate() : null;
-            String checker_user_name = (String) row[14];
-            LocalDate checker_date = row[15] != null ? ((Timestamp) row[14]).toLocalDateTime().toLocalDate() : null;
-            String user_role = (String) row[16];
-        	String user_action = (String) row[17];
-        	String remark = (String) row[18];
-			String cmmRefNo = "";
+			for (Object[] row : rawData) {
 
+				String sr_no = (String) row[0];
+				Long order_no = row[1] != null ? Long.parseLong(row[1].toString()) : null;
+				String ro_no = (String) row[2];
+				String ro_receive_date = (String) row[3];
+				String ro_date = (String) row[4];
+				String customer_name = (String) row[5];
+				String part_desc = (String) row[6];
+				String part_no = (String) row[7];
+				String batch_no = (String) row[8];
+				Integer qty = row[9] != null ? ((Number) row[9]).intValue() : null;
+				String status = (String) row[10];
+				String document_path = (String) row[11];
 
-			result.add(new CustomerOrderDto(sr_no, order_no, batch_no, ro_no, ro_receive_date, ro_date, customer_name,
-            		part_no, part_desc, qty, status, document_path, maker_user_name,
-            		maker_date, user_action, user_role, checker_user_name, checker_date, remark,cmmRefNo));
-        }
-		}catch(Exception e) {
-			System.out.print(e);
+				LocalDate maker_date = row[12] != null
+						? ((Timestamp) row[12]).toLocalDateTime().toLocalDate()
+						: null;
+
+				String maker_user_name = (String) row[13];
+
+				LocalDate checker_date = row[14] != null
+						? ((Timestamp) row[14]).toLocalDateTime().toLocalDate()
+						: null;
+
+				String checker_user_name = (String) row[15];
+				String user_role = (String) row[16];
+				String user_action = (String) row[17];
+				String remark = (String) row[18];
+				Integer backOrder = (Integer) row[19];
+				String cmmRefNo = row.length > 20 ? (String) row[20] : "";
+
+				CustomerOrderDto dto = CustomerOrderDto.builder()
+						.srNo(sr_no)
+						.orderNo(order_no)
+						.batchNo(batch_no)
+						.roNo(ro_no)
+						.roReceiveDate(ro_receive_date)
+						.roDate(ro_date)
+						.customerName(customer_name)
+						.partNo(part_no)
+						.backOrder(backOrder)
+						.partDescription(part_desc)
+						.quantity(qty)
+						.status(status)
+						.documentPath(document_path)
+						.makerUserName(maker_user_name)
+						.makerDate(maker_date)
+						.userRole(user_role)
+						.userAction(user_action)
+						.checkerUserName(checker_user_name)
+						.checkerDate(checker_date)
+						.remark(remark)
+						.cmmRefNo(cmmRefNo)
+						.build();
+
+				result.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-        return result;
+		return result;
 	}
+
 
 	@Override
 	public CustomerOrder updateOrder(String id, CustomerOrder updateOrder) {
@@ -268,6 +301,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService{
 	        if (updateOrder.getStatus()!= null) {
 	            updateExisting.setStatus(updateOrder.getStatus());
 	        }
+			if (updateOrder.getBackOrder()!= null) {
+				updateExisting.setBackOrder(updateOrder.getBackOrder());
+			}
 	        
 	        if (updateOrder.getBatchNo()!= null) {
 	            updateExisting.setBatchNo(updateOrder.getBatchNo());

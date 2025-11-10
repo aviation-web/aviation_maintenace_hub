@@ -1,5 +1,14 @@
 package com.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class ProductDTO {
     private String productName;
     private String productDescription;
@@ -18,18 +27,6 @@ public class ProductDTO {
         this.alternateProduct2 = alternateProduct2;
         this.unitOfMeasurement = unitOfMeasurement;
         this.mappingType = mappingType;
-    }
-
-    public ProductDTO(String productName, String productDescription, String alternateProduct1, String alternateProduct2, String unitOfMeasurement, String mappingType, int quantity, int alternateQuantity1, int alternateQuantity2) {
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.alternateProduct1 = alternateProduct1;
-        this.alternateProduct2 = alternateProduct2;
-        this.unitOfMeasurement = unitOfMeasurement;
-        this.mappingType = mappingType;
-        this.quantity = quantity;
-        this.alternateQuantity1 = alternateQuantity1;
-        this.alternateQuantity2 = alternateQuantity2;
     }
 
     // Getters and Setters

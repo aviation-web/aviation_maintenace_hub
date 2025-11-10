@@ -18,7 +18,7 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 	@Query("SELECT i FROM CustomerOrder i WHERE i.userAction = '1' AND makerUserName <> :makerUserName")
 	List<CustomerOrder> getAllPendingList(@Param("makerUserName")String makerUserName);
 
-	@Query(value = "SELECT sr_no, order_no, ro_no, ro_receive_date, customer_name, part_desc, part_no,"
+	@Query(value = "SELECT sr_no, order_no, ro_no, ro_receive_date, customer_name, part_desc, part_no,back_order"
 			+ " batch_no, qty, status, document_path, maker_user_name, maker_date, checker_user_name,"
 			+ " checker_date, user_role, user_action, remark "
 		    + " FROM customer_order_history", nativeQuery = true)

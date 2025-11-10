@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -87,14 +88,19 @@ public class WorkOrderController {
     // Get only OPEN status Customer Orders
     @GetMapping("/open")
     public ResponseEntity<List<CustomerOrder>> getOpenCustomerOrders() {
-        List<CustomerOrder> openOrders = workOrderService.getCustomerOrdersByStatus("OPEN");
 
-        if (openOrders.isEmpty()) {
+        List<CustomerOrder> openOrders = workOrderService.getCustomerOrdersByStatus("OPEN");
+        List<CustomerOrder> partialOrders = workOrderService.getCustomerOrdersByStatus("PARTIAL");
+        List<CustomerOrder> allOrders = new ArrayList<>();
+        allOrders.addAll(openOrders);
+        allOrders.addAll(partialOrders);
+
+        if (allOrders.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
 
-        return ResponseEntity.ok(openOrders);
+        return ResponseEntity.ok(allOrders);
     }
 
     @GetMapping("/closed")
