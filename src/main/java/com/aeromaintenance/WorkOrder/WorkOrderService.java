@@ -25,5 +25,6 @@ public interface WorkOrderService {
 //    public List<CustomerOrderHistoryDTO> getPendingWorkOrderHistory() {
 //        return customerOrderRepositoryCustom.findAllHistoryWithWorkOrderZero();
 //    }
+    List<WorkOrder> getOpenWorkOrders();
 
 }
