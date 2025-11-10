@@ -29,6 +29,7 @@ public class WorkOrderDTO {
     private LocalDate workshopManagerSignDate;
     private String snBn;
     private String srNumber; // customer_order  sr_no
+    private String flag ="N";
 
 
     private Set<WorkOrderStepDTO> workOrderSteps;

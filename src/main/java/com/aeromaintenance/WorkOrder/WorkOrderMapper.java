@@ -34,6 +34,7 @@ public class WorkOrderMapper {
         dto.setQualityManagerSignDate(entity1.getQualityManagerSignDate());
         dto.setWorkshopManagerSignDate(entity1.getWorkshopManagerSignDate());
         dto.setSnBn(entity1.getSnBn());
+        dto.setFlag(entity1.getFlag());
 
         // Steps
         if (entity1.getWorkOrderSteps() != null) {

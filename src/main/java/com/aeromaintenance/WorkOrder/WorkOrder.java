@@ -39,6 +39,7 @@ public class WorkOrder {
     private LocalDate workshopManagerSignDate;
     private String snBn;
     private String srNumber; // customer_order sr_no
+    private String flag = "N";
 
     //  NEW FIELD
     private String status; // e.g. "OPEN", "IN-PROGRESS", "COMPLETED"

@@ -112,6 +112,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         existing.setQualityManagerSignDate(dto.getQualityManagerSignDate());
         existing.setWorkshopManagerSignDate(dto.getWorkshopManagerSignDate());
         existing.setSnBn(dto.getSnBn());
+        existing.setFlag(dto.getFlag());
 
         // Safely replace WorkOrderSteps
         if (dto.getWorkOrderSteps() != null) {
@@ -178,6 +179,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         entity.setQualityManagerSignDate(dto.getQualityManagerSignDate());
         entity.setWorkshopManagerSignDate(dto.getWorkshopManagerSignDate());
         entity.setSnBn(dto.getSnBn());
+        entity.setFlag(dto.getFlag());
 
         if (dto.getWorkOrderSteps() != null) {
             entity.setWorkOrderSteps(dto.getWorkOrderSteps().stream().map(stepDTO -> {
@@ -324,6 +326,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         // Filter only closed work orders
         return workOrdersWithSteps.stream()
                 .filter(wo -> "CLOSED".equalsIgnoreCase(wo.getStatus()))
+                .filter(wo -> "N".equalsIgnoreCase(wo.getFlag()))   // <--- Added Condition
                 .collect(Collectors.toList());
     }
 }
