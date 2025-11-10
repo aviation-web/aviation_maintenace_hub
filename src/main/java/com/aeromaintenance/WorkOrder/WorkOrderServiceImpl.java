@@ -326,7 +326,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         // Filter only closed work orders
         return workOrdersWithSteps.stream()
                 .filter(wo -> "CLOSED".equalsIgnoreCase(wo.getStatus()))
-                .filter(wo -> "N".equalsIgnoreCase(wo.getFlag()))   // <--- Added Condition
+                .filter(wo -> wo.getFlag() != null && "N".equalsIgnoreCase(wo.getFlag())) // <-- IMPORTANT
                 .collect(Collectors.toList());
     }
 }
