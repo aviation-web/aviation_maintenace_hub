@@ -23,7 +23,7 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 	Optional<workOrderDetailDto> findDetailsByWorkOrder(@Param("workOrderNo") String workOrderNo);
 	
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(m.workOrderNo, m.description, m.partNumber, m.qty, m.snBn, m.customerName, m.repairOrderNo, m.status) " +
-		       "FROM WorkOrder m WHERE m.status <> 'Closed' ")
+		       "FROM WorkOrder m WHERE m.status = 'IN_PROGRESS' ")
 	List<workOrderDetailDto> findDetailsByWorkOrderStatus();
 
 //	@Modifying

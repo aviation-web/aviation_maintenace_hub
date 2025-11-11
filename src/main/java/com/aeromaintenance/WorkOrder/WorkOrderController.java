@@ -97,10 +97,10 @@ public class WorkOrderController {
         allOrders.addAll(partialOrders);
         allOrders.addAll(reopenOrders);
 
-        if (allOrders.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
-        }
+//        if (allOrders.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(null);
+//        }
 
         return ResponseEntity.ok(allOrders);
     }
@@ -109,9 +109,9 @@ public class WorkOrderController {
     public ResponseEntity<List<WorkOrder>> getClosedWorkOrders() {
         List<WorkOrder> closedOrders = workOrderService.getClosedWorkOrders();
 
-        if (closedOrders.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+//        if (closedOrders.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
 
         return ResponseEntity.ok(closedOrders);
     }
@@ -120,9 +120,9 @@ public class WorkOrderController {
     public ResponseEntity<List<WorkOrder>> getOpenWorkOrders() {
         List<WorkOrder> openOrders = workOrderService.getOpenWorkOrders();
 
-        if (openOrders.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+//        if (openOrders.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
 
         return ResponseEntity.ok(openOrders);
     }
