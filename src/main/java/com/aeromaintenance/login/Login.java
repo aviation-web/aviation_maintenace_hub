@@ -35,7 +35,7 @@ public class Login {
  	@Column(nullable = false, length = 50)
  	private String firstName;
  	 
- 	@Column(nullable = false, length = 50)
+ 	@Column(length = 50)
     private String middleName;
  	 
     @Column(nullable = false, length = 255)
