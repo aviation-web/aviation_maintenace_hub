@@ -28,7 +28,7 @@ public interface StoreInventoryRepo extends JpaRepository <Product, Long>{
     INSERT INTO store_inventory (part_number, part_description, quantity, rack_no, updated_by, updated_date)
     VALUES (:partNumber, :description, :quantity, :rackNo, :updatedBy, :updatedDate)
     ON DUPLICATE KEY UPDATE
-        quantity = quantity + :quantity,
+        quantity = :quantity,
         rack_no = CONCAT_WS(',', rack_no,
             (SELECT GROUP_CONCAT(new_rack) FROM
                 (SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(:rackNo, ',', numbers.n), ',', -1)) AS new_rack

@@ -1,6 +1,7 @@
 package com.aeromaintenance.DispatchReport;
 
 
+import com.aeromaintenance.WorkOrder.WorkOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,10 @@ public class DispatchReportService {
     
     @Autowired
     private InspectionReportRepositoryCustom inspectionReportRepositoryCustom;
+
+    @Autowired
+    private WorkOrderRepository workOrderRepository;
+
 
     // Convert Entity to DTO
     private DispatchReportDTO convertToDTO(DispatchReport report) {
@@ -87,12 +92,21 @@ public class DispatchReportService {
         dto.setReportNo(newReportNo);
         dto.setReportDate(java.time.LocalDate.now());
 
-        // 3️⃣ Save as usual
+        // 3️⃣ Save report
         DispatchReport savedReport = repository.save(convertToEntity(dto));
+
+        // 4️⃣ Update store inventory quantity (your existing logic)
         updateStoreInventryQuantity(dto);
+
+        // 5️⃣ ✅ Update WorkOrder flag to 'Y'
+        updateWorkOrderFlag(dto.getOrderNo());
+
         return convertToDTO(savedReport);
     }
 
+    private void updateWorkOrderFlag(String workOrderNo) {
+        workOrderRepository.updateFlagByWorkOrderNo("Y", workOrderNo);
+    }
 
     // Get all Dispatch Reports
     public List<DispatchReportDTO> getAllReports() {
