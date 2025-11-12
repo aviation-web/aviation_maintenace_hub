@@ -27,6 +27,13 @@ public class StoreAccService {
         logger.debug("Total store acceptances retrieved: {}", storeAcceptances.size());
         return storeAcceptances;
     }
+    
+    public List<StoreAcc> getAllStoreAcceptancesTag() {
+        logger.info("Fetching all store acceptances");
+        List<StoreAcc> storeAcceptances = repository.findAll();
+        logger.debug("Total store acceptances retrieved: {}", storeAcceptances.size());
+        return storeAcceptances;
+    }
 
     public StoreAcc getStoreAcceptanceById(Long id) {
         logger.info("Fetching store acceptance with ID: {}", id);

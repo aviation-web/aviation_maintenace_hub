@@ -70,7 +70,8 @@ public class LoginService {
     
 	public ResponseBean<String> addUser(Login user) {
 		ResponseBean<String> responseBean = null;
-		String randomPassword = generateRandomPassword(8);
+		//String randomPassword = generateRandomPassword(8);
+		String randomPassword = "Password@123";
 	    String encodedPassword = passwordEncoder.encode(randomPassword);
 	    
 	    user.setPassword(encodedPassword);
@@ -84,16 +85,16 @@ public class LoginService {
 	    	    );
 	    }else {
 	    	loginRepository.save(user);
-		try {
-			emailService.sendEmail(user.getEmail(), user.getUsername(), randomPassword);
-			//return "User created successfully";
-		} catch (MessagingException e) {
-			 responseBean = new ResponseBean<>(
-	    	        "500",
-	    	        "Internal Error.", 
-	    	        "" 
-	    	    );
-		}
+//		try {
+//			emailService.sendEmail(user.getEmail(), user.getUsername(), randomPassword);
+//			//return "User created successfully";
+//		} catch (MessagingException e) {
+//			 responseBean = new ResponseBean<>(
+//	    	        "500",
+//	    	        "Internal Error.", 
+//	    	        "" 
+//	    	    );
+//		}
 	    
 	}
 		return responseBean;

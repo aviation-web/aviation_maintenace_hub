@@ -24,6 +24,11 @@ System.out.println("StoreAccController Initialized");
     public List<StoreAcc> getAllStoreAcceptances() {
         return service.getAllStoreAcceptances();
     }
+    
+    @GetMapping("/allTag")
+    public List<StoreAcc> getAllStoreAcceptancesTag() {
+        return service.getAllStoreAcceptancesTag();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<StoreAcc> getStoreAcceptanceById(@PathVariable Long id) {
