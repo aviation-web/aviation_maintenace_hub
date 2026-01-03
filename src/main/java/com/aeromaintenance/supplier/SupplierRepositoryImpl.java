@@ -19,7 +19,7 @@ public class SupplierRepositoryImpl {
 	public int insertSupplierForm(SupplierDto form) {
 		Query query = entityManager.createNativeQuery(
 				"INSERT INTO supplier_history1 (" +
-						"rev, sysdate, supplier_name,vendor_type, address, phone_number, fax, email_id, " +
+						"rev, sysdate, supplier_name,vendor_types, address, phone_number, fax, email_id, " +
 						"qm_name, qm_phone_number, qm_email_id, quality_manager_country_code, " +
 						"sales_representative_name, sale_phone_number, sale_email_id, sale_representative_country_code, " +
 						"core_products, years_in_business, iso_registered, iso_standard, " +
