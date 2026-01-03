@@ -2,6 +2,7 @@ package com.aeromaintenance.supplier;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +33,11 @@ public class SupplierModel {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name = "supplier_id")
     private Long supplierId;
+
+
+    @NotBlank(message = "Please select at least one vendor type")
+    @Column(name = "vendor_types") // Database column stores: "OEM,MRO,Supplier"
+    private String vendorTypes;
 
     @Column(name = "rev")
     private Integer rev;

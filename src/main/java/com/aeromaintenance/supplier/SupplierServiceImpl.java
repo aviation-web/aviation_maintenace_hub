@@ -45,6 +45,9 @@ public class SupplierServiceImpl implements SupplierService {
 	        if (supplierModel.getSupplierName() != null) {
 	            updateExisting.setSupplierName(supplierModel.getSupplierName());
 	        }
+			if (supplierModel.getVendorTypes() != null) {
+				updateExisting.setVendorTypes(supplierModel.getVendorTypes());
+			}
 	        if (supplierModel.getAddress() != null) {
 	            updateExisting.setAddress(supplierModel.getAddress());
 	        }

@@ -2,6 +2,7 @@ package com.aeromaintenance.supplier;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,11 @@ public class SupplierDto {
 	
 //    @Column(name = "supplier_Id")
     private Long supplierId;
+
+
+    @NotBlank(message = "Please select at least one vendor type")
+    @Column(name = "vendor_types") // Database column stores: "OEM,MRO,Supplier"
+    private String vendorTypes;
 
    //@Column(name = "rev")
     private Integer rev;

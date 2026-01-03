@@ -19,7 +19,7 @@ public class SupplierRepositoryImpl {
 	public int insertSupplierForm(SupplierDto form) {
 		Query query = entityManager.createNativeQuery(
 				"INSERT INTO supplier_history1 (" +
-						"rev, sysdate, supplier_name, address, phone_number, fax, email_id, " +
+						"rev, sysdate, supplier_name,vendor_type, address, phone_number, fax, email_id, " +
 						"qm_name, qm_phone_number, qm_email_id, quality_manager_country_code, " +
 						"sales_representative_name, sale_phone_number, sale_email_id, sale_representative_country_code, " +
 						"core_products, years_in_business, iso_registered, iso_standard, " +
@@ -35,7 +35,7 @@ public class SupplierRepositoryImpl {
 						"housekeeping_procedure, user_Name, user_Role, user_Id, user_Action, checker_by, " +
 						"supplier_id, country_code, iso_certificate" +
 						") VALUES (" +
-						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+						"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 		);
 
 		// Set all parameters as strings
@@ -108,6 +108,7 @@ public class SupplierRepositoryImpl {
 		query.setParameter(57, form.getSupplierId() != null ? form.getSupplierId().toString() : null);
 		query.setParameter(58, form.getCountryCode());
 		query.setParameter(59, form.getIsoCertificate());
+		query.setParameter(60, form.getVendorTypes());
 
 		return query.executeUpdate();
 	}
