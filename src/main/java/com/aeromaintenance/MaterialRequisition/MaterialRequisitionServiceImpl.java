@@ -37,9 +37,13 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
         // Update WorkOrder status
         if (dto.getWorkOrderNo() != null && !dto.getWorkOrderNo().isEmpty()) {
             int updated = entityManager.createNativeQuery(
-                            "UPDATE work_order SET status = 'IN-PROGRESS' WHERE work_order_no = :work_order_no")
+                            "UPDATE work_order " +
+                                    "SET status = 'IN-PROGRESS', qty = :qty " +
+                                    "WHERE work_order_no = :work_order_no")
+                    .setParameter("qty", dto.getIssuedQty())
                     .setParameter("work_order_no", dto.getWorkOrderNo())
                     .executeUpdate();
+
             System.out.println("Rows updated in work_order: " + updated);
         }
 
