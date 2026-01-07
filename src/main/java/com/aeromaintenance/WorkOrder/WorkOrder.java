@@ -42,7 +42,7 @@ public class WorkOrder {
     private String flag = "N";
 
     //  NEW FIELD
-    private String status; // e.g. "OPEN", "IN-PROGRESS", "COMPLETED"
+    private String status; // e.g. "OPEN", "IN_PROGRESS", "COMPLETED"
 
     @JsonManagedReference
     @OneToMany(mappedBy = "workOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -52,10 +52,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
         WorkOrder savedOrder = repository.save(entity);
 
-        // Update customer_order status to IN-PROGRESS using srNo from DTO
+        // Update customer_order status to IN_PROGRESS using srNo from DTO
         if (dto.getSrNumber() != null && !dto.getSrNumber().isEmpty()) {
             int updated = entityManager.createNativeQuery(
-                            "UPDATE customer_order SET status = 'IN-PROGRESS' WHERE sr_no = :srNo")
+                            "UPDATE customer_order SET status = 'IN_PROGRESS' WHERE sr_no = :srNo")
                     .setParameter("srNo", dto.getSrNumber())
                     .executeUpdate();
             System.out.println("Rows updated in customer_order: " + updated);
