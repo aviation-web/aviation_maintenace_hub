@@ -22,4 +22,6 @@ public interface StoreAccRepository extends JpaRepository<StoreAcc, Long> {
 	int getReceiveQuantityByPartNO(@Param("partNum") String partNum);
 
 	Optional<StoreAcc> findByInspectionReportId(Long inspectionReportId);
+
+
 }

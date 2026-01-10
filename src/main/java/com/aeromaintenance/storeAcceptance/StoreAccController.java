@@ -25,9 +25,16 @@ System.out.println("StoreAccController Initialized");
         return service.getAllStoreAcceptances();
     }
     
-    @GetMapping("/allTag")
-    public List<StoreAcc> getAllStoreAcceptancesTag() {
-        return service.getAllStoreAcceptancesTag();
+//    @GetMapping("/allTag")
+//    public List<StoreAcc> getAllStoreAcceptancesTag() {
+//        return service.getAllStoreAcceptancesTag();
+//    }
+
+    @GetMapping("/tag/by-inspection/{inspectionReportId}")
+    public List<StoreAcc> getStoreTagsByInspectionReportId(
+            @PathVariable Long inspectionReportId) {
+
+        return service.getStoreTagsByInspectionReportId(inspectionReportId);
     }
 
     @GetMapping("/{id}")
