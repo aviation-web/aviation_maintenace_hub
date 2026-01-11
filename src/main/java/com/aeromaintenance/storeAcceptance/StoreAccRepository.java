@@ -23,5 +23,18 @@ public interface StoreAccRepository extends JpaRepository<StoreAcc, Long> {
 
 	Optional<StoreAcc> findByInspectionReportId(Long inspectionReportId);
 
+	@Query(
+			value = """
+            SELECT sa.*
+            FROM store_acceptance sa
+            JOIN inspection_report_history irh
+              ON sa.inspection_report_id = irh.inspection_report_id
+            WHERE irh.inspection_report_id = :inspectionReportId
+        """,
+			nativeQuery = true
+	)
+	List<StoreAcc> findStoreAccByInspectionReportIdFromHistory(
+			@Param("inspectionReportId") Long inspectionReportId
+	);
 
 }
