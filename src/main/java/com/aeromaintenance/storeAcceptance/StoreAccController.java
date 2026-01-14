@@ -31,13 +31,20 @@ System.out.println("StoreAccController Initialized");
 //        return service.getAllStoreAcceptancesTag();
 //    }
 
+//    @GetMapping("/tag/by-inspection/{inspectionReportId}")
+//    public List<StoreAcc> getStoreTagsByInspectionReportId(
+//            @PathVariable Long inspectionReportId) {
+//
+//        return service.getStoreTagsByInspectionReportId(inspectionReportId);
+//    }
+
     @GetMapping("/tag/by-inspection/{inspectionReportId}")
-    public List<StoreAcc> getStoreTagsByInspectionReportId(
+    public ResponseEntity<List<StoreAcc>> getStoreTagsByInspectionReportId(
             @PathVariable Long inspectionReportId) {
 
-        return service.getStoreTagsByInspectionReportId(inspectionReportId);
+        List<StoreAcc> result = service.getStoreTagsByInspectionReportId(inspectionReportId);
+        return ResponseEntity.ok(result);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<StoreAcc> getStoreAcceptanceById(@PathVariable Long id) {

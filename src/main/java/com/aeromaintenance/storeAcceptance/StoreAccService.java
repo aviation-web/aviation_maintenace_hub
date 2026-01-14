@@ -35,11 +35,8 @@ public class StoreAccService {
         return storeAcceptances;
     }
 
-    public List<StoreAcc> getStoreTagsByInspectionReportId(Long inspection_report_id) {
-
-        return repository.findStoreAccByInspectionReportIdFromHistory(
-                inspection_report_id
-        );
+    public List<StoreAcc> getStoreTagsByInspectionReportId(Long inspectionReportId) {
+        return repository.findStoreAccByInspectionReportIdFromHistory(inspectionReportId);
     }
 
 
