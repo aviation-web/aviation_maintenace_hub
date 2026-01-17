@@ -77,7 +77,7 @@ public class LoginController {
     
             String token = jwtUtil.generateToken(user.getUsername(), userDetail.getRole());
             
-            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),userDetail.getRole())); // Return token wrapped in response
+            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),userDetail.getId(),userDetail.getRole())); // Return token wrapped in response
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
         } catch (Exception e) {

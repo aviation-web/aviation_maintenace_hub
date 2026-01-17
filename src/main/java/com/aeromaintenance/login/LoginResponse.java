@@ -15,5 +15,6 @@ public class LoginResponse {
 	private String token;
 	private boolean passwordExpired;
 	private String username;
+	private Long id;
 	private String role;
 }
