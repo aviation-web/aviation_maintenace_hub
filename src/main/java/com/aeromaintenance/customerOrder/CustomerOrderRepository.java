@@ -24,7 +24,7 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 		    + " FROM customer_order_history", nativeQuery = true)
 			List<Object[]> getRawReportList();
 
-	@Query("SELECT i FROM CustomerOrder i WHERE i.userAction = '4'")
+	@Query("SELECT i FROM CustomerOrder i WHERE i.status = 'OPEN'")
 	List<CustomerOrder> getAllEditReportList();
 
 
