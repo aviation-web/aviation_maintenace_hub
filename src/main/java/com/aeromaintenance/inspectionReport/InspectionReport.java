@@ -118,4 +118,7 @@ public class InspectionReport {
 	
 	@Column
 	private String documentPath;
+
+    @Column
+    private int Rflag = 1;
 }

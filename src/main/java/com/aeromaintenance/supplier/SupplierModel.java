@@ -222,4 +222,7 @@ public class SupplierModel {
     @Column(name="remark")
     private String remark;
 
+    @Column(nullable = false)
+    private int Rflag = 1;
+
 }

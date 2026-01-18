@@ -62,6 +62,9 @@ public class PurchaseRequisition {
     @Column(name = "status", nullable = false)
     private String status = "Open";
 
+    @Column
+    private int Rflag = 1;
+
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDateTime.now();

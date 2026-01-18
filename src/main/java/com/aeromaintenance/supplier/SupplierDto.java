@@ -262,4 +262,7 @@ public class SupplierDto {
  @Pattern(regexp = "^\\+?[0-9]{1,4}$", message = "Sale Representative Country Code must be numeric (1 to 4 digits, optional + sign)")
  private String saleRepresentativeCountryCode;
 
+    @Column(nullable = false)
+    private int Rflag = 1;
+
 }

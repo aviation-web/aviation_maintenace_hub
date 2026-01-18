@@ -48,4 +48,5 @@ public class DispatchReport {
 
     private String storesInChargeName;
     private String storesInChargeSign;
+    private int Rflag = 1;
 }

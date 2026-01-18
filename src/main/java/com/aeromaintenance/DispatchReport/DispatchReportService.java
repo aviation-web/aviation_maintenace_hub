@@ -50,7 +50,8 @@ public class DispatchReportService {
             report.getEwayBillDate(),
             report.getEwayBillRemark(),
             report.getStoresInChargeName(),
-            report.getStoresInChargeSign()
+            report.getStoresInChargeSign(),
+                report.getRflag()
         );
     }
 
@@ -79,7 +80,8 @@ public class DispatchReportService {
                 dto.getEwayBillDate(),
                 dto.getEwayBillRemark(),
             dto.getStoresInChargeName(),
-            dto.getStoresInChargeSign()
+            dto.getStoresInChargeSign(),
+                dto.getRflag()
         );
     }
 

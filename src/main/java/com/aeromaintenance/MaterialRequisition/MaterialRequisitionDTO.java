@@ -25,5 +25,6 @@ public class MaterialRequisitionDTO {
     private String supplierName;
     private Date curDate;
     private String status;
+    private int Rflag = 1;
 }
 

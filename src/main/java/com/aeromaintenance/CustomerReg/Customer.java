@@ -66,4 +66,7 @@ public class Customer {
     @Pattern(regexp = "Airline|MRO|NSOP", flags = Pattern.Flag.CASE_INSENSITIVE,
             message = "Customer type must be Airline, MRO, or NSOP")
     private String customerType;
+
+    @Column(nullable = false)
+    private int Rflag = 1;
 }

@@ -93,6 +93,9 @@ import org.hibernate.annotations.GenericGenerator;
 		@Column
 		private String cmmRefNo;
 
+        @Column
+        private int Rflag = 1;
+
 	@PrePersist
 	public void prePersist() {
 		if (this.status == null) {

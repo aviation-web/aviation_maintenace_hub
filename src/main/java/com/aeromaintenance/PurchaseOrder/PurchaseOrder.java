@@ -39,6 +39,9 @@ public class PurchaseOrder {
     @Column(name = "orderPlacedFlag", nullable = false)
     private int orderPlacedFlag = 0;
 
+    @Column(nullable = false)
+    private int Rflag = 1;
+
     private String SupplierName;
 
     private String ourReference;

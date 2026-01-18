@@ -64,4 +64,7 @@ public class MaterialReceiptNote {
     @Column(name = "status", nullable = false)
     private String status = "Open";
 
+    @Column
+    private int Rflag = 1;
+
 }

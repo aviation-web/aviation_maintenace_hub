@@ -35,4 +35,5 @@ public class DispatchReportDTO {
     private String ewayBillRemark;
     private String storesInChargeName;
     private String storesInChargeSign;
+    private int Rflag = 1;
 }

@@ -40,5 +40,7 @@ public class CustomerRepairProduct {
     private LocalDate date; // system date at creation
 
     private String registerBy;
+
+    private int Rflag = 1;
 }
 

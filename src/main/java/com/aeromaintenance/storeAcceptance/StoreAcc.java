@@ -88,6 +88,9 @@ public class StoreAcc {
 
     private String flag = "N";
 
+    @Column
+    private int Rflag = 1;
+
     
     @PrePersist
     protected void onCreate() {

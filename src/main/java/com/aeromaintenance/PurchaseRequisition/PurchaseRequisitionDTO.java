@@ -27,6 +27,7 @@ public class PurchaseRequisitionDTO {
     private String remark;
     private String batchNumber;
     private String status;
+    private int Rflag;
 
     // Convert DTO to Entity
     public PurchaseRequisition toEntity() {
@@ -41,6 +42,7 @@ public class PurchaseRequisitionDTO {
         entity.setRemark(this.remark);
         entity.setBatchNumber(this.batchNumber);
         entity.setStatus(this.status);
+        entity.setRflag(this.Rflag);
         return entity;
     }
 
@@ -57,6 +59,7 @@ public class PurchaseRequisitionDTO {
                 .remark(entity.getRemark())
                 .batchNumber(entity.getBatchNumber())
                 .status(entity.getStatus())
+                .Rflag(entity.getRflag())
                 .build();
     }
     

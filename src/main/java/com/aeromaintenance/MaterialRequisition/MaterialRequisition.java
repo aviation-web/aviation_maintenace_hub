@@ -66,5 +66,8 @@ public class MaterialRequisition {
 
     @Column(name = "status", nullable = false)
     private String status = "Open"; // 1 = active, 0 = submitted/hidden
+
+    @Column
+    private int Rflag = 1;
 }
 

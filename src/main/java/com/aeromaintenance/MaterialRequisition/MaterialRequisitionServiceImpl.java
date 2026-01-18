@@ -120,7 +120,8 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 entity.getUnitOfMeasurement(),
                 entity.getSupplierName(),
                 entity.getCurDate(),
-                entity.getStatus()
+                entity.getStatus(),
+                entity.getRflag()
         );
     }
 
@@ -139,7 +140,8 @@ public class MaterialRequisitionServiceImpl implements MaterialRequisitionServic
                 dto.getUnitOfMeasurement(),
                 dto.getSupplierName(),
                 dto.getCurDate(),
-                dto.getStatus()
+                dto.getStatus(),
+                dto.getRflag()
         );
     }
     @Override

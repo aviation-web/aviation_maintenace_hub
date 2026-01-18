@@ -40,6 +40,7 @@ public class WorkOrder {
     private String snBn;
     private String srNumber; // customer_order sr_no
     private String flag = "N";
+    private int Rflag = 1;
 
     //  NEW FIELD
     private String status; // e.g. "OPEN", "IN_PROGRESS", "COMPLETED"

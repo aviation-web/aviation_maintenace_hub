@@ -30,6 +30,7 @@ public class WorkOrderDTO {
     private String snBn;
     private String srNumber; // customer_order  sr_no
     private String flag ="N";
+    private int Rflag = 1;
 
 
     private Set<WorkOrderStepDTO> workOrderSteps;

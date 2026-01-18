@@ -57,6 +57,9 @@ public class Product {
     @Column(nullable = false)
     private int flag = 1;  // 1 = active, 0 = deleted
 
+    @Column(nullable = false)
+    private int Rflag = 1;
+
 
     // Getters and Setters
 
