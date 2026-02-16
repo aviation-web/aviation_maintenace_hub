@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,12 +132,16 @@ public class ReportService {
 
         if (request.getFilter() != null) {
             if (request.getFilter().getFlag() != null) {
-                conditions.add(entityAlias + ".Rflag = :flag");
+                conditions.add(entityAlias + ".Rflag = :Rflag");
             }
 
             if (request.getFilter().getDateFrom() != null && request.getFilter().getDateTo() != null) {
-                // Assuming there's a date field - you can make this configurable
-                conditions.add(entityAlias + ".registrationDate BETWEEN :dateFrom AND :dateTo");
+                // Use dateField from filter if specified, otherwise default to "registrationDate"
+                String dateField = request.getFilter().getDateField();
+                if (dateField == null || dateField.isEmpty()) {
+                    dateField = "registrationDate"; // Default date field
+                }
+                conditions.add(entityAlias + "." + dateField + " BETWEEN :dateFrom AND :dateTo");
             }
         }
 
@@ -157,11 +162,19 @@ public class ReportService {
             query.setParameter("flag", filter.getFlag());
         }
 
-        // Add more filter parameters as needed
+        // Apply date range filter
         if (filter.getDateFrom() != null && filter.getDateTo() != null) {
-            // You'll need to parse the date strings
-            // query.setParameter("dateFrom", parseDate(filter.getDateFrom()));
-            // query.setParameter("dateTo", parseDate(filter.getDateTo()));
+            try {
+                // Parse date strings to java.util.Date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date dateFrom = sdf.parse(filter.getDateFrom());
+                java.util.Date dateTo = sdf.parse(filter.getDateTo());
+
+                query.setParameter("dateFrom", dateFrom);
+                query.setParameter("dateTo", dateTo);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd format.");
+            }
         }
     }
 
