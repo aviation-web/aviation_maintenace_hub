@@ -29,4 +29,10 @@ public interface SupplierRepository  extends JpaRepository<SupplierModel, Long> 
     @Query("SELECT s FROM SupplierModel s WHERE s.userAction = '2'")
     List<SupplierModel> getSuppliersWithUserActionTwo();
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE SupplierModel SET remark = :remark WHERE supplier_id = :supplierId", nativeQuery = true)
+    int updateRemark(@Param("supplierId") Long supplierId,
+                     @Param("remark") String remark);
+
 }
