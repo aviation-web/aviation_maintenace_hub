@@ -1,11 +1,15 @@
 package com.aeromaintenance.report;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +39,26 @@ public class ReportService {
         ENTITY_MAPPING.put("PurchaseRequisition", "com.aeromaintenance.PurchaseRequisition.PurchaseRequisition");
         ENTITY_MAPPING.put("storeAcceptance", "com.aeromaintenance.storeAcceptance.StoreAcc");
         
+    }
+
+    private static final Map<String, String> ENTITY_DATE_MAPPING = new HashMap<>();
+
+    static {
+
+        ENTITY_DATE_MAPPING.put("Product", "registrationDate");
+        ENTITY_DATE_MAPPING.put("Inventory", "updatedDate");
+        ENTITY_DATE_MAPPING.put("WorkOrder", "issueDate");
+        ENTITY_DATE_MAPPING.put("PurchaseOrder", "poDate");
+        ENTITY_DATE_MAPPING.put("Supplier", "sysdate");
+        ENTITY_DATE_MAPPING.put("CustomerOrder", "roDate");
+        ENTITY_DATE_MAPPING.put("CustomerRepairProduct", "date");
+        ENTITY_DATE_MAPPING.put("DispatchReport", "date");
+        ENTITY_DATE_MAPPING.put("InspectionReport", "date");
+        ENTITY_DATE_MAPPING.put("MaterialReceiptNote", "receiptDate");
+        ENTITY_DATE_MAPPING.put("MaterialRequisition", "date");
+        ENTITY_DATE_MAPPING.put("PurchaseRequisition", "updatedDate");
+        ENTITY_DATE_MAPPING.put("storeAcceptance", "updatedDate");
+
     }
 
     /**
@@ -94,7 +118,7 @@ public class ReportService {
         Query query = entityManager.createQuery(jpql);
 
         // Apply filters if present
-        applyFilters(query, request.getFilter());
+        applyFilters(query, request);
 
         List<?> results = query.getResultList();
 
@@ -138,8 +162,9 @@ public class ReportService {
             if (request.getFilter().getDateFrom() != null && request.getFilter().getDateTo() != null) {
                 // Use dateField from filter if specified, otherwise default to "registrationDate"
                 String dateField = request.getFilter().getDateField();
+
                 if (dateField == null || dateField.isEmpty()) {
-                    dateField = "registrationDate"; // Default date field
+                    dateField = getDateColumnForEntity(request.getEntityName());
                 }
                 conditions.add(entityAlias + "." + dateField + " BETWEEN :dateFrom AND :dateTo");
             }
@@ -155,25 +180,83 @@ public class ReportService {
     /**
      * Apply filter parameters to query
      */
-    private void applyFilters(Query query, ReportRequest.ReportFilter filter) {
+    private void applyFilters(Query query, ReportRequest request) {
+        ReportRequest.ReportFilter filter = request.getFilter();
         if (filter == null) return;
 
         if (filter.getFlag() != null) {
-            query.setParameter("flag", filter.getFlag());
+            query.setParameter("Rflag", filter.getFlag());
         }
 
-        // Apply date range filter
         if (filter.getDateFrom() != null && filter.getDateTo() != null) {
-            try {
-                // Parse date strings to java.util.Date
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date dateFrom = sdf.parse(filter.getDateFrom());
-                java.util.Date dateTo = sdf.parse(filter.getDateTo());
 
-                query.setParameter("dateFrom", dateFrom);
-                query.setParameter("dateTo", dateTo);
+            try {
+                String entityClassName = ENTITY_MAPPING.get(request.getEntityName());
+                Class<?> entityClass = Class.forName(entityClassName);
+
+                String dateField = filter.getDateField();
+
+                if (dateField == null || dateField.isEmpty()) {
+                    dateField = getDateColumnForEntity(request.getEntityName());
+                }
+
+                Field field = entityClass.getDeclaredField(dateField);
+                Class<?> fieldType = field.getType();
+
+                String fromStr = filter.getDateFrom();
+                String toStr = filter.getDateTo();
+
+                // CASE 1: LocalDate
+                if (fieldType.equals(LocalDate.class)) {
+
+                    LocalDate from = LocalDate.parse(fromStr);
+                    LocalDate to = LocalDate.parse(toStr);
+
+                    query.setParameter("dateFrom", from);
+                    query.setParameter("dateTo", to);
+                }
+
+                // CASE 2: LocalDateTime
+                else if (fieldType.equals(LocalDateTime.class)) {
+
+                    LocalDate from = LocalDate.parse(fromStr);
+                    LocalDate to = LocalDate.parse(toStr);
+
+                    LocalDateTime start = from.atStartOfDay();
+                    LocalDateTime end = to.atTime(23, 59, 59);
+
+                    query.setParameter("dateFrom", start);
+                    query.setParameter("dateTo", end);
+                }
+
+                //  CASE 3: java.util.Date (YOUR FIX)
+                else if (fieldType.equals(Date.class)) {
+
+                    LocalDate from = LocalDate.parse(fromStr);
+                    LocalDate to = LocalDate.parse(toStr);
+
+                    Date startDate = java.sql.Timestamp.valueOf(from.atStartOfDay());
+                    Date endDate = java.sql.Timestamp.valueOf(to.atTime(23, 59, 59));
+
+                    query.setParameter("dateFrom", startDate);
+                    query.setParameter("dateTo", endDate);
+                }
+
+                // CASE 4: String
+                else if (fieldType.equals(String.class)) {
+
+                    query.setParameter("dateFrom", fromStr);
+                    query.setParameter("dateTo", toStr);
+                }
+
+                else {
+                    throw new IllegalArgumentException(
+                            "Unsupported date field type: " + fieldType.getSimpleName());
+                }
+
             } catch (Exception e) {
-                throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd format.");
+                e.printStackTrace();
+                throw new IllegalArgumentException("Invalid date filter configuration.");
             }
         }
     }
@@ -314,5 +397,39 @@ public class ReportService {
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Entity class not found: " + entityName);
         }
+    }
+
+    public String getDateColumnForEntity(String entityName) {
+
+        String mappedColumn = ENTITY_DATE_MAPPING.get(entityName);
+
+        if (mappedColumn != null) {
+            return mappedColumn;
+        }
+
+        // fallback detection using reflection
+        try {
+
+            String entityClassName = ENTITY_MAPPING.get(entityName);
+            Class<?> entityClass = Class.forName(entityClassName);
+
+            for (Field field : entityClass.getDeclaredFields()) {
+
+                Class<?> type = field.getType();
+
+                if (type.equals(LocalDate.class) ||
+                        type.equals(LocalDateTime.class) ||
+                        type.equals(Date.class) ||
+                        type.equals(String.class)) {
+
+                    if (field.getName().toLowerCase().contains("date")) {
+                        return field.getName();
+                    }
+                }
+            }
+
+        } catch (Exception ignored) {}
+
+        return null;
     }
 }
