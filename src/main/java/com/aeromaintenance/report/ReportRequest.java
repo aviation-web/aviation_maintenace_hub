@@ -19,9 +19,10 @@ public class ReportRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReportFilter {
-        private String dateFrom;
-        private String dateTo;
-        private Integer flag; // For active/inactive filtering
+        private String dateFrom;  // Format: "yyyy-MM-dd"
+        private String dateTo;    // Format: "yyyy-MM-dd"
+        private Integer flag;     // For active/inactive filtering
+        private String dateField; // Which date field to filter on (e.g., "registrationDate", "createdDate")
         // Add more filter criteria as needed
     }
 }
