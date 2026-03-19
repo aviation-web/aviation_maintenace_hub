@@ -2,6 +2,7 @@ package com.aeromaintenance.MaterialReceiptNote;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.aeromaintenance.PurchaseOrder.PurchaseOrder;
@@ -10,12 +11,18 @@ import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO;
 import com.aeromaintenance.exception.DuplicateRecordException;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class MaterialReceiptNoteService {
+	
+	@Value("${filter.days}")
+    private int filterDays;
     
     @Autowired
     private MaterialReceiptNoteRepository mrnRepository;
@@ -87,7 +94,12 @@ public class MaterialReceiptNoteService {
 //    }
 //    
     public List<MaterialReceiptNote> getAllMRNs() {
-        return mrnRepository.findByStatus("Open");
+    	LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+//        Date fromDate = Date.from(
+//                localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
+//        );
+    	return mrnRepository.findByStatusAndCreatedDateAfterOrderByCreatedDateDesc("Open", fromDate);
+        //return mrnRepository.findByStatus("Open");
     }
     
     public Optional<MaterialReceiptNote> getMRNById(Long id) {

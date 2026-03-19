@@ -1,5 +1,6 @@
 package com.aeromaintenance.caForm;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,10 +51,28 @@ public interface CAFormRepository extends JpaRepository<CAForm, String>{
 	@Query("UPDATE WorkOrder i SET i.status = :status WHERE i.workOrderNo = :workOrderNo")
 	void updateWorkOrderStatus(@Param("workOrderNo") String workOrderNo,
 							   @Param("status") String status);
+	
+	@Query(value = "SELECT w.work_order_no AS workOrderNo, " +
+	        "w.customer_name AS customerName, " +
+	        "w.repair_order_no AS repairOrderNo, " +
+	        "c.form_tracking_number AS formTrackingNumber, " +
+	        "c.description AS description, " +
+	        "c.part_no AS partNo, " +
+	        "c.item AS item, " +
+	        "c.quantity AS quantity, " +
+	        "c.serial_no AS serialNo, " +
+	        "c.status AS status, " +
+	        "c.remarks AS remarks " +
+	        "FROM ca_form c " +
+	        "JOIN work_order w ON c.work_order_no = w.work_order_no " +
+	        "WHERE STR_TO_DATE(c.date14e, '%d-%m-%Y') >= STR_TO_DATE(:date14e, '%Y-%m-%d') " +
+	        "ORDER BY STR_TO_DATE(c.date14e, '%d-%m-%Y') DESC",
+	        nativeQuery = true)
+	List<WorkOrderDetailProjection> getCAAndWorkOrderDetails(@Param("date14e") String date14e);
 
-	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.workOrderNo, w.customerName, w.repairOrderNo, c.formTrackingNumber, c.description, c.partNo, c.item, c.quantity, c.serialNo, c.status, c.remarks)" +
-			"FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
-	List<workOrderDetailDto> getCAAndWorkOrderDetails();
+//	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.workOrderNo, w.customerName, w.repairOrderNo, c.formTrackingNumber, c.description, c.partNo, c.item, c.quantity, c.serialNo, c.status, c.remarks)" +
+//			"FROM CAForm c JOIN WorkOrder w ON c.workOrderNo = w.workOrderNo")
+//	List<workOrderDetailDto> getCAAndWorkOrderDetails();
 
 	@Query("SELECT new com.aeromaintenance.caForm.workOrderDetailDto(w.customerName, w.repairOrderNo)" +
 			"FROM WorkOrder w WHERE w.workOrderNo = :workOrderNo")

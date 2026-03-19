@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.aeromaintenance.inspectionReport.InspectionReport;
 
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,5 +38,7 @@ public interface StoreAccRepository extends JpaRepository<StoreAcc, Long> {
 	List<StoreAcc> findStoreAccByInspectionReportIdFromHistory(
 			@Param("inspectionReportId") Long inspectionReportId
 	);
+
+	List<StoreAcc> findByFlagAndCreatedAtAfterOrderByCreatedAtDesc(String string, Date fromDate);
 
 }

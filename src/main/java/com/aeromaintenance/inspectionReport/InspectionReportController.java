@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -112,7 +113,7 @@ public class InspectionReportController {
 			     if (rowsInserted >= 1) {
 			    	 reportService.updateMrnNoStatus(reports.getReportNo().trim());
 			    	     reportService.saveInspectionDataInStore(reports);
-			    	     reportService.updateInventoryCurrentStoke(reports);
+			    	     //reportService.updateInventoryCurrentStoke(reports);
 			    		 response = new ResponseBean<>("200", "Report Submitted and moved to history successfully", null);	 	        
 			         return ResponseEntity.status(HttpStatus.OK).body(response);
 			     }else if(rowsInserted == -1) {
@@ -182,7 +183,7 @@ public class InspectionReportController {
 	    public ResponseEntity<List<InspectionReport>> getEditReportList() {
 	        //System.out.println("userAction = " + userAction + ", userRole = " + userRole);
 
-	        List<InspectionReport> reports = inspectionReportRepository.getAllEditReportList();
+	        List<InspectionReport> reports = reportService.getAllEditReportList();
 	        return ResponseEntity.ok(reports);
 	    }
 	 
@@ -198,6 +199,7 @@ public class InspectionReportController {
 	 
 	 @GetMapping("/viewReport")
 	    public ResponseEntity<List<InspectionReportDto>> getViewReportList() {
+
 	        //System.out.println("userAction = " + userAction + ", userRole = " + userRole);
 
 	        List<InspectionReportDto> reports = reportService.getAllViewReportList();

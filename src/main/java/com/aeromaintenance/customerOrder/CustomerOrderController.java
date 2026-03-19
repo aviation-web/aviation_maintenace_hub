@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @RestController
 @RequestMapping(value="/api/customerOrder")
 public class CustomerOrderController {
+	@Value("${filter.days}")
+    private int filterDays;
 	
 	@Autowired
 	private CustomerOrderRepository customerOrderRepository;
@@ -71,7 +74,9 @@ public class CustomerOrderController {
 	// GET: All Customer Orders
 	@GetMapping("/all")
 	public ResponseEntity<List<CustomerOrder>> getAllOrders() {
-		List<CustomerOrder> orders = customerOrderRepository.findAll();
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+		List<CustomerOrder> orders = customerOrderRepository.findByMakerDateAfterOrderByMakerDateDesc(fromDate);
+		//List<CustomerOrder> orders = customerOrderRepository.findAll();
 		return ResponseEntity.ok(orders);
 	}
 

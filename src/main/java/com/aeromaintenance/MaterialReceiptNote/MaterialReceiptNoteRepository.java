@@ -1,6 +1,8 @@
 package com.aeromaintenance.MaterialReceiptNote;
 
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +25,8 @@ public interface MaterialReceiptNoteRepository extends JpaRepository<MaterialRec
 	
 	@Query("SELECT m.mrnNo FROM MaterialReceiptNote m ORDER BY m.mrnNo DESC")
 	List<String> findLatestMrnNo();
+
+	List<MaterialReceiptNote> findByStatusAndCreatedDateAfterOrderByCreatedDateDesc(String status, LocalDate fromDate);
 
     
 }

@@ -1,6 +1,7 @@
 package com.aeromaintenance.Utils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.aeromaintenance.login.SessionRepository;
+import com.aeromaintenance.login.UserSession;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -23,6 +27,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private SessionRepository sessionRepository;
+    
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/auth/");
+    }
 
     @Override
     protected void doFilterInternal(
@@ -42,6 +54,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7); // Remove "Bearer " prefix
+            
+            Optional<UserSession> session =
+                    sessionRepository.findByAccessTokenAndIsActiveTrue(token);
+
+            if (session.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+            
             String username = jwtUtil.extractUsername(token);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

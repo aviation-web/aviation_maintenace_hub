@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,17 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, String> {
     Optional<WorkOrder> findTopByWorkOrderNoStartingWithOrderByWorkOrderNoDesc(String prefix);
 
     // Fetch all work order steps
+    
+    @Query("""
+    	    SELECT DISTINCT w
+    	    FROM WorkOrder w
+    	    LEFT JOIN FETCH w.workOrderSteps
+    	    WHERE w.issueDate >= :issueDate
+    	    ORDER BY w.issueDate DESC
+    	""")
+    	List<WorkOrder> findWorkOrdersAfterIssuedDate(@Param("issueDate") LocalDate issueDate);
+    
+    
     @Query("""
         SELECT DISTINCT w 
         FROM WorkOrder w

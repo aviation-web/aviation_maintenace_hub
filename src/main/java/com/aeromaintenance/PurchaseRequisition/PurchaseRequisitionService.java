@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,10 @@ import java.util.Set;
 
 @Service
 public class PurchaseRequisitionService {
+	
+	@Value("${filter.days}")
+    private int filterDays;
+	
     @Autowired
     private PurchaseRequisitionRepository repository;
 
@@ -78,14 +83,31 @@ public class PurchaseRequisitionService {
 //            })
 //            .collect(Collectors.toList());
     	
+    	// For recently added record
+    	LocalDateTime fromDate = LocalDateTime.now()
+        .minusDays(filterDays);
+
+return repository
+        .findByStatusAndCreatedDateAfterOrderByCreatedDateDesc(
+                "Open",
+                fromDate
+        )
+        .stream()
+        .map(entity -> {
+            PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        })
+        .collect(Collectors.toList());
     	
-    	return repository.findByStatus("Open").stream()
-    	        .map(entity -> {
-    	            PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
-    	            BeanUtils.copyProperties(entity, dto);
-    	            return dto;
-    	        })
-    	        .collect(Collectors.toList());
+    	
+//    	return repository.findByStatus("Open").stream()
+//    	        .map(entity -> {
+//    	            PurchaseRequisitionDTO dto = new PurchaseRequisitionDTO();
+//    	            BeanUtils.copyProperties(entity, dto);
+//    	            return dto;
+//    	        })
+//    	        .collect(Collectors.toList());
     }
 
     // Update Purchase Requisition

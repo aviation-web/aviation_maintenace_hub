@@ -22,12 +22,18 @@ public class JwtUtil {
 
     //private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     private final Key key;
+    private final Key refreshKey;
     private final long expirationTime;
+    
+    @Value("${jwt.refresh.expiration}")
+    private long refreshExpiration;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
+            @Value("${jwt.refresh.secret}") String refreshSecret,
             @Value("${jwt.expiration}") long expirationTime) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.refreshKey = Keys.hmacShaKeyFor(refreshSecret.getBytes());
         this.expirationTime = expirationTime;
     }
     // Generate JWT Token
@@ -41,6 +47,17 @@ public class JwtUtil {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+    
+    public String generateRefreshToken(String username) {
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .signWith(refreshKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 
  // Extract all claims from the token
     public Claims extractClaims(String token) {
@@ -64,6 +81,10 @@ public class JwtUtil {
         Claims claims = extractClaims(token);
         return claims != null ? claims.getSubject() : null;
     }
+    
+    public String extractUsernameFromRefreshToken(String token) {
+    	 Claims claims = extractClaims(token);
+    	    return claims != null ? claims.getSubject() : null;    }
 
     // Check if token is expired
     public boolean isTokenExpired(String token) {
@@ -75,5 +96,14 @@ public class JwtUtil {
     public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
         return extractedUsername != null && extractedUsername.equals(username) && !isTokenExpired(token);
+    }
+    
+    public boolean validateRefreshToken(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,12 +24,17 @@ import java.util.stream.Stream;
 
 @Service
 public class ProductService {
+	
+	@Value("${filter.days}")
+    private int productFilterDays;
 
     @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private StoreInventoryRepo inventoryRepo;
+    
+    private static final int ACTIVE_FLAG = 1;
 
     // Save Product
     public Product saveProduct(Product product) {
@@ -225,6 +234,14 @@ public class ProductService {
     }
 
     public List<Product> getActiveProduct(){
+		/*
+		 * LocalDate localDate = LocalDate.now().minusDays(productFilterDays); Date
+		 * fromDate = Date.from(
+		 * localDate.atStartOfDay(ZoneId.systemDefault()).toInstant() ); return
+		 * productRepository.
+		 * findByFlagAndRegistrationDateAfterOrderByRegistrationDateDesc(ACTIVE_FLAG,
+		 * fromDate);
+		 */
         return productRepository.findAllActiveProducts();
     }
 

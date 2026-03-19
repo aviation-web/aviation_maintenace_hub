@@ -1,5 +1,6 @@
 package com.aeromaintenance.login;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,9 @@ public class LoginController {
     private LoginRepository userRepository;
     
     @Autowired
+    private SessionRepository sessionRepository;
+    
+    @Autowired
 	private PasswordEncoder passwordEncoder;
     
   
@@ -75,19 +79,86 @@ public class LoginController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
     
-            String token = jwtUtil.generateToken(user.getUsername(), userDetail.getRole());
+            //String token = jwtUtil.generateToken(user.getUsername(), userDetail.getRole());
             
-            return ResponseEntity.ok(new LoginResponse(token,userDetails.get().isPasswordExpired(),user.getUsername(),userDetail.getId(),userDetail.getRole())); // Return token wrapped in response
+            //  STEP 1: Invalidate Old Session
+            Optional<UserSession> activeSession =
+                    sessionRepository.findByUserIdAndIsActiveTrue(userDetail.getId());
+
+            if (activeSession.isPresent()) {
+                UserSession oldSession = activeSession.get();
+                oldSession.setIsActive(false);
+                oldSession.setLogoutTime(LocalDateTime.now());
+                sessionRepository.save(oldSession);
+            }
+
+            // STEP 2: Generate Tokens
+            String token = jwtUtil.generateToken(
+                    user.getUsername(), userDetail.getRole());
+
+            String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
+
+            // STEP 3: Save New Session
+            UserSession newSession = new UserSession();
+            newSession.setUserId(userDetail.getId());
+            newSession.setAccessToken(token);
+            newSession.setRefreshToken(refreshToken);
+            newSession.setIsActive(true);
+            newSession.setLoginTime(LocalDateTime.now());
+            newSession.setRefreshExpiry(LocalDateTime.now().plusDays(7));
+
+            sessionRepository.save(newSession);
+
+            return ResponseEntity.ok(
+                    new LoginResponse(
+                            token,
+                            refreshToken,
+                            userDetail.isPasswordExpired(),
+                            user.getUsername(),
+                            userDetail.getId(),
+                            userDetail.getRole()
+                    )
+            );
+
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password.");
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred. Please try again.");
-        }
-        finally {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred. Please try again.");
+
+        } finally {
             LocationBasedRoutingDataSourceContextHolder.clear();
         }
     }
     
+    
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest request) {
+
+        String refreshToken = request.getRefreshToken();
+
+        Optional<UserSession> session =
+            sessionRepository.findByRefreshTokenAndIsActiveTrue(refreshToken);
+
+        if (session.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (session.get().getRefreshExpiry().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Login user = userRepository.findById(session.get().getUserId()).get();
+
+        String newAccessToken = jwtUtil.generateToken(user.getUsername(), user.getRole());
+
+        session.get().setAccessToken(newAccessToken);
+        sessionRepository.save(session.get());
+
+        return ResponseEntity.ok(newAccessToken);
+    }
 
 	 
 	 @PostMapping("/passwordChange") 

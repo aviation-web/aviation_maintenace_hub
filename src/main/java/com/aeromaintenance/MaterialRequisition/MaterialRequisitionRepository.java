@@ -13,7 +13,7 @@ public interface MaterialRequisitionRepository extends JpaRepository<MaterialReq
     @Query(value = "SELECT material_requisition_no FROM material_requisition ORDER BY id DESC LIMIT 1", nativeQuery = true)
     String findLastMaterialRequisitionNo();
 
-    @Query("SELECT m FROM MaterialRequisition m WHERE m.status = 'Open'")
+    @Query("SELECT m FROM MaterialRequisition m WHERE m.status = 'Open' Order By m.curDate Desc")
     List<MaterialRequisition> findAllActive();
 
     // Find all material requisitions by work order number

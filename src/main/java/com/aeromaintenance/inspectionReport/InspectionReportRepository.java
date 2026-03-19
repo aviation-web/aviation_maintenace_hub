@@ -1,5 +1,6 @@
 package com.aeromaintenance.inspectionReport;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,15 +44,26 @@ public interface InspectionReportRepository extends JpaRepository<InspectionRepo
 	 * List<InspectionReportDto> getAllViewReportList();
 	 */
 	
-    @Query(value = "SELECT inspection_report_id, part_number, part_desc, purchase_order_no, supplier_name, report_no, date, qty, qty_receive, invoice_observation, manufacturer_cert_observation, "+
-    " supplier_cert_observation, full_traceability_observation, batch_number_observation, date_of_manufacturing_observation, self_life_observation, tds_observation, material_condition_observation, "+
-    " specification_observation, document_observation, lot_accepted, remark, maker_user_name, maker_date, checker_user_name, checker_date, date_of_expiry_observation "+
-    " FROM inspection_report_history", nativeQuery = true)
-	List<Object[]> getRawReportList();
+//    @Query(value = "SELECT inspection_report_id, part_number, part_desc, purchase_order_no, supplier_name, report_no, date, qty, qty_receive, invoice_observation, manufacturer_cert_observation, "+
+//    " supplier_cert_observation, full_traceability_observation, batch_number_observation, date_of_manufacturing_observation, self_life_observation, tds_observation, material_condition_observation, "+
+//    " specification_observation, document_observation, lot_accepted, remark, maker_user_name, maker_date, checker_user_name, checker_date, date_of_expiry_observation "+
+//    " FROM inspection_report_history", nativeQuery = true)
+//	List<Object[]> getRawReportList();
+	
+	@Query(value = "SELECT inspection_report_id, part_number, part_desc, purchase_order_no, supplier_name, report_no, date, qty, qty_receive, invoice_observation, manufacturer_cert_observation, "+
+	        " supplier_cert_observation, full_traceability_observation, batch_number_observation, date_of_manufacturing_observation, self_life_observation, tds_observation, material_condition_observation, "+
+	        " specification_observation, document_observation, lot_accepted, remark, maker_user_name, maker_date, checker_user_name, checker_date, date_of_expiry_observation "+
+	        " FROM inspection_report_history "+
+	        " WHERE maker_date >= :fromDate "+
+	        " ORDER BY maker_date DESC",
+	        nativeQuery = true)
+	List<Object[]> getRawReportList(@Param("fromDate") LocalDate fromDate);
 
 	@Modifying
 	@Query("UPDATE MaterialReceiptNote i SET i.status = 'Close' WHERE i.mrnNo = :mrnNo")
 	int updateMrnNoStatus(@Param("mrnNo")String mrnNo);
+
+	List<InspectionReport> findByMakerDateAfterOrderByMakerDateDesc(LocalDate fromDate);
 	
 	/*
 	 * @Query(value =

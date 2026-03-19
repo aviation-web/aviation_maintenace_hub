@@ -5,8 +5,12 @@ import com.aeromaintenance.store.inventory.StoreInventoryRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +24,19 @@ public class StoreAccService {
 
     @Autowired
     public StoreInventoryRepo inventoryRepository;
+    
+    @Value("${filter.days}")
+    private int filterDays;
 
     public List<StoreAcc> getAllStoreAcceptances() {
         logger.info("Fetching all store acceptances");
-        List<StoreAcc> storeAcceptances = repository.findByFlag("N");
+        LocalDateTime localDateTime =
+                LocalDateTime.now().minusDays(filterDays);
+
+        Date fromDate = Date.from(
+                localDateTime.atZone(ZoneId.systemDefault()).toInstant()
+        );        List<StoreAcc> storeAcceptances = repository.findByFlagAndCreatedAtAfterOrderByCreatedAtDesc("N", fromDate);
+        //List<StoreAcc> storeAcceptances = repository.findByFlag("N");
         logger.debug("Total store acceptances retrieved: {}", storeAcceptances.size());
         return storeAcceptances;
     }

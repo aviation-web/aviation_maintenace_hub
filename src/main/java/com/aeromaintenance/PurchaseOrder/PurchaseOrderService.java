@@ -2,6 +2,7 @@ package com.aeromaintenance.PurchaseOrder;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.aeromaintenance.PurchaseRequisition.PurchaseRequisition;
@@ -10,6 +11,7 @@ import com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionService;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +20,9 @@ import javax.transaction.Transactional;
 
 @Service
 public class PurchaseOrderService {
+	
+	@Value("${filter.days}")
+    private int filterDays;
 
     @Autowired
     private PurchaseOrderRepository purchaseOrderRepository;
@@ -108,7 +113,13 @@ public class PurchaseOrderService {
 
     // View all Purchase Orders
     public List<PurchaseOrder> viewAllPurchaseOrders() {
-        return purchaseOrderRepository.findAll();
+    	LocalDate fromDate = LocalDate.now()
+    	        .minusDays(filterDays);
+
+    	return purchaseOrderRepository.findByPoDateAfterOrderByPoDateDesc(
+    	                fromDate
+    	        );
+       // return purchaseOrderRepository.findAll();
     }
     
     public List<PurchaseRequisitionDTO> getRequisitionsByBatchNumber(String batchNumber) {

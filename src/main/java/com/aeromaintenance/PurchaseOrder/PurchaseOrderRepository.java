@@ -1,5 +1,6 @@
 package com.aeromaintenance.PurchaseOrder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +42,6 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 			"LIMIT 1",
 			nativeQuery = true)
 	Optional<String> findLastPoNumberForYear(@Param("yearSuffix") String yearSuffix);
+
+	List<PurchaseOrder> findByPoDateAfterOrderByPoDateDesc(LocalDate fromDate);
 }

@@ -19,9 +19,10 @@ public class StoreAccMapper {
             storeAcc.setDom(Date.valueOf(dto.getDateOfManufacturingObservation()));
         }
 
-        if (dto.getSelfLifeObservation() != null) {
+        if (dto.getDateOfExpiryObservation() != null) {
             storeAcc.setDoe(Date.valueOf(dto.getDateOfExpiryObservation()));
         }
+         
 
         storeAcc.setQuantity(dto.getQtyReceive());
 

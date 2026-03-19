@@ -1,5 +1,6 @@
 package com.aeromaintenance.caForm;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.aeromaintenance.MaterialRequisition.MaterialRequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,9 @@ import com.aeromaintenance.inspectionReport.PartDetailsDTO;
 @RestController
 @RequestMapping(value="/api/caForm")
 public class CAFormController {
+	
+	@Value("${filter.days}")
+    private int filterDays;
 	
 	@Autowired
 	private CAFormRepository repository;
@@ -107,7 +112,23 @@ public ResponseEntity<?> submitCAForm(@RequestBody CAForm caForm){
 
 	@GetMapping("/viewCAForm")
 	public ResponseEntity<List<workOrderDetailDto>> viewCAFormList(){
-		List<workOrderDetailDto> list = repository.getCAAndWorkOrderDetails();
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+		List<workOrderDetailDto> list = repository.getCAAndWorkOrderDetails(fromDate.toString()).stream()
+		        .map(p -> new workOrderDetailDto(
+		                p.getWorkOrderNo(),
+		                p.getCustomerName(),
+		                p.getRepairOrderNo(),
+		                p.getFormTrackingNumber(),
+		                p.getDescription(),
+		                p.getPartNo(),
+		                p.getItem(),
+		                p.getQuantity(),
+		                p.getSerialNo(),
+		                p.getStatus(),
+		                p.getRemarks()
+		        ))
+		        .toList();;
+//		List<workOrderDetailDto> list = repository.getCAAndWorkOrderDetails();
 		return ResponseEntity.ok(list);
 	}
 	

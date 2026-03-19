@@ -13,6 +13,7 @@ import com.common.ResponseBean;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class InspectionReportService {
 
 	@Autowired
 	private StoreAccRepository storeAccRepository;
+	
+	@Value("${filter.days}")
+    private int filterDays;
 
 	public int approveReport(InspectionReportDto report) {
 		 int result=0;
@@ -152,7 +156,7 @@ public class InspectionReportService {
 	        int rowsInserted = inspectionReportRepositoryCustom.updateInHistoryTable(reportDto);
 	        if(rowsInserted >0) {
 	        updateInspectionDataInStore(updateExisting);
-	        updateInventoryCurrentStoke(updateExisting);
+	        //updateInventoryCurrentStoke(updateExisting);
 	        }
 //	        ResponseBean<Void> response=null;
 //		     if (rowsInserted >= 1) {
@@ -199,7 +203,10 @@ public class InspectionReportService {
 
 
 	public List<InspectionReportDto> getAllViewReportList() {
-		List<Object[]> rawData = inspectionReportRepository.getRawReportList();
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+
+		List<Object[]> rawData = inspectionReportRepository.getRawReportList(fromDate);
+		//List<Object[]> rawData = inspectionReportRepository.getRawReportList();
         List<InspectionReportDto> result = new ArrayList<>();
 
         for (Object[] row : rawData) {
@@ -302,6 +309,13 @@ public class InspectionReportService {
 	        return ((java.util.Date) obj).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    }
 	    throw new IllegalArgumentException("Unsupported date type: " + obj.getClass());
+	}
+
+	public List<InspectionReport> getAllEditReportList() {
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+        List<InspectionReport> reports = inspectionReportRepository.findByMakerDateAfterOrderByMakerDateDesc(fromDate);
+
+		return reports;
 	}
 
 }

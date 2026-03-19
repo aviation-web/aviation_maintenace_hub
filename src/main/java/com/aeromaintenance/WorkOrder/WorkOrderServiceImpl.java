@@ -7,12 +7,15 @@ import com.aeromaintenance.customerOrder.*;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +27,9 @@ import java.util.stream.Collectors;
 
 public class WorkOrderServiceImpl implements WorkOrderService {
 
+	@Value("${filter.days}")
+    private int filterDays;
+	
     @Autowired
     private WorkOrderRepository repository;
 
@@ -242,7 +248,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     public List<WorkOrder> getAllWorkOrdersWithDetails() {
     	// First query: WorkOrders + Steps
-        List<WorkOrder> workOrders = repository.findAllWithWorkOrderSteps();
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+
+    	List<WorkOrder> workOrders = repository.findWorkOrdersAfterIssuedDate(fromDate);
+       // List<WorkOrder> workOrders = repository.findAllWithWorkOrderSteps();
 
         // Second query: WorkOrders + Material Requisitions
         List<WorkOrder> workOrdersWithMaterials = repository.findAllWithMaterialRequisitions();

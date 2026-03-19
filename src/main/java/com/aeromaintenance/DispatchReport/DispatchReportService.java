@@ -3,10 +3,12 @@ package com.aeromaintenance.DispatchReport;
 
 import com.aeromaintenance.WorkOrder.WorkOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.aeromaintenance.inspectionReport.InspectionReportRepositoryCustom;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,6 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class DispatchReportService {
+	
+	@Value("${filter.days}")
+    private int filterDays;
 
     @Autowired
     private DispatchReportRepository repository;
@@ -112,7 +117,13 @@ public class DispatchReportService {
 
     // Get all Dispatch Reports
     public List<DispatchReportDTO> getAllReports() {
-        return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+		return repository.findByDateAfterOrderByDateDesc(fromDate)
+	            .stream()
+	            .map(this::convertToDTO)
+	            .collect(Collectors.toList());
+
+        //return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     // Get a Dispatch Report by ID

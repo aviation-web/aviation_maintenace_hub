@@ -5,6 +5,8 @@ import com.aeromaintenance.CustomerRepairProduct.CustomerRepairProduct;
 import com.aeromaintenance.CustomerRepairProduct.CustomerRepairProductRepository;
 import com.common.CustomerRepairDTO;
 import com.common.ProductDTO;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 public class CustomerRepairProductService {
 
     private final CustomerRepairProductRepository repository;
+    
+    @Value("${filter.days}")
+    private int filterDays;
 
     public CustomerRepairProductService(CustomerRepairProductRepository repository) {
         this.repository = repository;
@@ -29,7 +34,9 @@ public class CustomerRepairProductService {
     }
 
     public List<CustomerRepairProduct> findAll() {
-        return repository.findAll();
+		LocalDate fromDate = LocalDate.now().minusDays(filterDays);
+    	return repository.findByDateAfterOrderByDateDesc(fromDate);
+        //return repository.findAll();
     }
 
     public Optional<CustomerRepairProduct> findById(Long id) {

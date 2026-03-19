@@ -1,5 +1,6 @@
 package com.aeromaintenance.customerOrder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,6 +38,8 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, St
 
 	@Query("SELECT c.roNo FROM CustomerOrder c WHERE c.roNo IN :roNos")
 	List<String> findExistingRoNos(@Param("roNos") List<String> roNos);
+
+	List<CustomerOrder> findByMakerDateAfterOrderByMakerDateDesc(LocalDate fromDate);
 
 
 }

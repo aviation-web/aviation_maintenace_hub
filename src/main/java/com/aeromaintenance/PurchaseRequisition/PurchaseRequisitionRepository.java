@@ -4,8 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseRequisition, Long> {
@@ -21,6 +23,9 @@ public interface PurchaseRequisitionRepository extends JpaRepository<PurchaseReq
 	List<String> findLatestBatchNo();
 
 	boolean existsByBatchNumber(String batchNumber);
+
+	List<PurchaseRequisition> findByStatusAndCreatedDateAfterOrderByCreatedDateDesc(String string,
+			LocalDateTime fromDate);
 
 //    @Query("SELECT new com.aeromaintenance.PurchaseRequisition.PurchaseRequisitionDTO(p.srNo,p.partNumber, p.description, p.currentStock) FROM PurchaseRequisition p where p.flag = Pending ")
 //    List<PurchaseRequisitionDTO> findAllOrderByBatchNumber();
