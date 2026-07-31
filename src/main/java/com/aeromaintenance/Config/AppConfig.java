@@ -61,7 +61,9 @@ public class AppConfig {
 	                            "http://13.234.95.189:8080",
 	                            "http://13.234.95.189:3000",  // React dev
 	                            "http://localhost:3000",     // Local dev
-	                            "http://localhost:8089"     // Other dev
+	                            "http://localhost:8089",
+								"https://amc-tech.in",
+            					"https://www.amc-tech.in"     // Other dev
 	                        )
 	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 	                        .allowedHeaders("*")
