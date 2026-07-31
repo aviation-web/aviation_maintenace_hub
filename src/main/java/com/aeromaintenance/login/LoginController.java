@@ -31,7 +31,6 @@ import com.aeromaintenance.Utils.JwtUtil;
 import com.aeromaintenance.storeAcceptance.StoreAcc;
 @RestController
 @RequestMapping("/auth")
-//@CrossOrigin(origins = "http://localhost:8089")
 public class LoginController {
 
     @Autowired
@@ -105,7 +104,7 @@ public class LoginController {
             newSession.setRefreshToken(refreshToken);
             newSession.setIsActive(true);
             newSession.setLoginTime(LocalDateTime.now());
-            newSession.setRefreshExpiry(LocalDateTime.now().plusDays(7));
+            newSession.setRefreshExpiry(LocalDateTime.now().plusDays(1));
 
             sessionRepository.save(newSession);
 
