@@ -62,27 +62,56 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            
+            try{
             String username = jwtUtil.extractUsername(token);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                if (jwtUtil.validateToken(token, userDetails.getUsername())) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                } else {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
+            if (username == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
+
+if (SecurityContextHolder.getContext().getAuthentication() == null) {
+
+    UserDetails userDetails =
+            userDetailsService.loadUserByUsername(username);
+
+    if (!jwtUtil.validateToken(token, userDetails.getUsername())) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
+
+    UsernamePasswordAuthenticationToken authentication =
+            new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+    
+            // if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            //     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            //     if (jwtUtil.validateToken(token, userDetails.getUsername())) {
+            //         UsernamePasswordAuthenticationToken authentication =
+            //                 new UsernamePasswordAuthenticationToken(
+            //                         userDetails,
+            //                         null,
+            //                         userDetails.getAuthorities()
+            //                 );
+            //         SecurityContextHolder.getContext().setAuthentication(authentication);
+                 
+                  
+  
+        
+    }catch (Exception e) {
+         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+           return;
+    }
+}
 
         filterChain.doFilter(request, response);
     }
 }
+

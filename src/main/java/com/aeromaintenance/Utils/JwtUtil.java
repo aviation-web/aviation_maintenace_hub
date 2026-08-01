@@ -69,12 +69,30 @@ public class JwtUtil {
                     .getBody();
         } catch (ExpiredJwtException e) {
             System.out.println("Token expired: " + e.getMessage());
-            return e.getClaims(); // Return claims even if expired
+            return null;
         } catch (JwtException e) {
             System.out.println("Invalid JWT: " + e.getMessage());
             return null;
         }
     }
+
+    public Claims extractRefreshClaims(String token) {
+    try {
+        return Jwts.parserBuilder()
+                .setSigningKey(refreshKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+    } catch (ExpiredJwtException e) {
+        System.out.println("Refresh token expired: " + e.getMessage());
+        return null;
+
+    } catch (JwtException e) {
+        System.out.println("Invalid refresh JWT: " + e.getMessage());
+        return null;
+    }
+}
 
     // Extract username from token
     public String extractUsername(String token) {
@@ -83,27 +101,45 @@ public class JwtUtil {
     }
     
     public String extractUsernameFromRefreshToken(String token) {
-    	 Claims claims = extractClaims(token);
-    	    return claims != null ? claims.getSubject() : null;    }
+    Claims claims = extractRefreshClaims(token);
+    return claims != null ? claims.getSubject() : null;
+}
 
-    // Check if token is expired
-    public boolean isTokenExpired(String token) {
-        Claims claims = extractClaims(token);
-        return claims == null || claims.getExpiration().before(new Date());
+public boolean isTokenExpired(String token) {
+    try {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getExpiration().before(new Date());
+
+    } catch (ExpiredJwtException e) {
+        return true;
+
+    } catch (JwtException e) {
+        return true;
     }
+}
+    // // Check if token is expired
+    // public boolean isTokenExpired(String token) {
+    //     Claims claims = extractClaims(token);
+    //     return claims == null || claims.getExpiration().before(new Date());
+    // }
 
     // Validate token with username
     public boolean validateToken(String token, String username) {
-        String extractedUsername = extractUsername(token);
-        return extractedUsername != null && extractedUsername.equals(username) && !isTokenExpired(token);
+       Claims claims = extractClaims(token);
+    return claims != null
+            && username.equals(claims.getSubject())
+            && claims.getExpiration().after(new Date());
     }
     
     public boolean validateRefreshToken(String token) {
-        try {
-            extractClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+    Claims claims = extractRefreshClaims(token);
+
+    return claims != null &&
+           claims.getExpiration().after(new Date());
+}
 }
